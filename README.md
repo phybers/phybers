@@ -133,12 +133,12 @@ You will locate the segmentation results in the 'ffclust_result' directory
 # 
  > ## _phybers.utils_
  > > ### _Description_
-Necesitamos descripción global simple
+The ***utils*** are a set of tools used for tractography preprocessing and the analysis of brain fiber clustering and segmentation results. The module includes tools for reading and writing brain fiber files in bundles format, transform the fibers to a reference coordinate system based on a deformation field, sampling of fibers at n equidistant points, calculation of intersection between sets of brain fibers, and tools for extracting measures and filtering fiber clusters or segmented bundles. We considered the extraction of measures such as size, length and the distance between fibers of each cluster (or fascicle)
 
  > > ### _phybers.utils.deform_
  > > > ### _Description_
 
-The ***deformation*** sub-module transforms a tractography file to another space using a non-linear deformation file. The maps must be stored in NIfTI format, where the voxels contain the transformation to be applied to each voxel 3D space location. The Deform sub-module applies the deformation to the 3D coordinates of the fiber points. Deform needs as input data the deformation map, the path of the fibers to be transformed, and the directory where the fibers will be saved. The output is the tractography file in the transformed space.
+The ***deformation*** sub-module transforms a tractography file to another space using a non-linear deformation file. The maps must be stored in NIfTI format, where the voxels contain the transformation to be applied to each voxel 3D space location. The Deform sub-module applies the deformation to the 3D coordinates of the fiber points. 
 
 > > > ### _deform Functions_
 
@@ -148,13 +148,12 @@ def deform(imgdef=string, infile=string, outfile=string)
 > > >### _deform  Parameters_
 
 The inputs are:
--	***imgdef***:
--	***infile***:
--	***outfile***:
+-	***imgdef***: deformation image (image in NIfTI format containing the deformations)
+-	***infile***: input tractography dataset
+-	***outfile***: path to the transformed tractography dataset
 
 The outputs files are:
--	***na***: .
--	***na***: .
+-	 tractography dataset that has been transformed into the MNI space.
 
 > > > ### _deform Example_
 To test `deform()`,  download the data from the link provided [link to be provided][datadeform]. Then, open a Python terminal and run the following commands.
@@ -166,7 +165,7 @@ deform(imgdef= ‘id_acpc_dc2standard.nii’, infile=‘subject_raw.bundles’, 
  > > ### _phybers.utils.sampling_
  > > > ### _Description_
 
-The ***sampling*** sub-module performs a sampling of the fibers, recalculating their points using a defined number of equidistant points. The input data of the algorithm are: the path of the tractography file to be transformed, the number of points ($n$) and the directory where the fibers with $n$ points will be saved. The sampling sub-module is used in the preprocessing stage of the segmentation and clustering algorithms.
+The ***sampling*** sub-module performs a sampling of the fibers, recalculating their points using a defined number of equidistant points. The sampling sub-module is used in the preprocessing stage of the segmentation and clustering algorithms.
 
 > > > ### _sampling Functions_
 
@@ -176,13 +175,12 @@ def sampling(indir=string, npoints= int, outdir= string)
 > > >### _sampling  Parameters_
 
 The inputs are:
--	***imgdef***:
--	***infile***:
--	***outfile***:
+-	***indir***: input tractography dataset
+-	***npoints***: number of sampling points (***n***)
+-	***outdir***: path to save the sub-sampled fibers
 
 The outputs files are:
--	***na***: .
--	***na***: .
+-	The tractography dataset sampled at ***n*** equidistant points.
 
 > > > ### _sampling Example_
 To test `sampling()`,  download the data from the link provided [link to be provided][datasampling]. Then, open a Python terminal and run the following commands.
@@ -194,8 +192,7 @@ sampling(indir= ‘test_allpoint.bundles’, npoints= 21, outdir= ‘test_21poit
  > > ### _phybers.utils.intersection_
  > > > ### _Description_
 
-The bundle ***intersection*** sub-module calculates a similarity measure between two sets of brain fibers (fiber clusters or segmented bundles). It uses a maximum distance threshold to consider two fibers as similar. Both sets of fibers must be in the same space. First, a Euclidean distance matrix is calculated between the fibers of the two sets. Then, the maximum distance threshold is applied between fiber pairs and the number of fibers from one set that have a similar fibers in the other set are count, for both sets. The similarity measure yields a value between $0$ and $100\%$. The input data of the intersection algorithm are the two sets of fibers and the maximum distance threshold, while the output is the similarity percentage.
-
+The bundle ***intersection*** sub-module calculates a similarity measure between two sets of brain fibers (fiber clusters or segmented bundles). It uses a maximum distance threshold to consider two fibers as similar. Both sets of fibers must be in the same space. First, a Euclidean distance matrix is calculated between the fibers of the two sets. Then, the maximum distance threshold is applied between fiber pairs and the number of fibers from one set that have a similar fibers in the other set are count, for both sets. The similarity measure yields a value between $0$ and $100\%$. 
 > > > ### _intersection Functions_
 
 ```python
@@ -204,15 +201,13 @@ def intersection(dir_fib1=string, dir_fib2=string, outdir=string, d_th=float)
 > > >### _intersection  Parameters_
 
 The inputs are:
-- ***dir_fib1***:
-- ***dir_fib2***:
-- ***outdir***:
-- 	***d_th***:
-
+- ***dir_fib1***: path of the first fiber bundle
+- ***dir_fib2***: path of the second fiber bundle
+- ***outdir***: path to save the distance matrix
+- 	***d_th***: istance threshold in millimeters used to consider similar two fibers
 
 The outputs files are:
--	***na***: .
--	***na***: .
+-	`intersection()` returns a tuple with the intersection percentage. The first value indicates the percentage of intersection of the first set of fibers compared to the second set of fibers, and the second value indicates the reverse scenario, intersection of the second set of fibers compared to the first set of fibers.
 
 > > > ### _intersection Example_
 To test `intersection()`,  download the data from the link provided [link to be provided][dataintersection]. Then, open a Python terminal and run the following commands.
@@ -238,11 +233,11 @@ def postprocessing(in_directory=string)
 > > >### _postprocessing  Parameters_
 
 The inputs are:
-- 	***in_directory***:
+- 	***in_directory***: directory where the segmentation or clustering result is located
 
 The outputs files are:
--	***na***: .
--	***na***: .
+-	`postprocessing()` return "pandas": DataFrame output, which has the following list of keys:
+*'id_bundle': bundle identifier, 'sizes': number of fibers in the bundle ,'lens': centroid length per bundle, 'intra_min': manimum intra-bundle Euclidean distance and intra_mean': mean intra-bundle Euclidean distance*
 
 > > > ### _postprocessing Example_
 To test `postprocessing()`,  download the data from the link provided [link to be provided][datapostprocessing]. Then, open a Python terminal and run the following commands.
@@ -257,7 +252,7 @@ postprocessing(in_directory=string)
  > > ### _Description_
 The tractography files can be rendered with lines or cilynders. In the case of lines, the software loads the streamlines with a fixed normal per vertex, which correspond to the normalized direction for the particular segment of the streamline. Furthermore, a phong lighting algorithm [ABrainVis][abrainvis] is implemented in a vertex shader to compute the color fetched for the streamline. The MRI data is rendered by using specific shaders for slice visualization and volume rendering. Meshes can be displayed using points, wireframes or shaded triangles. The user interface (GUI) allows viewing several objects simultaneously, performing camera operations (zoom, rotate and motion), modifying material properties (color and adding transparency) and applying linear transformation (zoom, rotate and motion) on the brain tractography.
 
-Fiber selection based on 3D ROIs
+*Fiber selection based on 3D ROIs*
 
 This function allows users to extract bundles using 3D objects and labeled 3D images, creating a point-based data structure for fast queries (called Octree). It is based on storing points inside a bounding box with a capacity of N. When a node is filled and a new point is added, the node subdivides his bounding box in eight new nodes (no overlapping each other) and the points are moved in the new nodes. The resulting selected fiber for each object can be used into logical mathematical operations (and, or, xor, not). This allows the use of multiple ROIs in order to find fibers that connect some areas, while excluding others that are selected by others areas.
 
@@ -268,12 +263,20 @@ def start_fibervis()
 ```
 
 > > ### Example
-To test `fibervis()`, download the data from the links provided above. Then, open a Python terminal and run the following commands.
+To test `fibervis()`, download the data from the links provided above. Then, open a Python terminal and run the following commands:
 
 ```python
 from phybers. fibervis import start_fibervis
 start_fibervis()
 ```
+
+`fibervis()`is installed as a program, which allows you to run it through the command line in Windows or Ubuntu. To execute it on both platforms, use the following command:
+
+```python
+fibervis
+```
+For your convenience in using `fibervis()`, a video demonstrating all its features is now accessible through the following link
+[link to be provided][video]
 
    [Pg2012]: <https://doi.org/10.1016/j.neuroimage.2012.02.071>
    [LN2017]: <https://link.springer.com/article/10.1007/s12021-016-9316-7>
@@ -291,4 +294,5 @@ start_fibervis()
    [dataintersection]: <https://link.>
    [datasampling]: <https://link.>
    [datapostprocessing]: <https://link.>
+   [video]: <https://link.>
    
