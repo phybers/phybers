@@ -18,7 +18,7 @@ We provide one atlas of deep white matter (DWM) bundles ([Guevara et al., 2012][
 > > ### _Functions_
 
 ```python
-def fiberseg (fiber_input=string, idsubj = string, atlasdir=string, atlasInformation=string, result_path=string)
+def fiberseg (fiber_input: str, idsubj: str, atlasdir: str, atlasInformation: str, result_path: str) -> None
 ```
 
 > > ### _Parameters_
@@ -70,7 +70,7 @@ From the affinity graph, the hierarchical tree is generated using an agglomerati
 > > > ### _HClust Functions_
 
 ```python
-def hclust(fiber_input=string, PartDistance_Threshold=int,  MaxDistance_Threshold=int, var=int, work_dir=string)
+def hclust(fiber_input: str, PartDistance_Threshold: int,  MaxDistance_Threshold: int, var: int, work_dir: str) -> None
 ```
 > > >### _HClust  Parameters_
 
@@ -104,7 +104,7 @@ FFClust is an intra-subject clustering algorithm aims to identify compact and ho
 > > > ### _FFClust Functions_
 
 ```python
-def ffclust(infile=string, output_directory=string, thr_assign=int, thr_join=int )
+def ffclust(infile: str, output_directory: str, thr_assign: int = 6, thr_join: int = 6) -> bool
 ```
 > > >### _FFClust  Parameters_
 
@@ -143,7 +143,7 @@ The ***deformation*** sub-module transforms a tractography file to another space
 > > > ### _deform Functions_
 
 ```python
-def deform(imgdef=string, infile=string, outfile=string)
+def deform(imgdef: str, infile: str, outfile: str) -> None
 ```
 > > >### _deform  Parameters_
 
@@ -170,7 +170,7 @@ The ***sampling*** sub-module performs a sampling of the fibers, recalculating t
 > > > ### _sampling Functions_
 
 ```python
-def sampling(indir=string, npoints= int, outdir= string)
+def sampling(indir: str, npoints: int = 21, outdir: str) -> None
 ```
 > > >### _sampling  Parameters_
 
@@ -196,7 +196,7 @@ The bundle ***intersection*** sub-module calculates a similarity measure between
 > > > ### _intersection Functions_
 
 ```python
-def intersection(dir_fib1=string, dir_fib2=string, outdir=string, d_th=float)
+def intersection(dir_fib1: str, dir_fib2: str, outdir: str, d_th: float = 10.0) -> tuple[float, float]
 ```
 > > >### _intersection  Parameters_
 
@@ -214,7 +214,7 @@ To test `intersection()`,  download the data from the link provided [link to be 
 
 ```python
 from phybers.utils import intersection
-result_inter=intersection (dir_fib1='fibers1.bundles', ir_fib2='fibers2.bundles',                              outdir='inter_result', d_th=10.0)
+result_inter=intersection (dir_fib1='fibers1.bundles', ir_fib2='fibers2.bundles', outdir='inter_result', d_th=10.0)
 
 print(' intersection fibers1 with fibers2', result_inter [0])
 print(' intersection fibers2 with fibers1', result_inter [1])
@@ -228,7 +228,7 @@ print(' intersection fibers2 with fibers1', result_inter [1])
 > > > ### _postprocessing Functions_
 
 ```python
-def postprocessing(in_directory=string)
+def postprocessing(in_directory: string) -> None
 ```
 > > >### _postprocessing  Parameters_
 
@@ -259,7 +259,7 @@ This function allows users to extract bundles using 3D objects and labeled 3D im
 > > ### _Functions_
 
 ```python
-def start_fibervis()
+def start_fibervis() -> None
 ```
 
 > > ### Example
