@@ -18,7 +18,7 @@ We provide one atlas of deep white matter (DWM) bundles ([Guevara et al., 2012][
 > > ### _Functions_
 
 ```python
-def fiberseg (fiber_input: str, idsubj: str, atlasdir: str, atlasInformation: str, result_path: str) -> None
+def fiberseg(fiber_input: str, idsubj: str, atlasdir: str, atlasInformation: str, result_path: str) -> None
 ```
 
 > > ### _Parameters_
