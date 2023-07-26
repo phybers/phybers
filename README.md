@@ -236,7 +236,7 @@ The inputs are:
 - 	***in_directory***: directory where the segmentation or clustering result is located
 
 The outputs files are:
--	`postprocessing()` return "pandas": DataFrame output, which has the following list of keys:
+-	`postprocessing()` return `pandas.DataFrame object` output, which has the following list of keys:
 *'id_bundle': bundle identifier, 'sizes': number of fibers in the bundle ,'lens': centroid length per bundle, 'intra_min': manimum intra-bundle Euclidean distance and intra_mean': mean intra-bundle Euclidean distance*
 
 > > > ### _postprocessing Example_
