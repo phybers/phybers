@@ -33,7 +33,7 @@ The inputs are:
 
 The outputs files are:
 
--	***Segmented fibers***_: the atlas fascicles extracted in the subject, which are labeled and saved in bundles format.
+-	***Segmented fibers***: the atlas fascicles extracted in the subject, which are labeled and saved in bundles format.
 
 -	***Centroids***: the centroid of each segmented fascicle.
 
@@ -160,7 +160,7 @@ To test `deform()`,  download the data from the link provided [link to be provid
 
 ```python
 from phybers.utils import deform
-deform(imgdef = ‘id_acpc_dc2standard.nii’, infile = ‘subject_raw.bundles’, outfile = ‘subject_rawtoMNI.bundles’)
+deform(imgdef = 'acpc_dc2standard.nii', infile = 'subject_raw.bundles', outfile = 'subject_rawtoMNI.bundles')
 ```
  > > ### _phybers.utils.sampling_
  > > > ### _Description_
