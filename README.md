@@ -187,7 +187,7 @@ To test `sampling()`,  download the data from the link provided [link to be prov
 
 ```python
 from phybers.utils import sampling
-sampling(indir = ‘test_allpoint.bundles’, npoints = 21, outdir = ‘test_21poits.bundles’)
+sampling(indir = 'test_allpoint.bundles', npoints = 21, outdir = 'test_21poits.bundles')
 ```
  > > ### _phybers.utils.intersection_
  > > > ### _Description_
