@@ -19,4 +19,4 @@ To install Phybers on Windows, run the following command:
 >```$ pip install phybers```
 
 To install Phybers on Ubuntu, run the following command:
->```$ python3 –m pip install phybers```
+>```$ python3 -m pip install phybers```
