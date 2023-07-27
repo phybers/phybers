@@ -1,4 +1,4 @@
-# cython: language_level=3, embedsignature=Trues
+# cython: language_level=3, embedsignature=True
 # distutils: language=c
 
 cdef extern from "fiberDistanceMax2bun.h":
