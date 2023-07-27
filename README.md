@@ -143,14 +143,14 @@ The ***deformation*** sub-module transforms a tractography file to another space
 > > > ### _deform Functions_
 
 ```python
-def deform(imgdef: str, infile: str, outfile: str) -> None
+def deform(deform_file: str, in_file: str, file_out: str) -> None
 ```
 > > >### _deform  Parameters_
 
 The inputs are:
--	***imgdef***: deformation image (image in NIfTI format containing the deformations)
--	***infile***: input tractography dataset
--	***outfile***: path to the transformed tractography dataset
+-	***deform_file***: deformation image (image in NIfTI format containing the deformations)
+-	***in_file***: input tractography dataset
+-	***file_out***: path to the transformed tractography dataset
 
 The outputs files are:
 -	 Tractography dataset that has been transformed into the MNI space.
@@ -160,7 +160,7 @@ To test `deform()`,  download the data from the link provided [link to be provid
 
 ```python
 from phybers.utils import deform
-deform(imgdef = 'acpc_dc2standard.nii', infile = 'subject_raw.bundles', outfile = 'subject_rawtoMNI.bundles')
+deform(deform_file = 'acpc_dc2standard.nii', in_file = 'subject_raw.bundles', file_out = 'subject_rawtoMNI.bundles')
 ```
  > > ### _phybers.utils.sampling_
  > > > ### _Description_
@@ -170,14 +170,15 @@ The ***sampling*** sub-module performs a sampling of the fibers, recalculating t
 > > > ### _sampling Functions_
 
 ```python
-def sampling(indir: str, npoints: int = 21, outdir: str) -> None
+def sampling(dir_in: str, file_out: str, npoints: int = 21) -> None
 ```
 > > >### _sampling  Parameters_
 
 The inputs are:
--	***indir***: input tractography dataset
+-	***dir_in***: input tractography dataset
+-	***file_out***: path to save the sub-sampled fibers
 -	***npoints***: number of sampling points (***n***)
--	***outdir***: path to save the sub-sampled fibers
+
 
 The outputs files are:
 -	The tractography dataset sampled at ***n*** equidistant points.
@@ -187,7 +188,7 @@ To test `sampling()`,  download the data from the link provided [link to be prov
 
 ```python
 from phybers.utils import sampling
-sampling(indir = 'test_allpoint.bundles', npoints = 21, outdir = 'test_21poits.bundles')
+sampling(dir_in = 'test_allpoint.bundles', file_out = 'test_21poits.bundles', npoints = 21)
 ```
  > > ### _phybers.utils.intersection_
  > > > ### _Description_
@@ -196,15 +197,15 @@ The bundle ***intersection*** sub-module calculates a similarity measure between
 > > > ### _intersection Functions_
 
 ```python
-def intersection(dir_fib1: str, dir_fib2: str, outdir: str, d_th: float = 10.0) -> tuple[float, float]
+def intersection(file1_in: str, file2_in: str, dir_out: str, d_th: distance_thr = 10.0) -> tuple[float, float]
 ```
 > > >### _intersection  Parameters_
 
 The inputs are:
-- ***dir_fib1***: path of the first fiber bundle
-- ***dir_fib2***: path of the second fiber bundle
-- ***outdir***: path to save the distance matrix
-- 	***d_th***: distance threshold in millimeters used to consider similar two fibers, default: $10.0$
+- ***file1_in***: path of the first fiber bundle
+- ***file2_in***: path of the second fiber bundle
+- ***dir_out***: path to save the distance matrix
+- 	***distance_thr***: distance threshold in millimeters used to consider similar two fibers, default: $10.0$
 
 The outputs files are:
 -	`intersection()` returns a tuple with the intersection percentage. The first value indicates the percentage of intersection of the first set of fibers compared to the second set of fibers, and the second value indicates the reverse scenario, intersection of the second set of fibers compared to the first set of fibers.
@@ -214,7 +215,7 @@ To test `intersection()`,  download the data from the link provided [link to be 
 
 ```python
 from phybers.utils import intersection
-result_inter=intersection (dir_fib1 = 'fibers1.bundles', dir_fib2 = 'fibers2.bundles', outdir = 'inter_result', d_th = 10.0)
+result_inter=intersection (file1_in = 'fibers1.bundles', file2_in = 'fibers2.bundles', dir_out = 'inter_result', distance_thr = 10.0)
 
 print(' intersection fibers1 with fibers2', result_inter [0])
 print(' intersection fibers2 with fibers1', result_inter [1])
@@ -228,12 +229,12 @@ print(' intersection fibers2 with fibers1', result_inter [1])
 > > > ### _postprocessing Functions_
 
 ```python
-def postprocessing(in_directory: str) -> pandas.DataFrame
+def postprocessing(dir_in: str) -> pandas.DataFrame
 ```
 > > >### _postprocessing  Parameters_
 
 The inputs are:
-- 	***in_directory***: directory where the segmentation or clustering result is located
+- 	***dir_in***: directory where the segmentation or clustering result is located
 
 The outputs files are:
 -	`postprocessing()` return `pandas.DataFrame object` output, which has the following list of keys:
@@ -244,7 +245,7 @@ To test `postprocessing()`,  download the data from the link provided [link to b
 
 ```python
 from phybers.utils import postprocessing
-df = postprocessing(in_directory = str)
+df = postprocessing(dir_in = str)
 ```
 #
  > ## _phybers.fibervis_
