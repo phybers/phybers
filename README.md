@@ -10,7 +10,7 @@ The module includes useful tools for reading/writing cerebral fibers, sampling '
 ## 4.	Visualization Module
 This module contains a visualization algorithm called **FiberVis**. It includes a graphical user interface that allows users to simultaneously visualize multiple MRI slices/volumes in NIfTI format (`.nii`/`.nii.gz`), mesh in (`.mesh`) format, and tractography in (`.bundles`) and TRK formats. Additionally, it features a useful tool for real-time segmentation of cerebral tractography using manual positioning of ROIs.
 ## Work formats
-MRI data in NIFTI format (`.nii`/`.nii.gz`) and cerebral tractography in .bundles format are taken as input/output by the segmentation, clustering, and utilities modules.
+MRI data in NIFTI format (`.nii`/`.nii.gz`) and cerebral tractography in `.bundles` format are taken as input/output by the segmentation, clustering, and utilities modules.
 ## Prerequisites for installation
 Phybers can be executed on both Windows and Ubuntu platforms. It has been tested on both OS with Python 3.9 versions.
 For running on Windows, make sure you have Microsoft Visual C++ 14.0 or a later version installed, which can be found at the [Visual Studio Website](https://visualstudio.microsoft.com/visual-cpp-build-tools)
