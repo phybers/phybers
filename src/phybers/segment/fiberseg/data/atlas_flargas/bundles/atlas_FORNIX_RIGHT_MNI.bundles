@@ -1,0 +1,9 @@
+attributes = {
+    'binary' : 1,
+    'bundles' : ['FORNIX_RIGHT', 0],
+    'byte_order' : 'DCBA',
+    'curves_count' : 70,
+    'data_file_name' : '*.bundlesdata',
+    'format' : 'bundles_1.0',
+    'space_dimension' : 3
+  }

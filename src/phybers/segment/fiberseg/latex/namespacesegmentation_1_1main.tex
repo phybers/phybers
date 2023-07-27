@@ -1,0 +1,102 @@
+\hypertarget{namespacesegmentation_1_1main}{}\doxysection{segmentation.\+main Namespace Reference}
+\label{namespacesegmentation_1_1main}\index{segmentation.main@{segmentation.main}}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacesegmentation_1_1main_a520355d003dd6220b409921936c77851}{pathname}} = os.\+path.\+dirname(\+\_\+\+\_\+file\+\_\+\+\_\+)
+\begin{DoxyCompactList}\small\item\em Variable that saves the absolute path of the file, so the executable /main can be run. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacesegmentation_1_1main_a5d3a2a98d205b34bd32bc75c9cc6b832}{npoints}} = sys.\+argv\mbox{[}1\mbox{]}
+\begin{DoxyCompactList}\small\item\em Number of points at which the segmentation is done. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacesegmentation_1_1main_ad36e6baea44b47c826845d36cf5d6cdb}{fibrasdir}} = sys.\+argv\mbox{[}2\mbox{]}
+\begin{DoxyCompactList}\small\item\em Path to the .bundles file that corresponds to the fascicles. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacesegmentation_1_1main_af6ba8fce56eb5a37631ab60914f2f292}{idsubj}} = sys.\+argv\mbox{[}3\mbox{]}
+\begin{DoxyCompactList}\small\item\em ID of the subject that the fascicles belong to. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacesegmentation_1_1main_af03553bfcb83570f3c585bc07b6002b8}{atlasdir}} = sys.\+argv\mbox{[}4\mbox{]}
+\begin{DoxyCompactList}\small\item\em Path to the folder that contains the .bundles and .bundlesdata files of the atlas. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacesegmentation_1_1main_ad9e08dc38570983ee1e934e1ea194a01}{atlas\+Information}} = sys.\+argv\mbox{[}5\mbox{]}
+\begin{DoxyCompactList}\small\item\em Path to the .txt file that contains the atlas\textquotesingle{} information. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacesegmentation_1_1main_a713c94cf41297bf79c16fb74f12c8cb0}{result\+\_\+path}} = sys.\+argv\mbox{[}6\mbox{]}
+\begin{DoxyCompactList}\small\item\em Output directory path for the segmented fascicles of the subject. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{namespacesegmentation_1_1main_description}{}\doxysubsubsection{How to run}\label{namespacesegmentation_1_1main_description}
+The segmentation code is ran like this\+:
+
+\begin{quote}
+python3 -\/m segmentation $<$npoints$>$ $<$fibrasdir$>$ $<$idsubj$>$ $<$atlasdir$>$ $<$atlas\+Information$>$ $<$result\+\_\+path$>$ \end{quote}
+~\newline
+ 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacesegmentation_1_1main_af03553bfcb83570f3c585bc07b6002b8}\label{namespacesegmentation_1_1main_af03553bfcb83570f3c585bc07b6002b8}} 
+\index{segmentation.main@{segmentation.main}!atlasdir@{atlasdir}}
+\index{atlasdir@{atlasdir}!segmentation.main@{segmentation.main}}
+\doxysubsubsection{\texorpdfstring{atlasdir}{atlasdir}}
+{\footnotesize\ttfamily segmentation.\+main.\+atlasdir = sys.\+argv\mbox{[}4\mbox{]}}
+
+
+
+Path to the folder that contains the .bundles and .bundlesdata files of the atlas. 
+
+Ruta al directorio que contiene los archivos .bundles y .bundlesdata del atlas. \mbox{\Hypertarget{namespacesegmentation_1_1main_ad9e08dc38570983ee1e934e1ea194a01}\label{namespacesegmentation_1_1main_ad9e08dc38570983ee1e934e1ea194a01}} 
+\index{segmentation.main@{segmentation.main}!atlasInformation@{atlasInformation}}
+\index{atlasInformation@{atlasInformation}!segmentation.main@{segmentation.main}}
+\doxysubsubsection{\texorpdfstring{atlasInformation}{atlasInformation}}
+{\footnotesize\ttfamily segmentation.\+main.\+atlas\+Information = sys.\+argv\mbox{[}5\mbox{]}}
+
+
+
+Path to the .txt file that contains the atlas\textquotesingle{} information. 
+
+Ruta al archivo .txt que contiene la información del atlas. \mbox{\Hypertarget{namespacesegmentation_1_1main_ad36e6baea44b47c826845d36cf5d6cdb}\label{namespacesegmentation_1_1main_ad36e6baea44b47c826845d36cf5d6cdb}} 
+\index{segmentation.main@{segmentation.main}!fibrasdir@{fibrasdir}}
+\index{fibrasdir@{fibrasdir}!segmentation.main@{segmentation.main}}
+\doxysubsubsection{\texorpdfstring{fibrasdir}{fibrasdir}}
+{\footnotesize\ttfamily segmentation.\+main.\+fibrasdir = sys.\+argv\mbox{[}2\mbox{]}}
+
+
+
+Path to the .bundles file that corresponds to the fascicles. 
+
+Ruta al archivo .bundles que corresponde a los fascículos. \mbox{\Hypertarget{namespacesegmentation_1_1main_af6ba8fce56eb5a37631ab60914f2f292}\label{namespacesegmentation_1_1main_af6ba8fce56eb5a37631ab60914f2f292}} 
+\index{segmentation.main@{segmentation.main}!idsubj@{idsubj}}
+\index{idsubj@{idsubj}!segmentation.main@{segmentation.main}}
+\doxysubsubsection{\texorpdfstring{idsubj}{idsubj}}
+{\footnotesize\ttfamily segmentation.\+main.\+idsubj = sys.\+argv\mbox{[}3\mbox{]}}
+
+
+
+ID of the subject that the fascicles belong to. 
+
+ID del sujeto a quien pertenecen los fascículos. \mbox{\Hypertarget{namespacesegmentation_1_1main_a5d3a2a98d205b34bd32bc75c9cc6b832}\label{namespacesegmentation_1_1main_a5d3a2a98d205b34bd32bc75c9cc6b832}} 
+\index{segmentation.main@{segmentation.main}!npoints@{npoints}}
+\index{npoints@{npoints}!segmentation.main@{segmentation.main}}
+\doxysubsubsection{\texorpdfstring{npoints}{npoints}}
+{\footnotesize\ttfamily segmentation.\+main.\+npoints = sys.\+argv\mbox{[}1\mbox{]}}
+
+
+
+Number of points at which the segmentation is done. 
+
+Es el número de puntos a los que se hace la segmentación. \mbox{\Hypertarget{namespacesegmentation_1_1main_a520355d003dd6220b409921936c77851}\label{namespacesegmentation_1_1main_a520355d003dd6220b409921936c77851}} 
+\index{segmentation.main@{segmentation.main}!pathname@{pathname}}
+\index{pathname@{pathname}!segmentation.main@{segmentation.main}}
+\doxysubsubsection{\texorpdfstring{pathname}{pathname}}
+{\footnotesize\ttfamily segmentation.\+main.\+pathname = os.\+path.\+dirname(\+\_\+\+\_\+file\+\_\+\+\_\+)}
+
+
+
+Variable that saves the absolute path of the file, so the executable /main can be run. 
+
+It is not entered by the user. Variable que guarda la ruta absoluta del archivo, para poder correr el ejecutable /main. No es ingresado por el usuario. \mbox{\Hypertarget{namespacesegmentation_1_1main_a713c94cf41297bf79c16fb74f12c8cb0}\label{namespacesegmentation_1_1main_a713c94cf41297bf79c16fb74f12c8cb0}} 
+\index{segmentation.main@{segmentation.main}!result\_path@{result\_path}}
+\index{result\_path@{result\_path}!segmentation.main@{segmentation.main}}
+\doxysubsubsection{\texorpdfstring{result\_path}{result\_path}}
+{\footnotesize\ttfamily segmentation.\+main.\+result\+\_\+path = sys.\+argv\mbox{[}6\mbox{]}}
+
+
+
+Output directory path for the segmented fascicles of the subject. 
+
+Directorio de salida para los fascículos segmentados del sujeto. 

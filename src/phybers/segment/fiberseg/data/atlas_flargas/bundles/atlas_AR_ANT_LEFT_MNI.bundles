@@ -1,0 +1,9 @@
+attributes = {
+    'binary' : 1,
+    'bundles' : ['AR_ANT_LEFT', 0],
+    'byte_order' : 'DCBA',
+    'curves_count' : 443,
+    'data_file_name' : '*.bundlesdata',
+    'format' : 'bundles_1.0',
+    'space_dimension' : 3
+  }

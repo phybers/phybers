@@ -1,0 +1,9 @@
+attributes = {
+    'binary' : 1,
+    'bundles' : ['Fu_Fu_1l', 0],
+    'byte_order' : 'DCBA',
+    'curves_count' : 427,
+    'data_file_name' : '*.bundlesdata',
+    'format' : 'bundles_1.0',
+    'space_dimension' : 3
+  }

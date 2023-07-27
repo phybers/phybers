@@ -1,0 +1,8 @@
+.pytest_cache/
+.vscode/
+dist/
+build/
+**/__pycache__/
+c_wrappers.*
+!c_wrappers.pyx
+*.egg-info

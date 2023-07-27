@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>IlumDialog</class>
+ <widget class="QDialog" name="IlumDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>324</width>
+    <height>376</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>324</width>
+    <height>376</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>324</width>
+    <height>397</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Ilumination Values</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="minimumSize">
+      <size>
+       <width>306</width>
+       <height>153</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Ilumination</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QLabel" name="La">
+          <property name="text">
+           <string>La</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Ld">
+          <property name="text">
+           <string>Ld</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Ls">
+          <property name="text">
+           <string>Ls</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QSlider" name="LaSlider">
+          <property name="maximumSize">
+           <size>
+            <width>217</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="sliderPosition">
+           <number>50</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="LdSlider">
+          <property name="maximumSize">
+           <size>
+            <width>217</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="sliderPosition">
+           <number>60</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="LsSlider">
+          <property name="maximumSize">
+           <size>
+            <width>218</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLabel" name="LaLabel">
+          <property name="minimumSize">
+           <size>
+            <width>33</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>0.5</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="LdLabel">
+          <property name="minimumSize">
+           <size>
+            <width>33</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>0.6</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="LsLabel">
+          <property name="minimumSize">
+           <size>
+            <width>33</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>1</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Material</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="QLabel" name="Ka">
+          <property name="text">
+           <string>Ka</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Kd">
+          <property name="text">
+           <string>Kd</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Ks">
+          <property name="text">
+           <string>Ks</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="S">
+          <property name="text">
+           <string>S</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QSlider" name="KaSlider">
+          <property name="maximumSize">
+           <size>
+            <width>216</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="sliderPosition">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="KdSlider">
+          <property name="maximumSize">
+           <size>
+            <width>215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="sliderPosition">
+           <number>80</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="KsSlider">
+          <property name="maximumSize">
+           <size>
+            <width>216</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="sliderPosition">
+           <number>80</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="SSlider">
+          <property name="maximumSize">
+           <size>
+            <width>228</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>200</number>
+          </property>
+          <property name="sliderPosition">
+           <number>5</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="KaLabel">
+          <property name="minimumSize">
+           <size>
+            <width>33</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>1</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="KdLabel">
+          <property name="minimumSize">
+           <size>
+            <width>33</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>0.8</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="KsLabel">
+          <property name="minimumSize">
+           <size>
+            <width>33</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>0.8</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="SLabel">
+          <property name="minimumSize">
+           <size>
+            <width>33</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>5</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="defaultButton">
+       <property name="text">
+        <string>&amp;Default</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>IlumDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>227</x>
+     <y>341</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>IlumDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>295</x>
+     <y>347</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>SSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>SLabel</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>109</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>302</x>
+     <y>291</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

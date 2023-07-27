@@ -1,0 +1,148 @@
+\hypertarget{namespacehclust_1_1main}{}\doxysection{hclust.\+main Namespace Reference}
+\label{namespacehclust_1_1main}\index{hclust.main@{hclust.main}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacehclust_1_1main_a513d6080106bd573ece89fdcfbbf99f0}{Hierarchical}} (raw\+\_\+tractography, Matrix\+Dist\+\_\+output, affinities\+\_\+graph\+\_\+output, \mbox{\hyperlink{namespacehclust_1_1main_a68758ce53232c2a4861bfa56b02e1794}{Max\+Distance\+\_\+\+Threshold}}, dendogram\+\_\+output)
+\item 
+def \mbox{\hyperlink{namespacehclust_1_1main_a41a2fd86558fc03916e942906181a472}{Particional\+\_\+\+Hierarchical}} (\mbox{\hyperlink{namespacehclust_1_1main_a858e9299cb028e570dc8d79723a0b538}{maxdist}}, \mbox{\hyperlink{namespacehclust_1_1main_a9df512b384478d801a40e4843ba8af1e}{var}}, arbfile, afffile, partfile)
+\item 
+def \mbox{\hyperlink{namespacehclust_1_1main_ab5e561ed7f885f2262d56b72f990f0ec}{Write\+\_\+\+Retrieve\+\_\+clusters}} (d\+\_\+result, wfv)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacehclust_1_1main_af77ddff117df9720836b51e5c196881e}\label{namespacehclust_1_1main_af77ddff117df9720836b51e5c196881e}} 
+{\bfseries pathname} = os.\+path.\+dirname(\+\_\+\+\_\+file\+\_\+\+\_\+)
+\item 
+\mbox{\Hypertarget{namespacehclust_1_1main_ab14d263a4c5bf1296a75907eed22a774}\label{namespacehclust_1_1main_ab14d263a4c5bf1296a75907eed22a774}} 
+{\bfseries exepath} = os.\+path.\+join(pathname, \char`\"{}hierarchical\char`\"{})
+\item 
+\mbox{\hyperlink{namespacehclust_1_1main_a533eb1873fcce83e6339e46c5da40cec}{dir\+\_\+raw\+\_\+tractography}} = sys.\+argv\mbox{[}1\mbox{]}
+\begin{DoxyCompactList}\small\item\em Path to the .bundles file that corresponds to the raw tractography. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehclust_1_1main_ac582a9839a5671f4ccb6cba0d31cda3b}\label{namespacehclust_1_1main_ac582a9839a5671f4ccb6cba0d31cda3b}} 
+{\bfseries Matrix\+Dist\+\_\+output} = os.\+path.\+join(pathname, \char`\"{}data\char`\"{},\char`\"{}hierarch\char`\"{},\char`\"{}matrixd.\+bin\char`\"{})
+\item 
+\mbox{\Hypertarget{namespacehclust_1_1main_a91bc35a280f2fb625b7b2667e9334df2}\label{namespacehclust_1_1main_a91bc35a280f2fb625b7b2667e9334df2}} 
+{\bfseries affinities\+\_\+graph\+\_\+output} = os.\+path.\+join(pathname, \char`\"{}data\char`\"{},\char`\"{}hierarch\char`\"{},\char`\"{}affin.\+txt\char`\"{})
+\item 
+\mbox{\hyperlink{namespacehclust_1_1main_a68758ce53232c2a4861bfa56b02e1794}{Max\+Distance\+\_\+\+Threshold}} = sys.\+argv\mbox{[}2\mbox{]}
+\begin{DoxyCompactList}\small\item\em Maximum threshold of euclidian distance between pairs of fibers, 40 is recommended. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehclust_1_1main_a11e8ca39312855df378776af3b3833b2}\label{namespacehclust_1_1main_a11e8ca39312855df378776af3b3833b2}} 
+{\bfseries dendogram\+\_\+output} = os.\+path.\+join(pathname, \char`\"{}data\char`\"{},\char`\"{}hierarch\char`\"{},\char`\"{}dendogram.\+txt\char`\"{})
+\item 
+\mbox{\Hypertarget{namespacehclust_1_1main_a7ee834ab91f9d71b49a03f5eea9e40a7}\label{namespacehclust_1_1main_a7ee834ab91f9d71b49a03f5eea9e40a7}} 
+{\bfseries t0} = time.\+time()
+\item 
+\mbox{\hyperlink{namespacehclust_1_1main_a858e9299cb028e570dc8d79723a0b538}{maxdist}} = float(sys.\+argv\mbox{[}3\mbox{]})
+\begin{DoxyCompactList}\small\item\em Maximum threshold of affinity, 30 is recommended. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacehclust_1_1main_a9df512b384478d801a40e4843ba8af1e}{var}} = float(sys.\+argv\mbox{[}4\mbox{]})
+\begin{DoxyCompactList}\small\item\em Value related with the scale of similarity used, 3600 is recommended. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacehclust_1_1main_a2c2801f5b5367b574bc2dfc9ea850421}{result\+\_\+path}} = sys.\+argv\mbox{[}5\mbox{]}
+\begin{DoxyCompactList}\small\item\em Output directory path. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehclust_1_1main_a0bc7ff6265b163b96f0360e047a11869}\label{namespacehclust_1_1main_a0bc7ff6265b163b96f0360e047a11869}} 
+{\bfseries arbfile} = dendogram\+\_\+output
+\item 
+\mbox{\Hypertarget{namespacehclust_1_1main_a3738d4d88dc2426fdd0a35c50d6be4ce}\label{namespacehclust_1_1main_a3738d4d88dc2426fdd0a35c50d6be4ce}} 
+{\bfseries afffile} = affinities\+\_\+graph\+\_\+output
+\item 
+\mbox{\Hypertarget{namespacehclust_1_1main_a115647e62929e69b00922dea5e25ed37}\label{namespacehclust_1_1main_a115647e62929e69b00922dea5e25ed37}} 
+string {\bfseries partfile} = os.\+path.\+join(pathname, \char`\"{}data\char`\"{},\char`\"{}hierarch\char`\"{},\char`\"{}particion\+\_\+\char`\"{})+str(\mbox{\hyperlink{namespacehclust_1_1main_a858e9299cb028e570dc8d79723a0b538}{maxdist}})+\char`\"{}.txt\char`\"{}
+\item 
+\mbox{\Hypertarget{namespacehclust_1_1main_a5d5910ef4fbaf1c2f0d750d251055d05}\label{namespacehclust_1_1main_a5d5910ef4fbaf1c2f0d750d251055d05}} 
+{\bfseries d\+\_\+result} = \mbox{\hyperlink{namespacehclust_1_1main_a2c2801f5b5367b574bc2dfc9ea850421}{result\+\_\+path}}
+\item 
+\mbox{\Hypertarget{namespacehclust_1_1main_a02ce06f39dd23fd6f024270af3e748cc}\label{namespacehclust_1_1main_a02ce06f39dd23fd6f024270af3e748cc}} 
+{\bfseries wfv} = CT.\+wforest\+\_\+partition\+\_\+maxdist\+\_\+from\+\_\+graph( arbfile,\mbox{\hyperlink{namespacehclust_1_1main_a858e9299cb028e570dc8d79723a0b538}{maxdist}},True,afffile,\mbox{\hyperlink{namespacehclust_1_1main_a9df512b384478d801a40e4843ba8af1e}{var}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\hypertarget{namespacehclust_1_1main_description}{}\doxysubsubsection{How to run}\label{namespacehclust_1_1main_description}
+The segmentation code is ran like this\+:
+
+\begin{quote}
+python3 -\/m hclust $<$dir\+\_\+raw\+\_\+tractography$>$ $<$\+Max\+Distance\+\_\+\+Threshold$>$ $<$maxdist$>$ {\itshape  $<$result\+\_\+path$>$ }\end{quote}
+~\newline
+ 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacehclust_1_1main_a513d6080106bd573ece89fdcfbbf99f0}\label{namespacehclust_1_1main_a513d6080106bd573ece89fdcfbbf99f0}} 
+\index{hclust.main@{hclust.main}!Hierarchical@{Hierarchical}}
+\index{Hierarchical@{Hierarchical}!hclust.main@{hclust.main}}
+\doxysubsubsection{\texorpdfstring{Hierarchical()}{Hierarchical()}}
+{\footnotesize\ttfamily def hclust.\+main.\+Hierarchical (\begin{DoxyParamCaption}\item[{}]{raw\+\_\+tractography,  }\item[{}]{Matrix\+Dist\+\_\+output,  }\item[{}]{affinities\+\_\+graph\+\_\+output,  }\item[{}]{Max\+Distance\+\_\+\+Threshold,  }\item[{}]{dendogram\+\_\+output }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Run to Hierarchical clustering.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacehclust_1_1main_a41a2fd86558fc03916e942906181a472}\label{namespacehclust_1_1main_a41a2fd86558fc03916e942906181a472}} 
+\index{hclust.main@{hclust.main}!Particional\_Hierarchical@{Particional\_Hierarchical}}
+\index{Particional\_Hierarchical@{Particional\_Hierarchical}!hclust.main@{hclust.main}}
+\doxysubsubsection{\texorpdfstring{Particional\_Hierarchical()}{Particional\_Hierarchical()}}
+{\footnotesize\ttfamily def hclust.\+main.\+Particional\+\_\+\+Hierarchical (\begin{DoxyParamCaption}\item[{}]{maxdist,  }\item[{}]{var,  }\item[{}]{arbfile,  }\item[{}]{afffile,  }\item[{}]{partfile }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}   Returns a ".txt" file with the detected clusters, where each list is a cluster.    
+   maxdist, 30 or 40mmm is recommended
+   var = 3600 ##minimum affinity within a cluster => #  N.exp( -max_cldist * max_cldist / var)
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacehclust_1_1main_ab5e561ed7f885f2262d56b72f990f0ec}\label{namespacehclust_1_1main_ab5e561ed7f885f2262d56b72f990f0ec}} 
+\index{hclust.main@{hclust.main}!Write\_Retrieve\_clusters@{Write\_Retrieve\_clusters}}
+\index{Write\_Retrieve\_clusters@{Write\_Retrieve\_clusters}!hclust.main@{hclust.main}}
+\doxysubsubsection{\texorpdfstring{Write\_Retrieve\_clusters()}{Write\_Retrieve\_clusters()}}
+{\footnotesize\ttfamily def hclust.\+main.\+Write\+\_\+\+Retrieve\+\_\+clusters (\begin{DoxyParamCaption}\item[{}]{d\+\_\+result,  }\item[{}]{wfv }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Return the clusters in the directory, d_result    
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacehclust_1_1main_a533eb1873fcce83e6339e46c5da40cec}\label{namespacehclust_1_1main_a533eb1873fcce83e6339e46c5da40cec}} 
+\index{hclust.main@{hclust.main}!dir\_raw\_tractography@{dir\_raw\_tractography}}
+\index{dir\_raw\_tractography@{dir\_raw\_tractography}!hclust.main@{hclust.main}}
+\doxysubsubsection{\texorpdfstring{dir\_raw\_tractography}{dir\_raw\_tractography}}
+{\footnotesize\ttfamily hclust.\+main.\+dir\+\_\+raw\+\_\+tractography = sys.\+argv\mbox{[}1\mbox{]}}
+
+
+
+Path to the .bundles file that corresponds to the raw tractography. 
+
+Ruta al archivo .bundles que corresponde a la tractografía. \mbox{\Hypertarget{namespacehclust_1_1main_a858e9299cb028e570dc8d79723a0b538}\label{namespacehclust_1_1main_a858e9299cb028e570dc8d79723a0b538}} 
+\index{hclust.main@{hclust.main}!maxdist@{maxdist}}
+\index{maxdist@{maxdist}!hclust.main@{hclust.main}}
+\doxysubsubsection{\texorpdfstring{maxdist}{maxdist}}
+{\footnotesize\ttfamily hclust.\+main.\+maxdist = float(sys.\+argv\mbox{[}3\mbox{]})}
+
+
+
+Maximum threshold of affinity, 30 is recommended. 
+
+Máximo umbral de afinidad, se recomienda 30. \mbox{\Hypertarget{namespacehclust_1_1main_a68758ce53232c2a4861bfa56b02e1794}\label{namespacehclust_1_1main_a68758ce53232c2a4861bfa56b02e1794}} 
+\index{hclust.main@{hclust.main}!MaxDistance\_Threshold@{MaxDistance\_Threshold}}
+\index{MaxDistance\_Threshold@{MaxDistance\_Threshold}!hclust.main@{hclust.main}}
+\doxysubsubsection{\texorpdfstring{MaxDistance\_Threshold}{MaxDistance\_Threshold}}
+{\footnotesize\ttfamily hclust.\+main.\+Max\+Distance\+\_\+\+Threshold = sys.\+argv\mbox{[}2\mbox{]}}
+
+
+
+Maximum threshold of euclidian distance between pairs of fibers, 40 is recommended. 
+
+Máximo umbral de distancia euclidiana entre pares de fibras, se recomienda 40. \mbox{\Hypertarget{namespacehclust_1_1main_a2c2801f5b5367b574bc2dfc9ea850421}\label{namespacehclust_1_1main_a2c2801f5b5367b574bc2dfc9ea850421}} 
+\index{hclust.main@{hclust.main}!result\_path@{result\_path}}
+\index{result\_path@{result\_path}!hclust.main@{hclust.main}}
+\doxysubsubsection{\texorpdfstring{result\_path}{result\_path}}
+{\footnotesize\ttfamily hclust.\+main.\+result\+\_\+path = sys.\+argv\mbox{[}5\mbox{]}}
+
+
+
+Output directory path. 
+
+Ruta del directorio de salida. \mbox{\Hypertarget{namespacehclust_1_1main_a9df512b384478d801a40e4843ba8af1e}\label{namespacehclust_1_1main_a9df512b384478d801a40e4843ba8af1e}} 
+\index{hclust.main@{hclust.main}!var@{var}}
+\index{var@{var}!hclust.main@{hclust.main}}
+\doxysubsubsection{\texorpdfstring{var}{var}}
+{\footnotesize\ttfamily hclust.\+main.\+var = float(sys.\+argv\mbox{[}4\mbox{]})}
+
+
+
+Value related with the scale of similarity used, 3600 is recommended. 
+
+Valor relacionado con la escala de similitud utilizada, se recomienda 3600. 

@@ -1,0 +1,7 @@
+Execute:
+
+gcc fiberDistanceMax2bun.c -o fiberDistanceMax2bun -lm
+
+Compile:
+
+./fiberDistanceMax2bun fib1.bundles fib2.bundles Dist_Matrix_outfile.txt 

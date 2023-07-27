@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Fiber Viewer</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpenBundle"/>
+    <addaction name="actionOpenMesh"/>
+    <addaction name="actionOpenMRI"/>
+   </widget>
+   <widget class="QMenu" name="menuTesting">
+    <property name="title">
+     <string>Testing</string>
+    </property>
+    <addaction name="actionIlumination"/>
+    <addaction name="actionBackground"/>
+    <addaction name="actionCamera"/>
+    <addaction name="actionTest"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionVisualizationObjects"/>
+   </widget>
+   <widget class="QMenu" name="actionAddROI">
+    <property name="title">
+     <string>Add ROI</string>
+    </property>
+    <addaction name="actionAddROISphere"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuView"/>
+   <addaction name="menuTesting"/>
+   <addaction name="actionAddROI"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionOpenBundle">
+   <property name="text">
+    <string>Open Bundle</string>
+   </property>
+  </action>
+  <action name="actionLoadAtlas">
+   <property name="text">
+    <string>Load atlas</string>
+   </property>
+  </action>
+  <action name="actionCamera">
+   <property name="text">
+    <string>Camera</string>
+   </property>
+  </action>
+  <action name="actionIlumination">
+   <property name="text">
+    <string>Ilumination</string>
+   </property>
+  </action>
+  <action name="actionToggleStatusBar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Toggle Status Bar</string>
+   </property>
+  </action>
+  <action name="actionToggleMenu">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Toggle Menu</string>
+   </property>
+  </action>
+  <action name="actionToggleFullScreen">
+   <property name="text">
+    <string>Full Screen</string>
+   </property>
+  </action>
+  <action name="actionToggleDock">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Toggle Patients Tree</string>
+   </property>
+  </action>
+  <action name="actionBackground">
+   <property name="text">
+    <string>Background</string>
+   </property>
+  </action>
+  <action name="actionOpenMesh">
+   <property name="text">
+    <string>Open Mesh</string>
+   </property>
+  </action>
+  <action name="actionVisualizationObjects">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Visualization objects</string>
+   </property>
+  </action>
+  <action name="actionOpenMRI">
+   <property name="text">
+    <string>Open MRI</string>
+   </property>
+  </action>
+  <action name="actionAddROISphere">
+   <property name="text">
+    <string>Sphere</string>
+   </property>
+  </action>
+  <action name="actionTest">
+   <property name="text">
+    <string>Test!</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

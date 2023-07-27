@@ -1,0 +1,1 @@
+Las rutas en config.json deben ser apropiadamente modificadas para usar estos tests.

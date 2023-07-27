@@ -1,0 +1,38 @@
+{
+    "segmentation": [
+        "E:\\test_data\\input_data\\data_FiberSeg\\100206_MNI_21p.bundles",
+        "Test",
+        "E:\\test_data\\input_data\\data_FiberSeg\\atlas\\bundles",
+        "E:\\test_data\\input_data\\data_FiberSeg\\atlas\\atlas_info.txt",
+        "E:\\test_data\\output\\FiberSeg"
+    ],
+    "ffclust": [
+        "E:\\test_data\\input_data\\data_FFClust\\100206_MNI_21p.bundles",
+        "E:\\test_data\\output\\FFClust"
+    ],
+    "hclust": [
+        "E:\\test_data\\input_data\\data_hclust\\g0_small.bundles",
+        "E:\\test_data\\output\\hclust",
+        40,
+        3600,
+        30
+    ],
+    "deform": [
+        "E:\\test_data\\input_data\\data_img_Deform\\100206_acpc_dc2standard.nii",
+        "E:\\test_data\\input_data\\data_img_Deform\\100206.bundles",
+        "E:\\test_data\\output\\img_Deform\\100206_deformed.bundles"
+    ],
+    "sampling": [
+        "E:\\test_data\\input_data\\data_sampling\\100206.bundles",
+        "E:\\test_data\\output\\sampling\\100206_21p.bundles",
+        21
+    ],
+    "intersection": [
+        "E:\\test_data\\input_data\\data_intersection\\AR_LEFT_1.bundles",
+        "E:\\test_data\\input_data\\data_intersection\\AR_LEFT_2.bundles",
+        "E:\\test_data\\output\\intersection"
+    ],
+    "postprocessing": [
+        "E:\\test_data\\output\\FFClust\\"
+    ]
+}
