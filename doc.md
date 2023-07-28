@@ -198,7 +198,7 @@ The bundle ***intersection*** sub-module calculates a similarity measure between
 > > > ### _intersection Functions_
 
 ```python
-def intersection(file1_in: str, file2_in: str, dir_out: str, d_th: distance_thr = 10.0) -> tuple[float, float]
+def intersection(file1_in: str, file2_in: str, dir_out: str, distance_thr: float= 10.0) -> tuple[float, float]
 ```
 > > >### _intersection  Parameters_
 
