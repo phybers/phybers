@@ -131,10 +131,10 @@ fibervis_ext = Extension("phybers.fibervis.FiberVis_core.FiberVis_core",
 
 setup(
     name="phybers",
-    version="0.1.0b",
+    version="0.1.0b2",
     description="Integration of multiple tractography and neural-fibers related tools and algorithms.",
     url="https://github.com/phybers/phybers",
-    author="Gonzalo Sabat, L. Liset Gonzales, Alejandro Cofre",
+    author="L. Liset Gonzales, Alejandro Cofre, Gonzalo Sabat",
     author_email="phybers.dmris@gmail.com",
     license="GNU",
     classifiers=['Development Status :: 4 - Beta'],
@@ -173,9 +173,7 @@ setup(
         "phybers.fibervis": ["shaders/*"],
         "phybers.fibervis.ui": ["Segmentations/*", "Settings/*", "*.ui"],
         "phybers.clustering.ffclust": ["*.jpg"],
-        "phybers.clustering.hclust": ["data/*"],
         "phybers.segment": ["fiberseg/data/*"],
-        "phybers.utils.intersection": ["data/Inter2bundles/*"],
         "phybers":["phyexample/*"]
     },
     exclude_package_data={'phybers.clustering': ["*.c", "*.cpp", "*.h", "*.hpp"]},

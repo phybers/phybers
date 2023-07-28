@@ -4,5 +4,6 @@ dist/
 build/
 **/__pycache__/
 c_wrappers.*
+*.pyd
 !c_wrappers.pyx
 *.egg-info
