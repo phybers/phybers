@@ -1,1 +1,2 @@
-from .segment import fiberseg as segment
+from .fiberseg.atlas import atlases
+from .segment import fiberseg

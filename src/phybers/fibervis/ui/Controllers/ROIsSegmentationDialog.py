@@ -1,8 +1,7 @@
 from PyQt5 import QtGui, QtWidgets, uic, QtCore
-from ...Framework.Tools.visualizationEnums import *
-
 from functools import wraps
 from importlib_resources import files
+from ...Framework.VisualizationBaseObject import VisualizationObject
 
 _roisd_ui = files('phybers.fibervis.ui.Segmentations').joinpath(
 	'ROIsSegmentationDialog.ui')

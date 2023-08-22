@@ -2,3 +2,7 @@ recursive-include src/phybers *.c
 recursive-include src/phybers *.cpp
 recursive-include src/phybers *.h
 recursive-include src/phybers *.hpp
+recursive-include src/phybers/fibervis/shaders *
+recursive-include src/phybers/fibervis/ui/ *
+recursive-include src/phybers/clustering/ffclust *.jpg
+recursive-include src/phybers/segment/fiberseg/data *

@@ -2,17 +2,15 @@
 Dictionary is keeping a reference to the segmentations objects... not deleting
 '''
 
-from PyQt5 import QtGui, QtWidgets, uic, QtCore
 import PyQt5
-from ...Framework.Tools.visualizationEnums import *
-
-# Segmentation Dialogs
-from ...Framework.Segmentation.SegmentationHandler import SegmentationHandler
+from PyQt5 import QtGui, QtWidgets, uic, QtCore
+from importlib_resources import files
 from .InPlaceSegmentationDialog import InPlaceSegmentationDialog
 from .ROIsSegmentationDialog import ROIsSegmentationDialog
 from .AtlasBasedParallelSegmentationDialog import AtlasBasedParallelSegmentationDialog
 from .FFClustSegmentationDialog import FFClustSegmentationDialog
-from importlib_resources import files
+from ...Framework.Tools.visualizationEnums import SegmentationTypes, segmentations, mriVisualizations, VisualizationActions, VisualizationObject
+from ...Framework.Segmentation.SegmentationHandler import SegmentationHandler
 
 _vot_ui = files('phybers.fibervis.ui').joinpath(
 	'visualizationObjectsTool.ui')

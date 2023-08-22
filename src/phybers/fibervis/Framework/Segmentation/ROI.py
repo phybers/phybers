@@ -1,8 +1,13 @@
 '''
 '''
-
-from ..VisualizationBaseObject import *
-from ..Tools.visualizationEnums import *
+import random
+import numpy as np
+import ctypes as ct
+from OpenGL import GL
+from ..Tools import glm
+from ..VisualizationBaseObject import VisualizationBaseObject, VisualizationObject, drawable, config
+from ..Shaders import Shader
+from ..Tools.visualizationEnums import SegmentationTypes, ROIType
 from ..Tools.Quaternion import Quaternion
 from importlib_resources import files
 

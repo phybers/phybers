@@ -7,45 +7,6 @@ import pandas as pd
 import regex
 
 #%%
-def read_bundle( infile ):
-  """ Read Bundles File.
-  """
-  points = []
-  bun_file = infile + 'data'
-  os.path.getsize( bun_file )
-  bytes = os.path.getsize( bun_file )
-  num = bytes / 4
-
-  num_count = 0
-  f = open( bun_file , 'rb')
-  while num_count < num:
-    p = N.frombuffer( f.read( 4 ), dtype=N.int32 )[ 0 ] # numero de puntos de la fibra
-    vertex = N.frombuffer( f.read( p * 3 * 4 ), dtype=N.float32 ).reshape( -1, 3 ) # lee coordenadas fibra
-    points.append( vertex )
-    num_count = num_count + 1 + ( p * 3 )
-
-  f.close()
-
-  return points
-
-
-def write_bundle( outfile, points ):
-  """ Write bundles File.
-  """
-  #write bundles file
-  f = open( outfile + 'data','wb' )
-  ncount = len( points )
-  for i in range( ncount ):
-    f.write(N.array( [ len( points[ i ] ) ], N.int32 ).tobytes() )
-    f.write( points[ i ].ravel().tostring() )
-
-  f.close()
-
-  # write minf file
-  minf = """attributes = {\n    'binary' : 1,\n    'bundles' : %s,\n    'byte_order' : 'DCBA',\n    'curves_count' : %s,\n    'data_file_name' : '*.bundlesdata',\n    'format' : 'bundles_1.0',\n    'space_dimension' : 3\n  }"""
-  open( outfile, 'w' ).write(minf % ( [ 'points', 0 ], ncount ) )
-
-
 _curves_count_p = regex.compile(r"\s*'curves_count'\s*:\s*(\d+),")
 def getBundleSize( bundlefile ):
   """ Get Bundles Size from file.

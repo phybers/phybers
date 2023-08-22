@@ -2,7 +2,7 @@
 # distutils: language=c
 import shutil
 import os
-from .bundleTools import write_bundle
+from ...utils import write_bundle
 from tempfile import mkdtemp
 from collections.abc import Sequence
 
@@ -35,14 +35,3 @@ def seg(nPoints:int ,threshold:float , large_clusters_fibers: Sequence, small_cl
                        <char *>py_byte_string_2, nfibers_subject, nfibers_atlas)
     shutil.rmtree(bundles_dir)
     return <int[:n_small_clusters_fibers]>res
-
-cdef extern from "sliceFibers.h":
-    cdef int main(int argc, char *argv[])
-
-def sliceFibers(fp_input: str, fp_output: str, point_count: int = 21):
-    cdef char * argv[4]
-    args = (b'', fp_input.encode('utf8'), fp_output.encode('utf8'), str(point_count).encode('utf8'))
-    for i, py_string in enumerate(args):
-        argv[i] = <char *> py_string
-    main(4, argv)
-    return

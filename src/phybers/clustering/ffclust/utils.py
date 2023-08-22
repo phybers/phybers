@@ -3,7 +3,7 @@ import numpy as np
 from os import path
 from dipy.segment.clustering import ClusterMapCentroid
 from . import clustering
-from .bundleTools import write_bundle
+from ...utils import write_bundle
 
 
 def clusters_fibers21p(results: ClusterMapCentroid, final_bundles_dir, infile):

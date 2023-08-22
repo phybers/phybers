@@ -204,7 +204,7 @@ float euclidean_dist21 (vector<float> &atlas_data, unsigned int fiber1, unsigned
     return max_ed;
 }
 
-void write_indices(const std::string &path, vector<string> &names, const std::vector<std::vector<unsigned short int>> &ind){
+void write_indices(const std::string &path, vector<string> &names, const std::vector<std::vector<unsigned int>> &ind){
 	DIR *dir;
 	if((dir = opendir(path.c_str())) == NULL) { // Checks if a directory path exists
 
@@ -242,7 +242,7 @@ void write_indices(const std::string &path, vector<string> &names, const std::ve
 }
 
 /*Read .bundles files and return (by reference) a vector with the datas*/
-void write_bundles(string subject_name, string output_path, vector<vector<unsigned short int>> &assignment,vector<string> &names ,int ndata_fiber,
+void write_bundles(string subject_name, string output_path, vector<vector<unsigned int>> &assignment,vector<string> &names ,int ndata_fiber,
                    vector<float> &subject_data){
     int npoints = ndata_fiber/3;
     ofstream bundlesfile;
@@ -437,14 +437,14 @@ vector<vector<float>> get_centroids(vector<vector<float>> &atlas_data, unsigned 
     return final_centroids;
 }
 
-vector<unsigned short> parallel_segmentation(vector<float> &atlas_data, vector<float> &subject_data,
+vector<unsigned int> parallel_segmentation(vector<float> &atlas_data, vector<float> &subject_data,
                                              unsigned short int ndata_fiber, vector<unsigned char> thresholds,
                                              vector<unsigned int> &bundle_of_fiber)
 {
     const int nfibers_subject = (unsigned int)(subject_data.size() / ndata_fiber);
     const int nfibers_atlas = (unsigned int)(atlas_data.size() / ndata_fiber);
     // int contador_fibras = 1;
-    vector<unsigned short> assignment(nfibers_subject, UNASSIGNED);
+    vector<unsigned int> assignment(nfibers_subject, UNASSIGNED);
     // vector<float> euclidean_distances(nfibers_subject,500.0);
     //  unsigned int nunProc = omp_get_num_procs();
     unsigned int nunProc = omp_get_num_procs();
@@ -459,13 +459,13 @@ vector<unsigned short> parallel_segmentation(vector<float> &atlas_data, vector<f
         for (int i = 0; i < nfibers_subject; i++)
         {
             float ed_i = 500;
-            unsigned short assignment_i = UNASSIGNED;
+            unsigned int assignment_i = UNASSIGNED;
             for (int j = 0; j < nfibers_atlas; j++)
             {
                 // cout<< to_string(nfibers_atlas) << endl;
                 bool is_inverted, is_discarded;
                 float ed = -1;
-                unsigned short b = bundle_of_fiber[j];
+                unsigned int b = bundle_of_fiber[j];
                 // First test: discard_centers++; discard centroid
                 is_discarded = discard_center(subject_data, atlas_data, ndata_fiber, thresholds[b], i, j);
                 if (is_discarded)
@@ -538,7 +538,7 @@ int main_segmentation(unsigned short int n_points, string subject_path, string s
 
     //std::cout << "holi" << std::endl;
 
-    vector<unsigned short> assignment;
+    vector<unsigned int> assignment;
     time_start_paralell = omp_get_wtime();
     //for (int i = 0; i<5; i++)
     assignment = parallel_segmentation(atlas_data,subject_data,ndata_fiber,thresholds,bundle_of_fiber);
@@ -546,17 +546,17 @@ int main_segmentation(unsigned short int n_points, string subject_path, string s
     /*std::cout << "Holi" << std::endl;
 
     for(unsigned int v = 0; v < assignment.size(); v++){
-    	std::cout << static_cast<unsigned>(assignment[v]) << std::endl;
+        std::cout << static_cast<unsigned>(assignment[v]) << std::endl;
     }*/
 
-    //std::cout << static_cast<unsigned>(assignment) << std::endl;
+    // std::cout << static_cast<unsigned>(assignment) << std::endl;
 
-    //vector<int> assignment = parallel_segmentation(atlas_centroids,subject_data,ndata_fiber,thresholds);
+    // vector<int> assignment = parallel_segmentation(atlas_centroids,subject_data,ndata_fiber,thresholds);
     parallelFastCPUTime = omp_get_wtime() - time_start_paralell;
 
     //std::cout << bundles_names.size() << std::endl;
 
-    vector<vector<unsigned short int>> map_results(bundles_names.size());
+    vector<vector<unsigned int>> map_results(bundles_names.size());
     //Map assignment
     for (unsigned int j = 0; j<assignment.size();j++) {
         if (assignment[j] != UNASSIGNED){

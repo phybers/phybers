@@ -3,10 +3,12 @@
 - If octree pool overflows it should create a second pool
 '''
 
-from .SegmentationHandler import *
+import numpy as np
 from .ROI import ROI
+from .SegmentationHandler import SegmentationHandler
+from ..BoundingBox import BoundingBox
+from ..Tools.visualizationEnums import SegmentationTypes
 from ..Tools.shunting_yard import shuntingYard
-
 from ..Tools.DataStructures import OctreePointBased
 
 

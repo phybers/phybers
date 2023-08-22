@@ -1,41 +1,6 @@
 import os
 import numpy as N
 
-def read_bundle( infile ):
-  points = []
-  bun_file = infile + 'data'
-  os.path.getsize( bun_file )
-  bytes = os.path.getsize( bun_file )
-  num = bytes / 4
-
-  num_count = 0
-  f = open( bun_file , 'rb')
-  while num_count < num:
-    p = N.frombuffer( f.read( 4 ), dtype=N.int32 )[ 0 ] # numero de puntos de la fibra
-    vertex = N.frombuffer( f.read( p * 3 * 4 ), dtype=N.float32 ).reshape( -1, 3 ) # lee coordenadas fibra
-    points.append( vertex )
-    num_count = num_count + 1 + ( p * 3 )
-
-  f.close()
-
-  return points
-
-def write_bundle( outfile, points ):
-
-  #write bundles file
-  f = open( outfile + 'data','wb' )
-  ncount = len( points )
-  for i in range( ncount ):
-    f.write(N.array( [ len( points[ i ] ) ], N.int32 ).tobytes() )
-    f.write( points[ i ].ravel().tobytes() )
-
-  f.close()
-
-  # write minf file
-  minf = """attributes = {\n    'binary' : 1,\n    'bundles' : %s,\n    'byte_order' : 'DCBA',\n    'curves_count' : %s,\n    'data_file_name' : '*.bundlesdata',\n    'format' : 'bundles_1.0',\n    'space_dimension' : 3\n  }"""
-  open( outfile, 'w' ).write(minf % ( [ 'points', 0 ], ncount ) )
-
-
 def write_bundle2( outfile, points,label ):
 
   #write bundles file

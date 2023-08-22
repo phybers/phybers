@@ -1,8 +1,5 @@
 import numpy as np
-# import Framework.CExtend.cfuncs as cfuncs
 from ...FiberVis_core import ROIsSegmentationQueryOctree, ROIsSegmentationPopulateAndDefragmentPool
-
-from .performance import *
 
 
 class OctreePointBased:

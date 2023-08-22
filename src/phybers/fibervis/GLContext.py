@@ -1,10 +1,9 @@
 from OpenGL import GL
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtOpenGL import *
+from PyQt5 import QtCore, QtWidgets
 from numpy import pi, sin
 
 from .Framework.Tools import glm
-from .Framework.Tools.visualizationEnums import *
+from .Framework.Tools.visualizationEnums import SegmentationTypes, ROIType, VisualizationActions, VisualizationObject
 from .Framework.CoordinateSystem import CoordinateSystem
 from .Framework.Tools.Camera import Camera
 

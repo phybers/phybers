@@ -31,26 +31,26 @@ def call_exit() -> None:
     exit()
 
 def ffclust():
-    from phybers.clustering.ffclust import cluster
+    from phybers.clustering import ffclust
     try:
-        cluster(*load_config()["ffclust"])
+        ffclust(*load_config()["ffclust"])
         return True
     except SystemError:
         return False
 
 def hclust():
-    from phybers.clustering.hclust import cluster
+    from phybers.clustering import hclust
     try:
-        cluster(*load_config()["hclust"])
+        hclust(*load_config()["hclust"])
         return True
     except SystemError:
         return False
 
 
 def segmentation():
-    from phybers.segment import segment
+    from phybers.segment import fiberseg
     try:
-        segment(*load_config()["segmentation"])
+        fiberseg(*load_config()["segmentation"])
         return True
     except SystemError:
         return False

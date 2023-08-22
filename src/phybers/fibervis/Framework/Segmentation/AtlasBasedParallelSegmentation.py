@@ -1,8 +1,14 @@
 # Works with Atlas that contains 254 or less bundles... For more bundles fiberValidator should be uint16, not uint8
 
 import numpy as np
-from .SegmentationHandler import *
-# import Framework.CExtend.cfuncs as cfuncs
+from OpenGL import GL
+from .SegmentationHandler import SegmentationHandler
+from ..Tools.utilities import findIntegersMultiplierFor
+from ..Tools.visualizationEnums import SegmentationTypes
+from ..BoundingBox import BoundingBox
+from ..VisualizationBaseObject import VisualizationBaseObject, propagateToChildren, drawable, config
+from ..Tools.visualizationEnums import VisualizationObject
+from ..Shaders import Shader
 from ...FiberVis_core import reSampleBundle, AtlasBasedSegmentation, AtlasBasedSegmentationExportbundlesdata
 from ..Bundle import Bundle
 from importlib_resources import files

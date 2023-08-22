@@ -1,15 +1,12 @@
 ''' Base class for every drawable object
 '''
 
-from .Shaders import *
-from .Tools import glm
-from .Tools.visualizationEnums import *
-import random
-from OpenGL import GL
-import ctypes as ct
-import numpy as np
-
 from functools import wraps
+from OpenGL import GL
+import numpy as np
+from .Tools import glm
+from .Tools.visualizationEnums import VisualizationObject
+
 
 fSize = np.dtype(np.float32).itemsize
 iSize = np.dtype(np.int32).itemsize

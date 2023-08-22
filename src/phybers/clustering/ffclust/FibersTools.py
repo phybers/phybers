@@ -4,49 +4,7 @@ import os
 import numpy as np
 import pandas as pd
 
-_minf = """attributes = {
-    'binary' : 1,
-    'bundles' : %s,
-    'byte_order' : 'DCBA',
-    'curves_count' : %s,
-    'data_file_name' : '*.bundlesdata',
-    'format' : 'bundles_1.0',
-    'space_dimension' : 3
-}"""
-
-
 #%%
-def read_bundle( infile ):
-    """
-    Read Bundles File.
-    """
-    points = []
-    bun_file = infile + 'data'
-    os.path.getsize( bun_file )
-    bytes = os.path.getsize( bun_file )
-    num = bytes / 4
-    num_count = 0
-    f = open( bun_file , 'rb')
-    while num_count < num:
-        p = np.frombuffer( f.read( 4 ), dtype=np.int32 )[ 0 ] # Numero de puntos de la fibra.
-        vertex = np.frombuffer( f.read( p * 3 * 4 ), dtype=np.float32 ).reshape( -1, 3 ) # Lee coordenadas fibra.
-        points.append( vertex )
-        num_count = num_count + 1 + ( p * 3 )
-    f.close()
-    return points
-
-def write_bundle( outfile, points ):
-    """ Write bundles File.
-    """
-    f = open( outfile + 'data','wb' )
-    ncount = len( points )
-    for i in range( ncount ):
-        f.write(np.array([len(points[i])], np.int32).tostring())  # type: ignore
-        f.write(points[i].ravel().tostring())
-    f.close()
-    # write minf file
-    open( outfile, 'w' ).write(_minf % ( [ 'points', 0 ], ncount ) )
-
 def getBundleSize( bundlefile ):
     """ Get Bundles Size from file.
     """

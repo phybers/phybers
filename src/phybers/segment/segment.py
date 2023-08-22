@@ -7,8 +7,7 @@ import sys
 import numpy as np
 from pathlib import Path
 from .fiberseg.c_wrappers import segment
-from ..utils import sampling
-from . import read_write_bundle as rb
+from ..utils import sampling, read_bundle, write_bundle
 
 
 def fiberseg(file_in: str, id_subj: str, atlas_dir: str, atlas_info: str, dir_out: str) -> None:
@@ -39,7 +38,7 @@ def fiberseg(file_in: str, id_subj: str, atlas_dir: str, atlas_info: str, dir_ou
     os.makedirs(id_seg_result, exist_ok=True)
 
     has21points = True
-    data=rb.read_bundle(file_in)
+    data=read_bundle(file_in)
 
     for i in range(len(data)-1):
         if len(data[i]) != len(data[i+1]):
@@ -70,7 +69,7 @@ def fiberseg(file_in: str, id_subj: str, atlas_dir: str, atlas_info: str, dir_ou
                 for line in file:
                     index.append(int(float(line.strip())))
             bun = np.array(data, dtype='object')[index]
-            rb.write_bundle(os.path.join(final_bundles_dir,id_subj+'_to_'+i[:-4]+'.bundles'), bun)
+            write_bundle(os.path.join(final_bundles_dir,id_subj+'_to_'+i[:-4]+'.bundles'), bun)
 
     else:
         segment(21, file_in, id_subj, atlas_dir, atlas_info,

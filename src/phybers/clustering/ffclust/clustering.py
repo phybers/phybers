@@ -1,20 +1,21 @@
 import functools
 import sklearn.cluster
 import numpy as np
-from dipy.segment.clustering import ClusterCentroid, ClusterMapCentroid, Clustering
+from dipy.segment.clustering import ClusterCentroid, \
+                                    ClusterMapCentroid, \
+                                    Clustering
 from joblib import Parallel, delayed
-from .bundleTools import write_bundle
-from . import processing as processing
+from ...utils import write_bundle
 from . import metric as metric
 from . import utils as utils
 from .c_wrappers import seg as segmentation
 
 
-
-def cluster_kmeans(x, k,random_state=0):
+def cluster_kmeans(x, k, random_state=0):
     kmeans = sklearn.cluster.MiniBatchKMeans(n_clusters=k,
                                              random_state=random_state)
     return kmeans.fit_predict(x), kmeans
+
 
 def parallel_points_clustering(X, ks, n_jobs=-1, backend='threading'):
     """
@@ -25,6 +26,7 @@ def parallel_points_clustering(X, ks, n_jobs=-1, backend='threading'):
     labels, clusterers = list(map(list, zip(*results)))
     labels = np.array(labels).T
     return labels, clusterers
+
 
 def map_clustering(labels):
     """
@@ -53,8 +55,10 @@ def map_clustering(labels):
             d[label] = len(d)
     return clusters
 
-def split_fibers(fibers,points):
-    return np.array(np.split(fibers, len(points), axis=1))[:,:,0]
+
+def split_fibers(fibers, points):
+    return np.array(np.split(fibers, len(points), axis=1))[:, :, 0]
+
 
 # Wrapper for dipy given that we have clusters and not centroids.
 def clusters_to_clustermap(clusters, fibers, ids=None):
@@ -82,10 +86,11 @@ def clusters_to_clustermap(clusters, fibers, ids=None):
         # Compute a centroid as a mean of its elements.
         centr = fibers[cluster].mean(axis=0)
         c = ClusterCentroid(centroid=centr,
-                                                    id=i, indices=cluster,
-                                                    refdata=fibers)
+                            id=i, indices=cluster,
+                            refdata=fibers)
         cluster_map.add_cluster(c)
     return cluster_map
+
 
 def get_groups(labels, ngroups):
     groups = [[] for i in range(ngroups)]
@@ -94,7 +99,9 @@ def get_groups(labels, ngroups):
     return groups
 
 
-def small_clusters_reassignment(clusters,min_size_filter, max_size_filter,input_dir, threshold,refdata):
+def small_clusters_reassignment(clusters,
+                                min_size_filter, max_size_filter,
+                                input_dir, threshold, refdata):
     """
     Write .bundles .bundlesdata of small (< 1 fiber) and long centroids (> 1 fiber) of clusters.
     """
@@ -102,7 +109,7 @@ def small_clusters_reassignment(clusters,min_size_filter, max_size_filter,input_
     large_clusters = clusters.get_large_clusters(min_size_filter)
     small_centroids = np.asarray([x.centroid for x in small_clusters])
     large_centroids = np.asarray([x.centroid for x in large_clusters])
-    reassignment = segmentation(21 ,threshold, large_centroids,small_centroids,len(small_centroids), len(large_centroids))
+    reassignment = segmentation(21, threshold, large_centroids, small_centroids, len(small_centroids), len(large_centroids))
 
     count = 0
     num_fibers_reass = 0

@@ -1,5 +1,7 @@
-from .SegmentationHandler import *
-# import Framework.CExtend.cfuncs as cfuncs
+import numpy as np
+from .SegmentationHandler import SegmentationHandler
+from ..BoundingBox import BoundingBox
+from ..Tools.visualizationEnums import SegmentationTypes
 from ...FiberVis_core import inPlaceSegmentationMethod
 
 class InPlaceSegmentation(SegmentationHandler):

@@ -1,7 +1,10 @@
-from OpenGL import GL
-from .VisualizationBaseObject import *
-from .BoundingBox import BoundingBox
 import nibabel as nib
+import numpy as np
+from OpenGL import GL
+from .VisualizationBaseObject import VisualizationBaseObject, propagateToChildren, drawable
+from .Tools.visualizationEnums import VisualizationObject
+from .Tools import glm
+from .BoundingBox import BoundingBox
 
 class MRI(VisualizationBaseObject):
 	def __init__(self, sPath, shaderDict, parent):

@@ -3,19 +3,16 @@
 		exportbundlefile
 '''
 
-from ..VisualizationBaseObject import *
-from ..Bundle import Bundle
-from ..BoundingBox import BoundingBox
-# import Framework.CExtend.cfuncs as cfuncs
-from ...FiberVis_core import ROISegmentationExportBundlesdata
-
-from ..Tools.utilities import findIntegersMultiplierFor
-
 import math
-
-# DELETE
-from ..Tools.performance import *
+import numpy as np
+from OpenGL import GL
 from importlib_resources import files
+from ..VisualizationBaseObject import VisualizationBaseObject, propagateToChildren, drawable, config
+from ..Tools.visualizationEnums import VisualizationObject
+from ..Shaders import Shader
+from ..Bundle import Bundle
+from ...FiberVis_core import ROISegmentationExportBundlesdata
+from ..Tools.performance import timeit
 
 _s_vs = files('phybers.fibervis.shaders').joinpath('segmentation.vs')
 _sfs_vs = files('phybers.fibervis.shaders').joinpath('standardFragmentShader.fs')

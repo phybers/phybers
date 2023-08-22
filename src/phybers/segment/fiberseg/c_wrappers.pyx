@@ -20,14 +20,3 @@ def segment(unsigned short n_points, fibers, idsubj, atlasdir, atlasInformation,
         rmtree(final_bundles_dir)
     main_segmentation(n_points, argv[0], argv[1], argv[2], argv[3], argv[4], argv[5])
     return
-
-cdef extern from "sliceFibers.hpp":
-    cdef int main_sliceFibers (int argc, char *argv[])
-
-def sliceFibers(infile: str, outfile: str, nslices: int):
-    cdef char * argv[4]
-    args = (b'', infile.encode('utf8'), outfile.encode('utf8'), str(nslices).encode('utf8'))
-    for i, py_string in enumerate(args):
-        argv[i] = <char *> py_string
-    main_sliceFibers(4, argv)
-    return

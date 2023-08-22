@@ -1,4 +1,7 @@
-from .VisualizationBaseObject import *
+import numpy as np
+from OpenGL import GL
+from .VisualizationBaseObject import VisualizationObject, VisualizationBaseObject, drawable, config
+from .Shaders import Shader
 from .BoundingBox import BoundingBox
 from skimage.filters import threshold_otsu
 from .Tools import glm

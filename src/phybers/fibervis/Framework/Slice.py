@@ -1,6 +1,10 @@
-from .VisualizationBaseObject import *
+import numpy as np
+from OpenGL import GL
+from .VisualizationBaseObject import VisualizationBaseObject, drawable, config
+from .Tools.visualizationEnums import VisualizationObject
+from .Shaders import Shader
+from .Tools import glm
 from .BoundingBox import BoundingBox
-import nibabel as nib
 from importlib_resources import files
 
 _vs_vs = files('phybers.fibervis.shaders').joinpath('volume-slice.vs')

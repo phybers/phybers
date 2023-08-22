@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <fstream>
 #include <ctime>
+#include <cstdint>
 
 using namespace std;
 

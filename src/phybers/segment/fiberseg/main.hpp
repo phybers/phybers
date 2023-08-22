@@ -29,6 +29,7 @@ Last modification: 24-10-2018 */
 #include <vector>
 #include <fstream>
 #include <cstdio>
+#include <cstdint>
 #include <cstring>
 #include <algorithm>
 #include <math.h>
@@ -102,7 +103,7 @@ vector<float> calc_centroid(vector<float> &atlas_data,vector<unsigned int> &indi
 
 vector<vector<float>> get_centroids(vector<vector<float>> &atlas_data, unsigned short int ndata);
 
-vector<unsigned short> parallel_segmentation(vector<float> &atlas_data, vector<float> &subject_data,
+vector<unsigned int> parallel_segmentation(vector<float> &atlas_data, vector<float> &subject_data,
                                   unsigned short int ndata_fiber, vector<unsigned char> thresholds,
                                   vector<unsigned int> &bundle_of_fiber);
 

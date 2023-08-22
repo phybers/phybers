@@ -1,5 +1,9 @@
-from .VisualizationBaseObject import *
 from importlib_resources import files
+from OpenGL import GL
+import numpy as np
+from .VisualizationBaseObject import VisualizationBaseObject, config
+from .Shaders import Shader
+from .Tools import glm
 
 _cs_vs = files('phybers.fibervis.shaders').joinpath('coordinateSystem.vs')
 _sfs_fs = files('phybers.fibervis.shaders').joinpath(

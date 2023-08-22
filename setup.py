@@ -1,8 +1,8 @@
-import numpy
+from pathlib import Path
+from os.path import exists, getmtime
 from setuptools.command.build_ext import new_compiler  # type: ignore
 from setuptools import setup, Extension, find_packages
-from os.path import exists, getmtime
-from pathlib import Path
+import numpy
 
 long_description = (Path(__file__).parent / "README.md").read_text()
 
@@ -24,8 +24,10 @@ try:
 except ImportError:
     cython_ok = False
 
+
 def is_up_to_date(c_path, cy_path):
     return getmtime(c_path) >= getmtime(cy_path)
+
 
 def check_src(c_path):
     base, _ = c_path.rsplit('.', maxsplit=1)
@@ -47,12 +49,12 @@ def check_src(c_path):
         raise RuntimeError(f"Source file {c_path} missing and Cython is not present.")
     return c_path
 
+
 ffclust_ext = Extension(
     "phybers.clustering.ffclust.c_wrappers",
     sources=[
         check_src("./src/phybers/clustering/ffclust/c_wrappers.c"),
         "./src/phybers/clustering/ffclust/segmentation.c",
-        "./src/phybers/clustering/ffclust/sliceFibers.c",
         "./src/phybers/clustering/ffclust/BundleTools.c"
     ],
     extra_compile_args=openmp_compile + fast_math,
@@ -73,7 +75,6 @@ segmentation_ext = Extension(
     sources=[
         check_src("./src/phybers/segment/fiberseg/c_wrappers.cpp"),
         "./src/phybers/segment/fiberseg/main.cpp",
-        "./src/phybers/segment/fiberseg/sliceFibers.cpp",
         "./src/phybers/segment/fiberseg/BundleTools.cpp"
     ],
     extra_compile_args=openmp_compile + fast_math,
@@ -132,7 +133,8 @@ fibervis_ext = Extension("phybers.fibervis.FiberVis_core.FiberVis_core",
 setup(
     name="phybers",
     version="0.1.0b2",
-    description="Integration of multiple tractography and neural-fibers related tools and algorithms.",
+    description="Integration of multiple tractography and neural-fibers"
+                "related tools and algorithms.",
     url="https://github.com/phybers/phybers",
     author="L. Liset Gonzales, Alejandro Cofre, Gonzalo Sabat",
     author_email="phybers.dmris@gmail.com",
@@ -157,7 +159,9 @@ setup(
         "regex"
     ],
     package_dir={'': "src"},
-    packages=find_packages(where="./src", exclude=['phybers.fibervis_backup', 'phybers.phyexample']),
+    packages=find_packages(where="./src",
+                           exclude=['phybers.fibervis_backup',
+                                    'phybers.phyexample']),
     ext_modules=[
         ffclust_ext,
         hclust_ext,
@@ -173,10 +177,12 @@ setup(
         "phybers.fibervis": ["shaders/*"],
         "phybers.fibervis.ui": ["Segmentations/*", "Settings/*", "*.ui"],
         "phybers.clustering.ffclust": ["*.jpg"],
-        "phybers.segment": ["fiberseg/data/*"],
-        "phybers":["phyexample/*"]
+        "phybers.segment.fiberseg": ["data/*", "*.bundles",
+                                     "*.bundlesdata", "*.txt"],
+        "phybers": ["phyexample/*"]
     },
-    exclude_package_data={'phybers.clustering': ["*.c", "*.cpp", "*.h", "*.hpp"]},
+    exclude_package_data={'phybers.clustering': ["*.c", "*.cpp",
+                                                 "*.h", "*.hpp"]},
     include_dirs=[numpy.get_include()],
     zip_safe=False,
     entry_points={

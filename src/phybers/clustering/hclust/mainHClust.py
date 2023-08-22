@@ -13,7 +13,7 @@ from shutil import rmtree
 from . import clusterTools as CT
 from tempfile import mkdtemp
 from pathlib import Path
-from .read_write_bundle import read_bundle, write_bundle
+from ...utils import read_bundle, write_bundle
 from .c_wrappers import fiberDistanceMax, getAffinityGraphFromDistanceMatrix, getAverageLinkHCFromGraphFile
 from ...utils import sampling
 

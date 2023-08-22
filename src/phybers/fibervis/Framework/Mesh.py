@@ -2,10 +2,15 @@
 _loadMeshAttributes sin implementar (leia archivos .mesh.minf)
 '''
 
-from .VisualizationBaseObject import *
-from .BoundingBox import BoundingBox
 import nibabel as nib
+import numpy as np
+import ctypes as ct
+from OpenGL import GL
 from importlib_resources import files
+from .VisualizationBaseObject import VisualizationBaseObject, fSize, propagateToChildren, drawable, config
+from .Tools.visualizationEnums import VisualizationObject
+from .Shaders import Shader
+from .BoundingBox import BoundingBox
 
 _m_vs = files('phybers.fibervis.shaders').joinpath('mesh.vs')
 _sfs_fs = files('phybers.fibervis.shaders').joinpath(

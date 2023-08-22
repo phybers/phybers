@@ -7,6 +7,4 @@ Phybers is a library for Python that integrates multiple tractography and neural
 The functions of this package work mostly with file paths, both for input and output.
 """
 
-from . import clustering
-from . import segment
-from . import utils
+__all__ = ['clustering', 'fibervis', 'segment', 'utils']

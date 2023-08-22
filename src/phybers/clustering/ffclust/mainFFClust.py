@@ -3,10 +3,9 @@ import time
 import os
 import numpy as np
 import joblib
-from .bundleTools import read_bundle
+from ...utils import read_bundle, sampling
 from .clustering import split_fibers, parallel_points_clustering, MapClustering,\
     small_clusters_reassignment, get_groups, parallel_group_join_clique
-from ...utils import sampling
 from .utils import clusters_fibers21p, save_clusters, save_clusters_centroids
 
 def ffclust(file_in: str, dir_out: str, assign_thr: int=6, join_thr: int=6) -> bool:

@@ -1,14 +1,18 @@
-from .SegmentationHandler import *
-
-from sklearn.cluster import MiniBatchKMeans
+import random
+import math
+import numpy as np
+import networkx as nx
 import multiprocessing as mp
+from OpenGL import GL
+from sklearn.cluster import MiniBatchKMeans
 from scipy import sparse
 from functools import partial
-# import Framework.CExtend.segmentation as seg
+from .SegmentationHandler import SegmentationHandler
+from ..Tools.utilities import findIntegersMultiplierFor
+from ..Tools.visualizationEnums import SegmentationTypes
+from ..BoundingBox import BoundingBox
 from ...FiberVis_core import ffclust, reSampleBundle
-import networkx as nx
 
-import random
 
 num_proc = mp.cpu_count()
 
@@ -295,10 +299,10 @@ class FFClustSegmentation(SegmentationHandler):
 
 
 	def updateFiberValidator(self):
-		glActiveTexture(GL_TEXTURE1)
-		glBindTexture(GL_TEXTURE_2D, self.validFiberTexture)
+		GL.glActiveTexture(GL.GL_TEXTURE1)
+		GL.glBindTexture(GL.GL_TEXTURE_2D, self.validFiberTexture)
 
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, *self.validFiberTexDims, GL_RED_INTEGER, GL_UNSIGNED_SHORT, self.fiberValidator)
+		GL.glTexSubImage2D(GL.GL_TEXTURE_2D, 0, 0, 0, *self.validFiberTexDims, GL.GL_RED_INTEGER, GL.GL_UNSIGNED_SHORT, self.fiberValidator)
 
 
 
@@ -307,7 +311,7 @@ class FFClustSegmentation(SegmentationHandler):
 
 
 	def configFiberValidator(self):
-		maxTexDim = glGetIntegerv(GL_MAX_TEXTURE_SIZE)
+		maxTexDim = GL.glGetIntegerv(GL.GL_MAX_TEXTURE_SIZE)
 
 		if maxTexDim*maxTexDim < self.curvescount:
 			raise ValueError('Fiber data set to big for GPU, need to change render mode...')
@@ -316,22 +320,22 @@ class FFClustSegmentation(SegmentationHandler):
 
 		self.fiberValidator = self.defaultFiberValidator()
 
-		self.validFiberTexture = glGenTextures(1)
+		self.validFiberTexture = GL.glGenTextures(1)
 
-		glActiveTexture(GL_TEXTURE1)
+		GL.glActiveTexture(GL.GL_TEXTURE1)
 
-		glBindTexture(GL_TEXTURE_2D, self.validFiberTexture)
+		GL.glBindTexture(GL.GL_TEXTURE_2D, self.validFiberTexture)
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER)
+		GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP_TO_BORDER)
+		GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP_TO_BORDER)
 
 		bgColor = np.array([1,1,1,1], dtype=np.float32)
-		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, bgColor)
+		GL.glTexParameterfv(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_BORDER_COLOR, bgColor)
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+		GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST)
+		GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST)
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_R16UI, self.validFiberTexDims[0], self.validFiberTexDims[1], 0, GL_RED_INTEGER, GL_UNSIGNED_SHORT, self.fiberValidator)
+		GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_R16UI, self.validFiberTexDims[0], self.validFiberTexDims[1], 0, GL.GL_RED_INTEGER, GL.GL_UNSIGNED_SHORT, self.fiberValidator)
 
 
 
@@ -351,7 +355,7 @@ class FFClustSegmentation(SegmentationHandler):
 		None
 
 		'''
-		maxTexDim = glGetIntegerv(GL_MAX_TEXTURE_SIZE)
+		maxTexDim = GL.glGetIntegerv(GL.GL_MAX_TEXTURE_SIZE)
 
 		if maxTexDim*maxTexDim < len(self.color):
 			raise ValueError('To many bundles inside the atlas... Color texture not big enought.')
@@ -359,22 +363,22 @@ class FFClustSegmentation(SegmentationHandler):
 		print(self.validBundleColorTexDims)
 
 		if self.colorTableTexture == None:
-			self.colorTableTexture = glGenTextures(1)
+			self.colorTableTexture = GL.glGenTextures(1)
 
-		glActiveTexture(GL_TEXTURE0)
-		glBindTexture(GL_TEXTURE_2D, self.colorTableTexture)
+		GL.glActiveTexture(GL.GL_TEXTURE0)
+		GL.glBindTexture(GL.GL_TEXTURE_2D, self.colorTableTexture)
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER)
+		GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP_TO_BORDER)
+		GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP_TO_BORDER)
 
 		bgColor = np.array([1.0, 1.0, 1.0, 1.0], dtype=np.float32)
-		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, bgColor)
+		GL.glTexParameterfv(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_BORDER_COLOR, bgColor)
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+		GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST)
+		GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST)
 
-		# glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA, 1, 0, GL_RGBA, GL_FLOAT, self.atlas.colorTable.flatten())
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, *self.validBundleColorTexDims, 0, GL_RGBA, GL_FLOAT, self.color.flatten())
+		# GL.glTexImage1D(GL.GL_TEXTURE_1D, 0, GL.GL_RGBA, 1, 0, GL.GL_RGBA, GL.GL_FLOAT, self.atlas.colorTable.flatten())
+		GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, *self.validBundleColorTexDims, 0, GL.GL_RGBA, GL.GL_FLOAT, self.color.flatten())
 
 
 	def updateColor(self, n_of_clusters):
@@ -386,18 +390,18 @@ class FFClustSegmentation(SegmentationHandler):
 
 
 	def updateColorTexture(self):
-		maxTexDim = glGetIntegerv(GL_MAX_TEXTURE_SIZE)
+		maxTexDim = GL.glGetIntegerv(GL.GL_MAX_TEXTURE_SIZE)
 
 		if maxTexDim*maxTexDim < len(self.color):
 			raise ValueError('To many bundles inside the atlas... Color texture not big enought.')
 		self.validBundleColorTexDims = findIntegersMultiplierFor(len(self.color), maxTexDim)
 		print(self.validBundleColorTexDims)
 
-		glActiveTexture(GL_TEXTURE0)
-		glBindTexture(GL_TEXTURE_2D, self.colorTableTexture)
+		GL.glActiveTexture(GL.GL_TEXTURE0)
+		GL.glBindTexture(GL.GL_TEXTURE_2D, self.colorTableTexture)
 
-		# glTexImage1D(GL_TEXTURE_2D, 0, GL_RGBA, len(self.atlas.bundlesNames)+1, 0, GL_RGBA, GL_FLOAT, self.atlas.colorTable.flatten())
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, *self.validBundleColorTexDims, 0, GL_RGBA, GL_FLOAT, self.color.flatten())
+		# GL.glTexImage1D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, len(self.atlas.bundlesNames)+1, 0, GL.GL_RGBA, GL.GL_FLOAT, self.atlas.colorTable.flatten())
+		GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, *self.validBundleColorTexDims, 0, GL.GL_RGBA, GL.GL_FLOAT, self.color.flatten())
 
 
 	def _loadBuffers(self):
@@ -417,33 +421,33 @@ class FFClustSegmentation(SegmentationHandler):
 		'''
 
 		# Reference for vbos, ebos and attribute ptrs
-		self.vao = glGenVertexArrays(1)
-		glBindVertexArray(self.vao)
+		self.vao = GL.glGenVertexArrays(1)
+		GL.glBindVertexArray(self.vao)
 
-		# self.ebo = glGenBuffers(1)
+		# self.ebo = GL.glGenBuffers(1)
 
 		# VBO positions
-		glBindBuffer(GL_ARRAY_BUFFER, self.vbo[0])
+		GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo[0])
 
 		positionAttribute =	self.shader[0].attributeLocation('vertexPos')
-		glEnableVertexAttribArray(positionAttribute)
-		glVertexAttribPointer(positionAttribute,3, GL_FLOAT, GL_FALSE, 0, None)
+		GL.glEnableVertexAttribArray(positionAttribute)
+		GL.glVertexAttribPointer(positionAttribute,3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
 
 		# VBO normals
-		glBindBuffer(GL_ARRAY_BUFFER, self.vbo[1])
+		GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo[1])
 
 		normalAttribute =	self.shader[0].attributeLocation('vertexNor')
-		glEnableVertexAttribArray(normalAttribute)
-		glVertexAttribPointer(normalAttribute,	3, GL_FLOAT, GL_FALSE, 0, None)
+		GL.glEnableVertexAttribArray(normalAttribute)
+		GL.glVertexAttribPointer(normalAttribute,	3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
 
 		# EBO
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self.ebo)
+		GL.glBindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, self.ebo)
 
 
 	def loadUniforms(self):
 		super().loadUniforms()
 
-		glUniform1i(self.shader[self.selectedShader].glGetUniformLocation('notAssigned'), len(self.clusters))
+		GL.glUniform1i(self.shader[self.selectedShader].glGetUniformLocation('notAssigned'), len(self.clusters))
 
-		glUniform1i(self.shader[self.selectedShader].glGetUniformLocation('colorTable'), 0)
-		glUniform1i(self.shader[self.selectedShader].glGetUniformLocation('fiberValidator'), 1)
+		GL.glUniform1i(self.shader[self.selectedShader].glGetUniformLocation('colorTable'), 0)
+		GL.glUniform1i(self.shader[self.selectedShader].glGetUniformLocation('fiberValidator'), 1)

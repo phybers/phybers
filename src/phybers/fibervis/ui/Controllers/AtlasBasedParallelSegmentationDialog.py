@@ -1,5 +1,4 @@
 from PyQt5 import QtGui, QtWidgets, uic, QtCore
-from ...Framework.Tools.visualizationEnums import *
 from importlib_resources import files
 
 _abpsd_ui = files('phybers.fibervis.ui.Segmentations').joinpath(
