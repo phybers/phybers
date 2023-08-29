@@ -72,6 +72,7 @@ class GLWidget(QtWidgets.QOpenGLWidget):
 		self.orbit = False
 		self.pan = False
 		self.panning = False
+		self.tilt = False
 
 		self.currentObject = None
 		self.draw_boundingbox = True
@@ -224,9 +225,22 @@ class GLWidget(QtWidgets.QOpenGLWidget):
 		# Makes the context the current one
 		self.makeCurrent()
 
-		for bundlePath in bundleFiles:
-			self.bundles.append(Bundle(bundlePath, self.shaderDict, self.bundles))
-			# self.bundles.append(Bundle(bundlePath, self.bundleShader, self.bundles))
+		new_bundles = [Bundle(bundlePath, self.shaderDict, self.bundles) for bundlePath in bundleFiles]
+		if new_bundles:
+			self.bundles.extend(new_bundles)
+
+			if hasattr(self, 'camera'):
+				bboxs = np.array([bundle.calculateBoundingBoxDimCenter() for bundle in new_bundles])
+				center = (bboxs[:, 0].max(axis=0) + bboxs[:, 0].min(axis=0)) / 2
+
+				self.camera.center = center
+				self.camera.view = self.camera.calculateView()
+
+				for s in self.shaderList:
+					for shader in s:
+						self._configView(shader)
+
+			self._configView(self.coordSystemShader[0], self.csCamera)
 
 		self.updateViewingObjects.emit()
 		self.update()
@@ -464,6 +478,19 @@ class GLWidget(QtWidgets.QOpenGLWidget):
 					i.setSelectedShader(data)
 			else:
 				itemObject.setSelectedShader(data)
+		# Focus camera on object
+		elif action == VisualizationActions.FocusObject:
+			size = None
+			center = itemObject.get_center()
+			try:
+				size = np.max(itemObject.get_size()) * 2
+			except NotImplementedError:
+				print(f"Object {itemObject} does not implement get_size.")
+			finally:
+				self.camera.focus(center, min_r=size)
+				for shaders in self.shaderList:
+					for shader in shaders:
+						self._configView(shader)
 		else:
 			raise TypeError('Unrecognise visualization objects action')
 
@@ -556,23 +583,26 @@ class GLWidget(QtWidgets.QOpenGLWidget):
 		if event.button() == QtCore.Qt.LeftButton:
 			self.orbit = True
 			self.pan = False
+			self.tilt = False
 			event.accept()
 
 		elif event.button() == QtCore.Qt.RightButton: # Permite desplazar el modelo.
 			self.orbit = False
 			self.pan = True
 			self.panning = False
+			self.tilt = False
 			event.accept()
 
-		elif event.button() == QtCore.Qt.MiddleButton: # No implementado. ######
-			# self.camera.middleButton()
-			# self.orbit = False
-			# self.pan = False
-			event.ignore()
+		elif event.button() == QtCore.Qt.MiddleButton:
+			self.orbit = False
+			self.pan = False
+			self.tilt = True
+			event.accept()
 
 		else:
 			self.orbit = False
 			self.pan = False
+			self.tilt = False
 			event.ignore()
 
 
@@ -592,9 +622,9 @@ class GLWidget(QtWidgets.QOpenGLWidget):
 
 				if isinstance(self.currentObject, list):
 					for cObject_i in self.currentObject:
-						cObject_i.rotate(self.camera.center, angle, axis)
+						cObject_i.rotate(cObject_i.get_center(), angle, axis)
 				else:
-					self.currentObject.rotate(self.camera.center, angle, axis)
+					self.currentObject.rotate(self.currentObject.get_center(), angle, axis)
 
 			elif self.pan:
 				self.panning = True
@@ -605,20 +635,27 @@ class GLWidget(QtWidgets.QOpenGLWidget):
 						cObject_i.stackTranslate(translateV)
 				else:
 					self.currentObject.stackTranslate(translateV)
-
+			elif self.tilt:
+				axis = self.camera.tiltAxisFromScreen()
+				if isinstance(self.currentObject, list):
+					for cObject_i in self.currentObject:
+						cObject_i.spin(dx * np.pi / 10, axis)
+				else:
+					self.currentObject.spin(dx *np.pi / 10, axis)
 			self.objectsChanged.emit([self.currentObject])
-
 		else:
 			if self.orbit:
-				self.camera.orbit(dx, dy)
-				self.csCamera.orbit(dx, dy)
-
+				if True:
+					self.camera.orbit(dx, dy)
+					self.csCamera.orbit(dx, dy)
 				self._configView(self.coordSystemShader[0], self.csCamera)
-
 			elif self.pan:
 				self.panning = True
 				self.camera.panning(dx, dy)
-
+			elif self.tilt:
+				self.camera.spin(np.pi * dx / 10)
+				self.csCamera.spin(np.pi * dx / 10)
+				self._configView(self.coordSystemShader[0], self.csCamera)
 			else:
 				return
 
@@ -655,6 +692,18 @@ class GLWidget(QtWidgets.QOpenGLWidget):
 		event.accept()
 		self.update()
 
+	def set_draw_bbox(self, value=None):
+		if value is None:
+			self.draw_boundingbox = not self.draw_boundingbox
+		else:
+			self.draw_boundingbox = value
+		for bundle in self.bundles:
+			bundle.setDrawBB(self.draw_boundingbox)
+		for mri in self.mris:
+			mri.setDrawBB(self.draw_boundingbox)
+		for mesh in self.meshes:
+			mesh.setDrawBB(self.draw_boundingbox)
+
 
 	def keyPressEvent(self, event):
 		key = event.key()
@@ -662,37 +711,55 @@ class GLWidget(QtWidgets.QOpenGLWidget):
 		if key == QtCore.Qt.Key_1:
 			self.camera.frontView()
 			self.csCamera.frontView()
-
 		elif key == QtCore.Qt.Key_2:
 			self.camera.backView()
 			self.csCamera.backView()
-
 		elif key == QtCore.Qt.Key_3:
 			self.camera.leftView()
 			self.csCamera.leftView()
-
 		elif key == QtCore.Qt.Key_4:
 			self.camera.rightView()
 			self.csCamera.rightView()
-
 		elif key == QtCore.Qt.Key_5:
 			self.camera.topView()
 			self.csCamera.topView()
-
 		elif key == QtCore.Qt.Key_6:
 			self.camera.bottomView()
 			self.csCamera.bottomView()
-
 		elif key == QtCore.Qt.Key_B:
-			self.draw_boundingbox = not self.draw_boundingbox
-			for bundle in self.bundles:
-				bundle.setDrawBB(self.draw_boundingbox)
-			for mri in self.mris:
-				mri.setDrawBB(self.draw_boundingbox)
-			for mesh in self.meshes:
-				mesh.setDrawBB(self.draw_boundingbox)
-
-
+			self.set_draw_bbox()
+		elif key == QtCore.Qt.Key_W:
+			self.camera.panning(0, 0, -10)
+		elif key == QtCore.Qt.Key_A:
+			self.camera.panning(10, 0)
+		elif key == QtCore.Qt.Key_S:
+			self.camera.panning(0, 0, 10)
+		elif key == QtCore.Qt.Key_D:
+			self.camera.panning(-10, 0)
+		elif key == QtCore.Qt.Key_R:
+			self.camera.panning(0, 10)
+		elif key == QtCore.Qt.Key_F:
+			self.camera.panning(0, -10)
+		elif key == QtCore.Qt.Key_Q:
+			self.camera.spin(np.pi * 1)
+			self.csCamera.spin(np.pi * 1)
+		elif key == QtCore.Qt.Key_E:
+			self.camera.spin(np.pi * -1)
+			self.csCamera.spin(np.pi * -1)
+		elif key == QtCore.Qt.Key_Up:
+			self.camera.orbit(0, 1)
+			self.csCamera.orbit(0, 1)
+		elif key == QtCore.Qt.Key_Down:
+			self.camera.orbit(0, -1)
+			self.csCamera.orbit(0, -1)
+		elif key == QtCore.Qt.Key_Left:
+			self.camera.orbit(1, 0)
+			self.csCamera.orbit(1, 0)
+		elif key == QtCore.Qt.Key_Right:
+			self.camera.orbit(-1, 0)
+			self.csCamera.orbit(-1, 0)
+		elif key == QtCore.Qt.Key_F4:
+			self.debug_breakpoint()
 		else:
 			event.ignore()
 			return
@@ -803,3 +870,12 @@ class GLWidget(QtWidgets.QOpenGLWidget):
 			print("Test ended. Number of samples taken: ", self.testing_i, "\nAverage time:", np.mean(self.testArray))
 		except Exception as e:
 			print(e)
+
+	def debug_breakpoint(self):
+		if not self.currentObject:
+			return
+		self.objectsChanged.emit([self.currentObject])
+
+		for s in self.shaderList:
+			for shader in s:
+				self._configView(shader)

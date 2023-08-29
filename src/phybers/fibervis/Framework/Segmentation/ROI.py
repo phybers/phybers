@@ -15,366 +15,372 @@ _b_vs = files('phybers.fibervis.shaders').joinpath('bundle.vs')
 _sfs_vs = files('phybers.fibervis.shaders').joinpath('standardFragmentShader.fs')
 
 class ROI(VisualizationBaseObject):
-	'''
-	'''
+    '''
+    '''
 
-	def __init__(self, roitype, center, radius, shaderDict, parent):
-		'''
-		'''
+    def __init__(self, roitype, center, radius, shaderDict, parent):
+        '''
+        '''
 
-		if not roitype in ROIType:
-			raise TypeError('Unsupported ROI type.')
+        if not roitype in ROIType:
+            raise TypeError('Unsupported ROI type.')
 
-		super().__init__(parent, shaderDict)
-		self.identifier = VisualizationObject.ROI
+        super().__init__(parent, shaderDict)
+        self.identifier = VisualizationObject.ROI
 
-		self.fileName = str(roitype).split('.')[-1]
+        self.fileName = str(roitype).split('.')[-1]
 
-		self.roiType = roitype
+        self.roiType = roitype
 
-		self.center = np.array(center, dtype=np.float32)
+        self.center = np.array(center, dtype=np.float32)
 
-		self.radius = np.array(radius, dtype=np.float32)
+        self.radius = np.array(radius, dtype=np.float32)
 
-		self.squaredRadius  = self.radius**2
+        self.squaredRadius  = self.radius**2
 
-		self.points = None
-		self.normals = None
-		self.color = None
-		self.createROI()
+        self.points = None
+        self.normals = None
+        self.color = None
+        self.createROI()
 
-		# Initialize the values on colorTable
-		self.colorTable = np.array([random.random(), random.random(), random.random(), 1.0], dtype=np.float32)
+        # Initialize the values on colorTable
+        self.colorTable = np.array([random.random(), random.random(), random.random(), 1.0], dtype=np.float32)
 
-		# Initialize of texture id and loading of self.colorTable into the GPU
-		self.colorTableTexture = None
-		self._loadColorTexture()
+        # Initialize of texture id and loading of self.colorTable into the GPU
+        self.colorTableTexture = None
+        self._loadColorTexture()
 
-		# Creates VBOs & an EBO, then populates them with the point, normal and color data. The elements data goes into the EBO
-		self._loadBuffers()
+        # Creates VBOs & an EBO, then populates them with the point, normal and color data. The elements data goes into the EBO
+        self._loadBuffers()
 
-		# Random translation
-		self.translate([random.random()*100 for x in range(3)])
+        # Random translation
+        self.translate([random.random()*100 for x in range(3)])
 
-		# Ready to draw
-		self.drawable = True#parent.drawable
+        # Ready to draw
+        self.drawable = True#parent.drawable
 
+    def get_center(self):
+        return self.center
 
-	def cleanOpenGL(self):
-		print('Cleaning object: ', self)
-		GL.glDeleteVertexArrays(1, [self.vao])
+    def get_size(self):
+        return self.boundingbox.get_size()
 
-		GL.glDeleteBuffers(1, [self.vbo])
 
-		GL.glDeleteTextures([self.colorTableTexture])
+    def cleanOpenGL(self):
+        print('Cleaning object: ', self)
+        GL.glDeleteVertexArrays(1, [self.vao])
 
-		self.clean = True
+        GL.glDeleteBuffers(1, [self.vbo])
 
+        GL.glDeleteTextures([self.colorTableTexture])
 
-	def createROI(self):
-		if self.roiType == ROIType.Sphere:
-			self.createSphere()
+        self.clean = True
 
-			self.translation = glm.translateMatrix(self.center)
-			self.scalation = glm.scaleMatrix((self.radius, self.radius, self.radius))
 
+    def createROI(self):
+        if self.roiType == ROIType.Sphere:
+            self.createSphere()
 
-		elif self.roiType == ROIType.Aabb:
-			raise TypeError('ROI type not implemented: ', self.roiType)
+            self.translation = glm.translateMatrix(self.center)
+            self.scalation = glm.scaleMatrix((self.radius, self.radius, self.radius))
 
-		elif self.roiType == ROIType.Obb:
-			raise TypeError('ROI type not implemented: ', self.roiType)
 
-		elif self.roiType == ROIType.Plane:
-			raise TypeError('ROI type not implemented: ', self.roiType)
+        elif self.roiType == ROIType.Aabb:
+            raise TypeError('ROI type not implemented: ', self.roiType)
 
+        elif self.roiType == ROIType.Obb:
+            raise TypeError('ROI type not implemented: ', self.roiType)
 
-	def _loadColorTexture(self):
-		''' It generates a texture (if not already). Then makes the texture0 the active one and loads the color table as a 1D texture.
+        elif self.roiType == ROIType.Plane:
+            raise TypeError('ROI type not implemented: ', self.roiType)
 
-		Parameters
-		----------
-		None
 
-		Returns
-		-------
-		None
+    def _loadColorTexture(self):
+        ''' It generates a texture (if not already). Then makes the texture0 the active one and loads the color table as a 1D texture.
 
-		'''
+        Parameters
+        ----------
+        None
 
-		self.validBundleColorTexDims = (np.int32(1), np.int32(1))
+        Returns
+        -------
+        None
 
-		if self.colorTableTexture == None:
-			self.colorTableTexture = GL.glGenTextures(1)
+        '''
 
-		GL.glActiveTexture(GL.GL_TEXTURE0)
-		GL.glBindTexture(GL.GL_TEXTURE_2D, self.colorTableTexture)
+        self.validBundleColorTexDims = (np.int32(1), np.int32(1))
 
-		GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP_TO_BORDER)
-		GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP_TO_BORDER)
+        if self.colorTableTexture == None:
+            self.colorTableTexture = GL.glGenTextures(1)
 
-		bgColor = np.array([1.0, 1.0, 1.0, 1.0], dtype=np.float32)
-		GL.glTexParameterfv(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_BORDER_COLOR, bgColor)
+        GL.glActiveTexture(GL.GL_TEXTURE0)
+        GL.glBindTexture(GL.GL_TEXTURE_2D, self.colorTableTexture)
 
-		GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST)
-		GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST)
+        GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP_TO_BORDER)
+        GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP_TO_BORDER)
 
-		# GL.glTexImage1D(GL.GL_TEXTURE_1D, 0, GL.GL_RGBA, 1, 0, GL.GL_RGBA, GL.GL_FLOAT, self.colorTable.flatten())
-		GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, *self.validBundleColorTexDims, 0, GL.GL_RGBA, GL.GL_FLOAT, self.colorTable.flatten())
+        bgColor = np.array([1.0, 1.0, 1.0, 1.0], dtype=np.float32)
+        GL.glTexParameterfv(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_BORDER_COLOR, bgColor)
 
+        GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST)
+        GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST)
 
-	def _loadBuffers(self):
-		''' It generates a VAO, VBO and EBO.
-		It populates them with the vertex, normal and colors (the VBO), also the elements (the EBO).
+        # GL.glTexImage1D(GL.GL_TEXTURE_1D, 0, GL.GL_RGBA, 1, 0, GL.GL_RGBA, GL.GL_FLOAT, self.colorTable.flatten())
+        GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, *self.validBundleColorTexDims, 0, GL.GL_RGBA, GL.GL_FLOAT, self.colorTable.flatten())
 
-		It finishes when the buffers are linked with attributes on the vertex shader.
-
-		Parameters
-		----------
-		None
-
-		Returns
-		-------
-		None
-
-		'''
-
-		# Reference for vbos, ebos and attribute ptrs
-		self.vao = GL.glGenVertexArrays(1)
-		GL.glBindVertexArray(self.vao)
 
-		self.vbo = GL.glGenBuffers(1)
-
-		# VBO
-		bufferSize = self.points.nbytes + self.normals.nbytes + self.color.nbytes
-		GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo)
-		GL.glBufferData(GL.GL_ARRAY_BUFFER, bufferSize, None, GL.GL_STATIC_DRAW)	# Create empty buffer
-
-		# Populate buffer with points
-		GL.glBufferSubData(GL.GL_ARRAY_BUFFER,
-			0,
-			self.points.nbytes,
-			self.points.flatten())
+    def _loadBuffers(self):
+        ''' It generates a VAO, VBO and EBO.
+        It populates them with the vertex, normal and colors (the VBO), also the elements (the EBO).
 
-		# Normals
-		GL.glBufferSubData(GL.GL_ARRAY_BUFFER,
-			self.points.nbytes,
-			self.normals.nbytes,
-			self.normals.flatten())
+        It finishes when the buffers are linked with attributes on the vertex shader.
 
-		# Color-bundle id
-		GL.glBufferSubData(GL.GL_ARRAY_BUFFER,
-			(2*self.points.nbytes),
-			self.color.nbytes,
-			self.color.flatten())
+        Parameters
+        ----------
+        None
 
-		# Enable attributes
-		positionAttribute =	self.shader[0].attributeLocation('vertexPos')
-		normalAttribute =	self.shader[0].attributeLocation('vertexNor')
-		colorAttribute =	self.shader[0].attributeLocation('vertexCol')
+        Returns
+        -------
+        None
+
+        '''
+
+        # Reference for vbos, ebos and attribute ptrs
+        self.vao = GL.glGenVertexArrays(1)
+        GL.glBindVertexArray(self.vao)
 
-		# # Connect attributes
-		GL.glEnableVertexAttribArray(positionAttribute)
-		GL.glVertexAttribPointer(positionAttribute,3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
+        self.vbo = GL.glGenBuffers(1)
 
-		GL.glEnableVertexAttribArray(normalAttribute)
-		GL.glVertexAttribPointer(normalAttribute,	3, GL.GL_FLOAT, GL.GL_FALSE, 0, ct.c_void_p(self.points.nbytes))
+        # VBO
+        bufferSize = self.points.nbytes + self.normals.nbytes + self.color.nbytes
+        GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo)
+        GL.glBufferData(GL.GL_ARRAY_BUFFER, bufferSize, None, GL.GL_STATIC_DRAW)	# Create empty buffer
 
-		GL.glEnableVertexAttribArray(colorAttribute)
-		GL.glVertexAttribPointer(colorAttribute,	1, GL.GL_INT, GL.GL_FALSE, 0, ct.c_void_p(2*self.points.nbytes))
+        # Populate buffer with points
+        GL.glBufferSubData(GL.GL_ARRAY_BUFFER,
+            0,
+            self.points.nbytes,
+            self.points.flatten())
 
-	def createSphere(self):
-		def subdivideTriangles(triangles):
-			result = []
+        # Normals
+        GL.glBufferSubData(GL.GL_ARRAY_BUFFER,
+            self.points.nbytes,
+            self.normals.nbytes,
+            self.normals.flatten())
 
-			for triangle in triangles:
-				# first triangle
-				result.append([	triangle[0],
-								(triangle[1]-triangle[0])*0.5 + triangle[0],
-								(triangle[2]-triangle[0])*0.5 + triangle[0]])
+        # Color-bundle id
+        GL.glBufferSubData(GL.GL_ARRAY_BUFFER,
+            (2*self.points.nbytes),
+            self.color.nbytes,
+            self.color.flatten())
 
-				# second triangle
-				result.append([	triangle[1],
-								(triangle[0]-triangle[1])*0.5 + triangle[1],
-								(triangle[2]-triangle[1])*0.5 + triangle[1]])
+        # Enable attributes
+        positionAttribute =	self.shader[0].attributeLocation('vertexPos')
+        normalAttribute =	self.shader[0].attributeLocation('vertexNor')
+        colorAttribute =	self.shader[0].attributeLocation('vertexCol')
 
-				# third triangle
-				result.append([	triangle[2],
-								(triangle[0]-triangle[2])*0.5 + triangle[2],
-								(triangle[1]-triangle[2])*0.5 + triangle[2]])
+        # # Connect attributes
+        GL.glEnableVertexAttribArray(positionAttribute)
+        GL.glVertexAttribPointer(positionAttribute,3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
 
-				# fourth triangle
-				result.append([	(triangle[1]-triangle[0])*0.5 + triangle[0],
-								(triangle[2]-triangle[0])*0.5 + triangle[0],
-								(triangle[2]-triangle[1])*0.5 + triangle[1]])
+        GL.glEnableVertexAttribArray(normalAttribute)
+        GL.glVertexAttribPointer(normalAttribute,	3, GL.GL_FLOAT, GL.GL_FALSE, 0, ct.c_void_p(self.points.nbytes))
 
-			return np.array(result, dtype=np.float32)
+        GL.glEnableVertexAttribArray(colorAttribute)
+        GL.glVertexAttribPointer(colorAttribute,	1, GL.GL_INT, GL.GL_FALSE, 0, ct.c_void_p(2*self.points.nbytes))
 
-		triangles = np.array([[[1.0, 0.0, 0.0],
-							   [0.0, 1.0, 0.0],
-							   [0.0, 0.0, 1.0]]], dtype=np.float32)
+    def createSphere(self):
+        def subdivideTriangles(triangles):
+            result = []
 
-		# We subdivide the triangle in 4 triangles
-		for i in range(3):
-			triangles = subdivideTriangles(triangles)
+            for triangle in triangles:
+                # first triangle
+                result.append([	triangle[0],
+                                (triangle[1]-triangle[0])*0.5 + triangle[0],
+                                (triangle[2]-triangle[0])*0.5 + triangle[0]])
 
-		# We normalize the sphere vertex, so we have also the normals
-		for triangle in triangles:
-			for vertex in triangle:
-				vertex /= np.sqrt((vertex**2).sum())
+                # second triangle
+                result.append([	triangle[1],
+                                (triangle[0]-triangle[1])*0.5 + triangle[1],
+                                (triangle[2]-triangle[1])*0.5 + triangle[1]])
 
-		# We create the half sphere, by rotating the current 1/8
-		rotated = np.copy(triangles)
-		rotation = Quaternion.fromAngleAxis(np.pi/2, [0.0,1.0,0.0])
-		for i in range(3):
-			for triangle in rotated:
-				for vertex in triangle:
-					vertex[:] = rotation.rotateVector(vertex)
-			triangles = np.concatenate((triangles,rotated))
+                # third triangle
+                result.append([	triangle[2],
+                                (triangle[0]-triangle[2])*0.5 + triangle[2],
+                                (triangle[1]-triangle[2])*0.5 + triangle[2]])
 
-		# We create the whole sphere
-		rotated = np.copy(triangles)
-		rotated[:,:,1] *= -1
-		triangles = np.concatenate((triangles,rotated))
+                # fourth triangle
+                result.append([	(triangle[1]-triangle[0])*0.5 + triangle[0],
+                                (triangle[2]-triangle[0])*0.5 + triangle[0],
+                                (triangle[2]-triangle[1])*0.5 + triangle[1]])
 
-		self.points = np.ravel(triangles)
-		self.normals = self.points
-		self.color = np.zeros(self.points.size//3, dtype=np.int32)
+            return np.array(result, dtype=np.float32)
 
+        triangles = np.array([[[1.0, 0.0, 0.0],
+                               [0.0, 1.0, 0.0],
+                               [0.0, 0.0, 1.0]]], dtype=np.float32)
 
-	def setContainsMethods(self):
-		if self.roiType == ROIType.Sphere:
-			self.containsVertex = self.containsVertexSphere
-			self.containsBoundary = self.containsBoundarySphere
-			self.intersectsBoundary = self.intersectsBoundarySphere
+        # We subdivide the triangle in 4 triangles
+        for i in range(3):
+            triangles = subdivideTriangles(triangles)
 
-		elif self.roiType == ROIType.Aabb:
-			raise TypeError('Contains method for ROI type not implemented: ', self.roiType)
+        # We normalize the sphere vertex, so we have also the normals
+        for triangle in triangles:
+            for vertex in triangle:
+                vertex /= np.sqrt((vertex**2).sum())
 
-		elif self.roiType == ROIType.Obb:
-			raise TypeError('Contains method for ROI type not implemented: ', self.roiType)
+        # We create the half sphere, by rotating the current 1/8
+        rotated = np.copy(triangles)
+        rotation = Quaternion.fromAngleAxis(np.pi/2, [0.0,1.0,0.0])
+        for i in range(3):
+            for triangle in rotated:
+                for vertex in triangle:
+                    vertex[:] = rotation.rotateVector(vertex)
+            triangles = np.concatenate((triangles,rotated))
 
-		elif self.roiType == ROIType.Plane:
-			raise TypeError('Contains method for ROI type not implemented: ', self.roiType)
+        # We create the whole sphere
+        rotated = np.copy(triangles)
+        rotated[:,:,1] *= -1
+        triangles = np.concatenate((triangles,rotated))
 
-	def containsBoundary(self, center, radius):
-		print('method not being called')
-		pass
+        self.points = np.ravel(triangles)
+        self.normals = self.points
+        self.color = np.zeros(self.points.size//3, dtype=np.int32)
 
 
-	def containsVertex(self, vertex):
-		print('method not being called')
-		pass
+    def setContainsMethods(self):
+        if self.roiType == ROIType.Sphere:
+            self.containsVertex = self.containsVertexSphere
+            self.containsBoundary = self.containsBoundarySphere
+            self.intersectsBoundary = self.intersectsBoundarySphere
 
+        elif self.roiType == ROIType.Aabb:
+            raise TypeError('Contains method for ROI type not implemented: ', self.roiType)
 
-	def intersectsBoundary(self, center, radius):
-		print('method not being called')
-		pass
+        elif self.roiType == ROIType.Obb:
+            raise TypeError('Contains method for ROI type not implemented: ', self.roiType)
 
+        elif self.roiType == ROIType.Plane:
+            raise TypeError('Contains method for ROI type not implemented: ', self.roiType)
 
-	def containsBoundarySphere(self, center, radius):
-		points = center + np.array([[ radius[0],  radius[1],  radius[2]],
-									[-radius[0],  radius[1],  radius[2]],
-									[ radius[0], -radius[1],  radius[2]],
-									[-radius[0], -radius[1],  radius[2]],
-									[ radius[0],  radius[1], -radius[2]],
-									[-radius[0],  radius[1], -radius[2]],
-									[ radius[0], -radius[1], -radius[2]],
-									[-radius[0], -radius[1], -radius[2]]],dtype=np.float32)
+    def containsBoundary(self, center, radius):
+        print('method not being called')
+        pass
 
-		dist = points - self.center
 
-		return ((dist**2).sum() <= self.squaredRadius).sum()
+    def containsVertex(self, vertex):
+        print('method not being called')
+        pass
 
 
-	def containsVertexSphere(self, vertex):
-		dist = vertex - self.center
+    def intersectsBoundary(self, center, radius):
+        print('method not being called')
+        pass
 
-		return (dist**2).sum() <= self.squaredRadius
 
+    def containsBoundarySphere(self, center, radius):
+        points = center + np.array([[ radius[0],  radius[1],  radius[2]],
+                                    [-radius[0],  radius[1],  radius[2]],
+                                    [ radius[0], -radius[1],  radius[2]],
+                                    [-radius[0], -radius[1],  radius[2]],
+                                    [ radius[0],  radius[1], -radius[2]],
+                                    [-radius[0],  radius[1], -radius[2]],
+                                    [ radius[0], -radius[1], -radius[2]],
+                                    [-radius[0], -radius[1], -radius[2]]],dtype=np.float32)
 
-	def intersectsBoundarySphere(self, center, radius):
-		squaredDist = 0.0
+        dist = points - self.center
 
-		if self.center[0] < center[0]-radius[0]:
-			squaredDist += (self.center[0]-(center[0]-radius[0]))**2
-		elif self.center[0] > center[0]+radius[0]:
-			squaredDist += (self.center[0]-(center[0]+radius[0]))**2
+        return ((dist**2).sum() <= self.squaredRadius).sum()
 
-		if self.center[1] < center[1]-radius[1]:
-			squaredDist += (self.center[1]-(center[1]-radius[1]))**2
-		elif self.center[1] > center[1]+radius[1]:
-			squaredDist += (self.center[1]-(center[1]+radius[1]))**2
 
-		if self.center[2] < center[2]-radius[2]:
-			squaredDist += (self.center[2]-(center[2]-radius[2]))**2
-		elif self.center[2] > center[2]+radius[2]:
-			squaredDist += (self.center[2]-(center[2]+radius[2]))**2
+    def containsVertexSphere(self, vertex):
+        dist = vertex - self.center
 
-		return squaredDist <= self.squaredRadius
+        return (dist**2).sum() <= self.squaredRadius
 
 
-	def loadUniforms(self):
-		'''  This function is called always before drawing. It makes sure that the current bundle will be visualized with the uniforms specified for it.
+    def intersectsBoundarySphere(self, center, radius):
+        squaredDist = 0.0
 
-		Parameters
-		----------
-		None
+        if self.center[0] < center[0]-radius[0]:
+            squaredDist += (self.center[0]-(center[0]-radius[0]))**2
+        elif self.center[0] > center[0]+radius[0]:
+            squaredDist += (self.center[0]-(center[0]+radius[0]))**2
 
-		Returns
-		-------
-		None
+        if self.center[1] < center[1]-radius[1]:
+            squaredDist += (self.center[1]-(center[1]-radius[1]))**2
+        elif self.center[1] > center[1]+radius[1]:
+            squaredDist += (self.center[1]-(center[1]+radius[1]))**2
 
-		'''
+        if self.center[2] < center[2]-radius[2]:
+            squaredDist += (self.center[2]-(center[2]-radius[2]))**2
+        elif self.center[2] > center[2]+radius[2]:
+            squaredDist += (self.center[2]-(center[2]+radius[2]))**2
 
-		finalModel = self.model*self.translation*self.scalation
-		GL.glUniformMatrix4fv(self.shader[self.selectedShader].glGetUniformLocation("M"), 1, GL.GL_TRUE, finalModel.getA())
-		GL.glUniform1i(self.shader[self.selectedShader].glGetUniformLocation("colorTable"), 0)
+        return squaredDist <= self.squaredRadius
 
-		GL.glUniform1i(self.shader[self.selectedShader].glGetUniformLocation('texture1DMax'), self.validBundleColorTexDims[0])
 
+    def loadUniforms(self):
+        '''  This function is called always before drawing. It makes sure that the current bundle will be visualized with the uniforms specified for it.
 
-	def getRGB256(self):
-		return self.colorTable*255
+        Parameters
+        ----------
+        None
 
+        Returns
+        -------
+        None
 
-	def getCenter(self, inverseModel = glm.identity()):
-		finalModel = self.model*self.translation*self.scalation
-		return (inverseModel * finalModel * np.array([0, 0, 0, 1], dtype=np.float32).reshape((4,1)))[:3].ravel()
+        '''
 
+        finalModel = self.model*self.translation*self.scalation
+        GL.glUniformMatrix4fv(self.shader[self.selectedShader].glGetUniformLocation("M"), 1, GL.GL_TRUE, finalModel.getA())
+        GL.glUniform1i(self.shader[self.selectedShader].glGetUniformLocation("colorTable"), 0)
 
-	def getRadius(self, inverseModel = glm.identity()):
-		finalModel = inverseModel * self.model*self.translation*self.scalation
+        GL.glUniform1i(self.shader[self.selectedShader].glGetUniformLocation('texture1DMax'), self.validBundleColorTexDims[0])
 
-		r = (finalModel * np.array([1, 0, 0, 1], dtype=np.float32).reshape((4,1)))[:3].ravel()
-		r = r - self.getCenter(inverseModel)
-		r = np.linalg.norm(r)
 
-		return np.array([r, r, r], dtype=np.float32)
+    def getRGB256(self):
+        return self.colorTable*255
 
 
-	def changeFileName(self, newFilename):
-		self.fileName = newFilename
+    def getCenter(self, inverseModel = glm.identity()):
+        finalModel = self.model*self.translation*self.scalation
+        return (inverseModel * finalModel * np.array([0, 0, 0, 1], dtype=np.float32).reshape((4,1)))[:3].ravel()
 
 
-	def getROIValue(self):
-		return self.roiType.value
+    def getRadius(self, inverseModel = glm.identity()):
+        finalModel = inverseModel * self.model*self.translation*self.scalation
 
+        r = (finalModel * np.array([1, 0, 0, 1], dtype=np.float32).reshape((4,1)))[:3].ravel()
+        r = r - self.getCenter(inverseModel)
+        r = np.linalg.norm(r)
 
-	@drawable
-	@config
-	def draw(self):
-		GL.glActiveTexture(GL.GL_TEXTURE0)
-		GL.glBindTexture(GL.GL_TEXTURE_2D, self.colorTableTexture)
+        return np.array([r, r, r], dtype=np.float32)
 
-		GL.glDrawArrays(GL.GL_TRIANGLES, 0, self.color.size);
 
-	@staticmethod
-	def createProgram():
-		''' Anonymous function.
-		It creates the shader programs for this specific class and returns the handler.
-		'''
+    def changeFileName(self, newFilename):
+        self.fileName = newFilename
 
-		vertexGLSL = [str(_b_vs)]
-		fragmentGLSL = [str(_sfs_vs)]
-		return [Shader(vertexGLSL, fragmentGLSL)]
+
+    def getROIValue(self):
+        return self.roiType.value
+
+
+    @drawable
+    @config
+    def draw(self):
+        GL.glActiveTexture(GL.GL_TEXTURE0)
+        GL.glBindTexture(GL.GL_TEXTURE_2D, self.colorTableTexture)
+
+        GL.glDrawArrays(GL.GL_TRIANGLES, 0, self.color.size);
+
+    @staticmethod
+    def createProgram():
+        ''' Anonymous function.
+        It creates the shader programs for this specific class and returns the handler.
+        '''
+
+        vertexGLSL = [str(_b_vs)]
+        fragmentGLSL = [str(_sfs_vs)]
+        return [Shader(vertexGLSL, fragmentGLSL)]

@@ -187,8 +187,8 @@ setup(
     zip_safe=False,
     entry_points={
         'gui_scripts': [
-            'FiberVis = phybers.fibervis.FiberVis:main'
-        ]
+            'FiberVis = phybers.fibervis.FiberVis:parse_args_and_run'
+        ],
     },
     long_description=long_description,
     long_description_content_type='text/markdown'

@@ -66,7 +66,7 @@ class ROIsSegmentationDialog(QtWidgets.QDialog):
 
 		self.ui.tableWidget.cellChanged.connect(self.cellChanged)
 
-		self.ui.logicLineEdit.returnPressed.connect(self.logicLineEditEdited)
+		self.ui.logicLineEdit.editingFinished.connect(self.logicLineEditEdited)
 
 		self.show()
 
@@ -175,7 +175,8 @@ class ROIsSegmentationDialog(QtWidgets.QDialog):
 	@QtCore.pyqtSlot()
 	def logicLineEditEdited(self):
 		options = {	'reference' : self.segmentationRef,
-					'attributes': {'updateLogic' : [str(self.ui.logicLineEdit.text())]}}
+					'attributes': {'updateLogic' : [str(self.ui.logicLineEdit.text()),
+				     								self.ui.logicLineEdit.setText]}}
 
 		self.updateObject.emit(options)
 

@@ -118,6 +118,11 @@ class VisualizationBaseObject:
 	def setCamera(self, newCamera):
 		pass
 
+	def get_center(self):
+		raise NotImplementedError
+
+	def get_size(self):
+		raise NotImplementedError
 
 	def loadUniforms(self):
 
@@ -130,12 +135,16 @@ class VisualizationBaseObject:
 
 
 	def rotate(self, center, angle, axis):
-		rotate = glm.translateMatrix(center)*glm.rotateMatrix(angle, axis)*glm.translateMatrix(-center)
+		axis = (np.append(axis, 1) * self.rotationMat).getA()[0, :3]
+		rotate = glm.translateMatrix(center) * glm.rotateMatrix(angle, axis) * glm.translateMatrix(-center)
 
-		self.rotationMat = rotate*self.rotationMat
+		self.rotationMat *= rotate
 
 		self.model = self.translateMat*self.rotationMat*self.scaleMat
 		self.inverseModel = np.linalg.inv(self.model)
+
+	def spin(self, angle, axis):
+		self.rotate(self.get_center(), angle, axis)
 
 
 	def translate(self, vec):

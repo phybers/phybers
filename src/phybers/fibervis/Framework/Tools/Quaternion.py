@@ -1,402 +1,425 @@
 import numpy as np
 
 class Quaternion:
-	''' Class for storing rotations as quaternions
-	'''
+    ''' Class for storing rotations as quaternions
+    '''
 
-	def __init__(self):
-		''' Initializes a unit quaternion without rotation.
+    def __init__(self):
+        ''' Initializes a unit quaternion without rotation.
 
-		Parameters
-		----------
-		None
+        Parameters
+        ----------
+        None
 
-		Returns
-		-------
-		None
+        Returns
+        -------
+        None
 
-		'''
+        '''
 
-		self.w = 1
-		self.x = 0
-		self.y = 0
-		self.z = 0
+        self.w = 1
+        self.x = 0
+        self.y = 0
+        self.z = 0
 
-	@classmethod
-	def fromAngleAxis(cls, angle, axis):
-		''' Initialices a quaternion from an angle and axis.
+    @classmethod
+    def fromAngleAxis(cls, angle, axis):
+        ''' Initialices a quaternion from an angle and axis.
 
-		The quaternion is normalized.
+        The quaternion is normalized.
 
-		Parameters
-		----------
-		angle : float
-			Angle of the rotation in radians
+        Parameters
+        ----------
+        angle : float
+            Angle of the rotation in radians
 
-		axis : list, tuple, numpy.array
-			A 3 element parameters with the axis of rotation. Not necessarilly normalized.
+        axis : list, tuple, numpy.array
+            A 3 element parameters with the axis of rotation. Not necessarilly normalized.
 
-		Returns
-		-------
-		q : Quaternion
-			Initialized quaternion
+        Returns
+        -------
+        q : Quaternion
+            Initialized quaternion
 
-		'''
+        '''
 
-		module = np.sqrt(axis[0]**2 + axis[1]**2 + axis[2]**2)
-		s = np.sin(angle/2) / module
+        module = np.sqrt(axis[0]**2 + axis[1]**2 + axis[2]**2)
+        s = np.sin(angle/2) / module
 
-		q = cls()
+        q = cls()
 
-		q.w = np.cos(angle/2)
-		q.x = float(axis[0]) * s
-		q.y = float(axis[1]) * s
-		q.z = float(axis[2]) * s
+        q.w = np.cos(angle/2)
+        q.x = float(axis[0]) * s
+        q.y = float(axis[1]) * s
+        q.z = float(axis[2]) * s
 
-		return q
+        return q
 
-	@classmethod
-	def fromQuaternionElements(cls, w, x, y, z):
-		''' Initializes a quaternion from the given elements.
+    @classmethod
+    def fromQuaternionElements(cls, w, x, y, z):
+        ''' Initializes a quaternion from the given elements.
 
-		Parameters
-		----------
-		w : float
-			Real part of quaternion.
+        Parameters
+        ----------
+        w : float
+            Real part of quaternion.
 
-		x : float
-			Imaginary part of quaternion, corresponding x coordinate.
+        x : float
+            Imaginary part of quaternion, corresponding x coordinate.
 
-		y : float
-			Imaginary part of quaternion, corresponding y coordinate.
+        y : float
+            Imaginary part of quaternion, corresponding y coordinate.
 
-		z : float
-			Imaginary part of quaternion, corresponding z coordinate.
+        z : float
+            Imaginary part of quaternion, corresponding z coordinate.
 
-		Returns
-		-------
-		q : Quaternion
-			Initialized quaternion
+        Returns
+        -------
+        q : Quaternion
+            Initialized quaternion
 
-		'''
+        '''
 
-		q = cls()
+        q = cls()
 
-		q.w = float(w)
-		q.x = float(x)
-		q.y = float(y)
-		q.z = float(z)
+        q.w = float(w)
+        q.x = float(x)
+        q.y = float(y)
+        q.z = float(z)
 
-		return q
+        return q
 
-	@classmethod
-	def fromQuaternion(cls, other):
-		''' Initializes a quaternion from another quaternion.
+    @classmethod
+    def fromQuaternion(cls, other):
+        ''' Initializes a quaternion from another quaternion.
 
-		Parameters
-		----------
-		other : Quaternion
-			Quaternion to be copied.
+        Parameters
+        ----------
+        other : Quaternion
+            Quaternion to be copied.
 
-		Returns
-		-------
-		q : Quaternion
-			Initialized quaternion
+        Returns
+        -------
+        q : Quaternion
+            Initialized quaternion
 
-		'''
+        '''
 
-		q = cls()
+        q = cls()
 
-		q.w = other.w
-		q.x = other.x
-		q.y = other.y
-		q.z = other.z
+        q.w = other.w
+        q.x = other.x
+        q.y = other.y
+        q.z = other.z
 
-		return q
+        return q
 
-	@classmethod
-	def identity(cls):
-		''' Initializes a unit quaternion without rotation.
+    @classmethod
+    def identity(cls):
+        ''' Initializes a unit quaternion without rotation.
 
-		Parameters
-		----------
-		None
+        Parameters
+        ----------
+        None
 
-		Returns
-		-------
-		q : Quaternion
-			Initialized quaternion
+        Returns
+        -------
+        q : Quaternion
+            Initialized quaternion
 
-		'''
+        '''
 
-		q = cls()
+        q = cls()
 
-		q.w = 1.0
-		q.x = 0.0
-		q.y = 0.0
-		q.z = 0.0
+        q.w = 1.0
+        q.x = 0.0
+        q.y = 0.0
+        q.z = 0.0
 
-		return q
+        return q
 
-	def normalize(self):
-		''' Normalizes the quaternion.
+    @classmethod
+    def from_pair_of_vectors(cls, vector_1, vector_2):
+        ''' Initializes a quaternion from a pair of vectors.
 
-		Parameters
-		----------
-		None
+        Parameters
+        ----------
+        vector_1 : list, tuple, numpy.ndarray
+            First vector of 3 elements.
+        vector_2 : list, tuple, numpy.ndarray
+            Second vector of 3 elements.
 
-		Returns
-		-------
-		self : Quaternion
+        Returns
+        -------
+        q : Quaternion
+            Initialized quaternion
+        '''
+        c_prod = np.cross(vector_1, vector_2)
+        n1, n2, nc_prod = np.linalg.norm([vector_1, vector_2, c_prod], axis=1)
+        angle = np.arcsin(nc_prod / n1 / n2)
+        axis = np.arcsin(c_prod / n1 / n2)
+        return cls.fromAngleAxis(angle, axis)
 
-		'''
 
-		module = np.sqrt(self.w**2 + self.x**2 + self.y**2 + self.z**2)
-		self.w /= module
-		self.x /= module
-		self.y /= module
-		self.z /= module
+    def normalize(self):
+        ''' Normalizes the quaternion.
 
-		return self
+        Parameters
+        ----------
+        None
 
+        Returns
+        -------
+        self : Quaternion
 
-	def inverted(self):
-		''' Invertes the quaternion, by inverting the axis.
+        '''
 
-		Parameters
-		----------
-		None
+        module = np.sqrt(self.w**2 + self.x**2 + self.y**2 + self.z**2)
+        self.w /= module
+        self.x /= module
+        self.y /= module
+        self.z /= module
 
-		Returns
-		-------
-		q : Quaternion
-			Inverted quaternion.
+        return self
 
-		'''
 
-		return Quaternion.fromQuaternionElements(self.w, -self.x, -self.y, -self.z)
+    def inverted(self):
+        ''' Invertes the quaternion, by inverting the axis.
 
+        Parameters
+        ----------
+        None
 
-	def rotateVector(self, vector):
-		''' Rotates a vector using the quaternion.
+        Returns
+        -------
+        q : Quaternion
+            Inverted quaternion.
 
-		Parameters
-		----------
-		vector : list, tuple, numpy.array
-			A 3 element parameters with the axis of rotation. Not necessarilly normalized.
+        '''
 
-		Returns
-		-------
-		array : numpy.array
-			Rotated vector.
+        return Quaternion.fromQuaternionElements(self.w, -self.x, -self.y, -self.z)
 
-		'''
 
-		p = Quaternion.fromQuaternionElements(0, vector[0], vector[1], vector[2])
-		pp = self * p * self.inverted()
+    def rotateVector(self, vector):
+        ''' Rotates a vector using the quaternion.
 
-		return np.array([pp.x, pp.y, pp.z], dtype=np.float32)
+        Parameters
+        ----------
+        vector : list, tuple, numpy.array
+            A 3 element parameters with the axis of rotation. Not necessarilly normalized.
 
+        Returns
+        -------
+        array : numpy.array
+            Rotated vector.
 
-	def rotation3Matrix(self):
-		''' Creates a 3x3 rotation matrix from the quaternion.
+        '''
 
-		Parameters
-		----------
-		None
+        p = Quaternion.fromQuaternionElements(0, vector[0], vector[1], vector[2])
+        pp = self * p * self.inverted()
 
-		Returns
-		-------
-		matrix : numpy.matrix
-			Rotation matrix.
+        return np.array([pp.x, pp.y, pp.z], dtype=np.float32)
 
-		'''
 
-		xx = self.x**2
-		yy = self.y**2
-		zz = self.z**2
-		xy = self.x*self.y
-		wz = self.w*self.z
-		xz = self.x*self.z
-		wy = self.w*self.y
-		yz = self.y*self.z
-		wx = self.w*self.x
+    def rotation3Matrix(self):
+        ''' Creates a 3x3 rotation matrix from the quaternion.
 
-		return np.matrix([	[1-2*(yy+zz),	2*(xy-wz),		2*(xz+wy)],
-							[2*(xy+wz),		1-2*(xx+zz),	2*(yz-wx)],
-							[2*(xz-wy),		2*(yz+wx),		1-2*(xx+yy)]], dtype=np.float32)
+        Parameters
+        ----------
+        None
 
+        Returns
+        -------
+        matrix : numpy.matrix
+            Rotation matrix.
 
-	def rotation4Matrix(self):
-		''' Creates a 4x4 rotation matrix from the quaternion.
+        '''
 
-		Parameters
-		----------
-		None
+        xx = self.x**2
+        yy = self.y**2
+        zz = self.z**2
+        xy = self.x*self.y
+        wz = self.w*self.z
+        xz = self.x*self.z
+        wy = self.w*self.y
+        yz = self.y*self.z
+        wx = self.w*self.x
 
-		Returns
-		-------
-		matrix : numpy.matrix
-			Rotation matrix.
+        return np.matrix([	[1-2*(yy+zz),	2*(xy-wz),		2*(xz+wy)],
+                            [2*(xy+wz),		1-2*(xx+zz),	2*(yz-wx)],
+                            [2*(xz-wy),		2*(yz+wx),		1-2*(xx+yy)]], dtype=np.float32)
 
-		'''
 
-		xx = self.x**2
-		yy = self.y**2
-		zz = self.z**2
-		xy = self.x*self.y
-		wz = self.w*self.z
-		xz = self.x*self.z
-		wy = self.w*self.y
-		yz = self.y*self.z
-		wx = self.w*self.x
+    def rotation4Matrix(self):
+        ''' Creates a 4x4 rotation matrix from the quaternion.
 
-		return np.matrix([	[1-2*(yy+zz),	2*(xy-wz),		2*(xz+wy),		0],
-							[2*(xy+wz),		1-2*(xx+zz),	2*(yz-wx),		0],
-							[2*(xz-wy),		2*(yz+wx),		1-2*(xx+yy),	0],
-							[0,				0,				0,				1]], dtype=np.float32)
+        Parameters
+        ----------
+        None
 
+        Returns
+        -------
+        matrix : numpy.matrix
+            Rotation matrix.
 
-	def toAngleAxis(self):
-		''' Transforms the quaternion into the angle and axis of rotation in 3D coordinate system.
+        '''
 
-		Parameters
-		----------
-		None
+        xx = self.x**2
+        yy = self.y**2
+        zz = self.z**2
+        xy = self.x*self.y
+        wz = self.w*self.z
+        xz = self.x*self.z
+        wy = self.w*self.y
+        yz = self.y*self.z
+        wx = self.w*self.x
 
-		Returns
-		-------
-		angle : float
-			Angle of rotation.
+        return np.matrix([	[1-2*(yy+zz),	2*(xy-wz),		2*(xz+wy),		0],
+                            [2*(xy+wz),		1-2*(xx+zz),	2*(yz-wx),		0],
+                            [2*(xz-wy),		2*(yz+wx),		1-2*(xx+yy),	0],
+                            [0,				0,				0,				1]], dtype=np.float32)
 
-		axis : float
-			axis of rotation.
 
-		'''
+    def toAngleAxis(self):
+        ''' Transforms the quaternion into the angle and axis of rotation in 3D coordinate system.
 
-		angle = np.arccos(self.w)*2
-		axis = np.array([self.x, self.y, self.z], dtype=np.float32) / np.sqrt(1-self.w**2)
+        Parameters
+        ----------
+        None
 
-		return angle, axis
+        Returns
+        -------
+        angle : float
+            Angle of rotation.
 
+        axis : float
+            axis of rotation.
 
-	def slerp(self, other, t):
-		''' Spherical linear interpolation from the given quaternion to another, by the given t portion.
+        '''
 
-		Parameters
-		----------
-		other : Quaternion
-			Final quaternion to which the interpolation goes.
+        angle = np.arccos(self.w)*2
+        axis = np.array([self.x, self.y, self.z], dtype=np.float32) / np.sqrt(1-self.w**2)
 
-		t : float
-			Step from the linear interpolation between both quaternions. 0 <= t <= 1.
+        return angle, axis
 
-		Returns
-		-------
-		q : Quaternion
-			New quaternion with the slerp rotation in t.
 
-		'''
+    def slerp(self, other, t):
+        ''' Spherical linear interpolation from the given quaternion to another, by the given t portion.
 
-		return (other*self.inverted())**t * self
+        Parameters
+        ----------
+        other : Quaternion
+            Final quaternion to which the interpolation goes.
 
+        t : float
+            Step from the linear interpolation between both quaternions. 0 <= t <= 1.
 
-	def __mul__(self, other):
-		''' Overload multiply, for multiplying quaternions between them.
+        Returns
+        -------
+        q : Quaternion
+            New quaternion with the slerp rotation in t.
 
-		Parameters
-		----------
-		other : Quaternion
-			Rotation to be apply.
+        '''
 
-		Returns
-		-------
-		q : Quaternion
-			New quaternion with the rotation applied.
+        return (other*self.inverted())**t * self
 
-		'''
 
-		if not isinstance(other, Quaternion):
-			raise TypeError('Can not multiply with other object that is not a Quaternion')
+    def __mul__(self, other):
+        ''' Overload multiply, for multiplying quaternions between them.
 
-		newW = self.w*other.w - self.x*other.x - self.y*other.y - self.z*other.z
-		newX = self.x*other.w + self.w*other.x - self.z*other.y + self.y*other.z
-		newY = self.y*other.w + self.z*other.x + self.w*other.y - self.x*other.z
-		newZ = self.z*other.w - self.y*other.x + self.x*other.y + self.w*other.z
+        Parameters
+        ----------
+        other : Quaternion
+            Rotation to be apply.
 
-		return Quaternion.fromQuaternionElements(newW, newX, newY, newZ)
+        Returns
+        -------
+        q : Quaternion
+            New quaternion with the rotation applied.
 
+        '''
 
-	def __rmul__(self, other):
-		''' Bypass to normal multiply.
+        if not isinstance(other, Quaternion):
+            raise TypeError('Can not multiply with other object that is not a Quaternion')
 
-		Parameters
-		----------
-		other : Quaternion
-			Rotation to be apply.
+        newW = self.w*other.w - self.x*other.x - self.y*other.y - self.z*other.z
+        newX = self.x*other.w + self.w*other.x - self.z*other.y + self.y*other.z
+        newY = self.y*other.w + self.z*other.x + self.w*other.y - self.x*other.z
+        newZ = self.z*other.w - self.y*other.x + self.x*other.y + self.w*other.z
 
-		Returns
-		-------
-		q : Quaternion
-			New quaternion with the rotation applied.
+        return Quaternion.fromQuaternionElements(newW, newX, newY, newZ)
 
-		'''
 
-		return self*other
-		# raise TypeError('Can not multiply with other object that is not a Quaternion')
+    def __rmul__(self, other):
+        ''' Bypass to normal multiply.
 
+        Parameters
+        ----------
+        other : Quaternion
+            Rotation to be apply.
 
-	def __pow__(self, t):
-		''' Scales the angle of rotation in t.
+        Returns
+        -------
+        q : Quaternion
+            New quaternion with the rotation applied.
 
-		Parameters
-		----------
-		t : float
-			Floating point to scale the angle of rotation of the quaternion.
+        '''
 
-		Returns
-		-------
-		q : Quaternion
-			New quaternion with the same axis, but angle scaled in t.
+        return self*other
+        # raise TypeError('Can not multiply with other object that is not a Quaternion')
 
-		'''
 
-		angle, axis = self.toAngleAxis()
+    def __pow__(self, t):
+        ''' Scales the angle of rotation in t.
 
-		return Quaternion.fromAngleAxis(angle*t, axis)
+        Parameters
+        ----------
+        t : float
+            Floating point to scale the angle of rotation of the quaternion.
 
+        Returns
+        -------
+        q : Quaternion
+            New quaternion with the same axis, but angle scaled in t.
 
-	def __str__(self):
-		''' String representation of the quaternion.
+        '''
 
-		Parameters
-		----------
-		None
+        angle, axis = self.toAngleAxis()
 
-		Returns
-		-------
-		string : str
-			w, x, y, z as string representation of list.
+        return Quaternion.fromAngleAxis(angle*t, axis)
 
-		'''
 
-		return '[{0}, {1}, {2}, {3}]'.format(self.w, self.x, self.y, self.z)
+    def __str__(self):
+        ''' String representation of the quaternion.
 
-	def __iter__(self):
-		''' Iterable representation of the quaternion.
+        Parameters
+        ----------
+        None
 
-		Parameters
-		----------
-		None
+        Returns
+        -------
+        string : str
+            w, x, y, z as string representation of list.
 
-		Returns
-		-------
-		iter : iterable
-			yields w, x, y and z.
+        '''
 
-		'''
+        return '[{0}, {1}, {2}, {3}]'.format(self.w, self.x, self.y, self.z)
 
-		yield self.w
-		yield self.x
-		yield self.y
-		yield self.z
+    def __iter__(self):
+        ''' Iterable representation of the quaternion.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        iter : iterable
+            yields w, x, y and z.
+
+        '''
+
+        yield self.w
+        yield self.x
+        yield self.y
+        yield self.z

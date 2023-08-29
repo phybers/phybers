@@ -30,6 +30,7 @@ class VisualizationActions(Enum):
 	ResetTransforms = 9
 	LoadAndApplyMatrix = 10
 	ShaderSelection = 11
+	FocusObject = 12
 
 class SegmentationTypes(Enum):
 	InPlace = 0

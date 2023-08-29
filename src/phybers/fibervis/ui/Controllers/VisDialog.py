@@ -293,6 +293,7 @@ class VisDialog(QtWidgets.QDialog):
 		deleteAction = contextMenu.addAction('Delete')
 		addSegmentationAction = QtWidgets.QMenu('Add segmentation method')
 		addMRIVisualizationAction = QtWidgets.QMenu('Add MRI visualization object')
+		focusObjectAction = contextMenu.addAction('Focus Camera')
 		visibleToggleAction = QtWidgets.QAction('Visible')
 		visibleToggleAction.setCheckable(True)
 
@@ -348,25 +349,21 @@ class VisDialog(QtWidgets.QDialog):
 			if item.identifier == VisualizationObject.Segmentation:
 				self.windows.pop(retrieveItemIteratively(reference,number), None)
 			modifyObject = self.prepareDictionary(item, VisualizationActions.Delete)
-
 		elif action == visibleToggleAction:
 			modifyObject = self.prepareDictionary(item, VisualizationActions.ToggleDrawable)
-
 		elif action == windowToggleAction:
 			dialog = self.windows[retrieveItemIteratively(reference, number)]
 			dialog.setVisible(not dialog.isVisible())
 			return
-
 		elif action == testAction:
 			print('testAction')
 			return
-
 		elif action in segmentationAction.keys():
 			modifyObject = self.prepareDictionary(item, VisualizationActions.AddSegmentation, data=segmentationAction[action])
-
 		elif action in mriVisAction.keys():
 			modifyObject = self.prepareDictionary(item, VisualizationActions.AddSegmentation, data=mriVisAction[action])
-
+		elif action == focusObjectAction:
+			modifyObject = self.prepareDictionary(item, VisualizationActions.FocusObject)
 		else:
 			print('Action not atended: ', action)
 			return

@@ -5,6 +5,7 @@ to-do:
 
 import os
 import random
+from pathlib import Path
 from OpenGL import GL
 import numpy as np
 from importlib_resources import files
@@ -56,7 +57,7 @@ class Bundle(VisualizationBaseObject):
         self.identifier = VisualizationObject.Bundle
 
         self.path = sPath
-        self.fileName = sPath.split('/')[-1]
+        self.fileName = Path(sPath).name
 
         self.points = None
         self.normals = None
@@ -96,6 +97,12 @@ class Bundle(VisualizationBaseObject):
 
         print("Loading ready:\n\t", self.curvescount, " fibers.\n\t", len(self.bundlesName), " bundles.")
 
+
+    def get_center(self):
+        return self.boundingbox.get_center()
+
+    def get_size(self):
+        return self.boundingbox.get_size()
 
     def cleanOpenGL(self):
         print('Cleaning object: ', self)
@@ -143,18 +150,18 @@ class Bundle(VisualizationBaseObject):
 
         '''
 
-        extension = self.path.split('.')[-1]
+        extension = Path(self.path).suffix
 
         # Bundle file
-        if extension == 'bundles':
+        if extension == '.bundles':
             self._openBundle()
 
         # Trk file
-        elif extension == 'trk':
+        elif extension == '.trk':
             self._openTrk()
 
         # Tck file
-        elif extension == 'tck':
+        elif extension == '.tck':
             self._openTck()
 
         # Unsopported file
@@ -410,17 +417,17 @@ class Bundle(VisualizationBaseObject):
 
 
     def loadAndApplyMatrix(self, matrixFile):
-        extension = matrixFile.split('.')[-1]
+        extension = Path(matrixFile).suffix
 
         # numpy matrix file
-        if extension == 'npy':
+        if extension == '.npy':
             transform = Bundle.loadNumpyMatrix(matrixFile)
 
         # brain visa (trm) matrix file
-        elif extension == 'trm':
+        elif extension == '.trm':
             transform = Bundle.loadTrmMatrix(matrixFile)
 
-        elif extension == 'txt':
+        elif extension == '.txt':
             transform = Bundle.loadTxtMatrix(matrixFile)
 
         # Unsopported file

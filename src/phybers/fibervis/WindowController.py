@@ -44,6 +44,11 @@ class WindowController(QtWidgets.QMainWindow):
 		self.ui.actionOpenMRI.triggered.connect(self.openMRIFile)
 		self.ui.actionAddROISphere.triggered.connect(self.createROI)
 
+		#Toggle Bounding Boxes
+		self.ui.actionBoundingBoxes.changed.connect(
+			lambda: self.contextHandler.set_draw_bbox(self.ui.actionBoundingBoxes.isChecked()))
+		self.ui.actionBoundingBoxes.setChecked(True)
+
 		# testing action
 		self.ui.actionTest.triggered.connect(self.contextHandler.testingModule)
 
@@ -75,7 +80,6 @@ class WindowController(QtWidgets.QMainWindow):
 		self.visObj.roisReference = self.contextHandler.rois
 
 		self.setAcceptDrops(True)
-
 		# Hide testing tab
 		self.menuTesting.menuAction().setVisible(False)
 

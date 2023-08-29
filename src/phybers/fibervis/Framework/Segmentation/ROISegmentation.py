@@ -13,153 +13,160 @@ from ..Tools.DataStructures import OctreePointBased
 
 
 class ROISegmentation(SegmentationHandler):
-	# @averageTimeit
-	def __init__(self, bundle, shaderDict):
-		super().__init__(bundle, shaderDict)
+    # @averageTimeit
+    def __init__(self, bundle, shaderDict):
+        super().__init__(bundle, shaderDict)
 
-		self.segmentationIdentifier = SegmentationTypes.ROIs
+        self.segmentationIdentifier = SegmentationTypes.ROIs
 
-		self.tree = None
-		self.roiValidator = []
-		self.rois = []
-		# self.fiberSizes = bundle.fiberSizes
+        self.tree = None
+        self.roiValidator = []
+        self.rois = []
+        # self.fiberSizes = bundle.fiberSizes
 
-		for sibling in self.parent.children:
-			if isinstance(sibling, ROISegmentation):
-				self.tree = sibling.tree
+        for sibling in self.parent.children:
+            if isinstance(sibling, ROISegmentation):
+                self.tree = sibling.tree
 
-		if self.tree == None:
-			self.tree = OctreePointBased(self.points, self.fiberSizes)
+        if self.tree == None:
+            self.tree = OctreePointBased(self.points, self.fiberSizes)
 
-		self.fileName = 'ROI Segmentation' # temporal
+        self.fileName = 'ROI Segmentation' # temporal
 
-		self.alpha = 0.8
-		self.validLogic = False
+        self.alpha = 0.8
+        self.validLogic = False
+        self.last_valid_logic = ''
 
-		self.configFiberValidator()
+        self.configFiberValidator()
 
-		self._loadBuffers()
-		self.buildVertex2Fiber()
-		self.vboAndLinkVertex2Fiber()
+        self._loadBuffers()
+        self.buildVertex2Fiber()
+        self.vboAndLinkVertex2Fiber()
 
-		self.boundingbox = BoundingBox(shaderDict, self, bundle.boundingbox.dims, bundle.boundingbox.center)
-
-
-	# @timeit
-	def segmentMethod(self):
-		rois2beQuery = None
-		roisResults = None
-
-		if self.validLogic:
-			rois2beQuery = [self.rois[i] for i in self.logicRois]
-		else:
-			rois2beQuery = [self.rois[i] for i in [i for i, e in enumerate(self.roiValidator) if e]]
+        self.boundingbox = BoundingBox(shaderDict, self, bundle.boundingbox.dims, bundle.boundingbox.center)
 
 
-		n = len(rois2beQuery)
+    # @timeit
+    def segmentMethod(self):
+        rois2beQuery = None
+        roisResults = None
 
-		if n == 0:
-			self.fiberValidator[:self.curvescount] = 1
-
-		else:
-			roisResults = np.zeros((n, self.curvescount), dtype=np.int8)
-
-			dt = np.dtype([	('center', np.float32, 3),
-							('radius', np.float32, 3),
-							('roiType', np.int32, (1,))])
-
-			dataPacked = np.empty(len(rois2beQuery), dtype=dt)
-
-			for i in range(len(rois2beQuery)):
-				dataPacked[i]['center'] = rois2beQuery[i].getCenter(self.inverseModel)
-				dataPacked[i]['radius'] = rois2beQuery[i].getRadius(self.inverseModel)
-				dataPacked[i]['roiType'] = rois2beQuery[i].getROIValue()
+        if self.validLogic:
+            rois2beQuery = [self.rois[i] for i in self.logicRois]
+        else:
+            rois2beQuery = [self.rois[i] for i in [i for i, e in enumerate(self.roiValidator) if e]]
 
 
-			self.tree.queryCollision(dataPacked, roisResults)
+        n = len(rois2beQuery)
+
+        if n == 0:
+            self.fiberValidator[:self.curvescount] = 1
+
+        else:
+            roisResults = np.zeros((n, self.curvescount), dtype=np.int8)
+
+            dt = np.dtype([	('center', np.float32, 3),
+                            ('radius', np.float32, 3),
+                            ('roiType', np.int32, (1,))])
+
+            dataPacked = np.empty(len(rois2beQuery), dtype=dt)
+
+            for i in range(len(rois2beQuery)):
+                dataPacked[i]['center'] = rois2beQuery[i].getCenter(self.inverseModel)
+                dataPacked[i]['radius'] = rois2beQuery[i].getRadius(self.inverseModel)
+                dataPacked[i]['roiType'] = rois2beQuery[i].getROIValue()
 
 
-			if self.validLogic:
-				infix = [roisResults[self.logicRois.index(i)] if isinstance(i, int) else i for i in self.logicInfix]
-				self.fiberValidator[:self.curvescount] = shuntingYard(infix)
-
-			else:
-				self.fiberValidator[:self.curvescount] = roisResults.sum(axis=0, dtype=np.int8) #could overflow with 256 rois or more
+            self.tree.queryCollision(dataPacked, roisResults)
 
 
-	def addROI(self, roi):
-		'''
-		'''
+            if self.validLogic:
+                infix = [roisResults[self.logicRois.index(i)] if isinstance(i, int) else i for i in self.logicInfix]
+                self.fiberValidator[:self.curvescount] = shuntingYard(infix)
 
-		if isinstance(roi, ROI) and not roi in self.rois:
-			self.children.append(roi)
-			self.rois.append(roi)
-			self.roiValidator.append(True)
+            else:
+                self.fiberValidator[:self.curvescount] = roisResults.sum(axis=0, dtype=np.int8) #could overflow with 256 rois or more
 
 
-	def removeROIFromIndex(self, index):
-		roi = self.rois.pop(index)
-		self.roiValidator.pop(index)
-		self.children.remove(roi)
+    def addROI(self, roi):
+        '''
+        '''
+
+        if isinstance(roi, ROI) and not roi in self.rois:
+            self.children.append(roi)
+            self.rois.append(roi)
+            self.roiValidator.append(True)
 
 
-	def setValidatorAtIndex(self, index, validate):
-		self.roiValidator[index] = validate
+    def removeROIFromIndex(self, index):
+        roi = self.rois.pop(index)
+        self.roiValidator.pop(index)
+        self.children.remove(roi)
 
 
-	def updateLogic(self, logicStr):
-		self.validLogic = False
-
-		if logicStr == '':
-			raise ValueError('ROISegmentation: Empty logic string.')
-
-		parsed = self.parseLogicString(logicStr)
-
-		if not parsed:
-			raise ValueError('ROISegmentation: Not a valid string for logic operations.')
-
-		self.logicInfix = parsed
-
-		self.logicRois = list(set([i for i in parsed if isinstance(i, int)]))
-
-		if max(self.logicRois) >= len(self.rois):
-			raise ValueError('ROISegmentation: Not a valid ID for ROI selection. ID: {}.'.format(max(self.logicRois)))
-
-		self.validLogic = True
+    def setValidatorAtIndex(self, index, validate):
+        self.roiValidator[index] = validate
 
 
-	def parseLogicString(self, logicStr):
-		''' Could get a list of valid ids '''
-		numberStack = ''
-		infix = []
+    def updateLogic(self, logicStr, reset_field=None):
+        try:
+            if logicStr == '':
+                raise ValueError('ROISegmentation: Empty logic string.')
+            if not self.rois:
+                raise ValueError('Add at least one ROI.')
+            parsed = self.parseLogicString(logicStr)
+            if not parsed:
+                raise ValueError('ROISegmentation: Not a valid string'
+                                'for logic operations.\n'
+                                'Valid operators are "| & ^ ( ) !".')
+            self.logicInfix = parsed
+            self.logicRois = list(set([i for i in parsed if isinstance(i, int)]))
+            if max(self.logicRois) >= len(self.rois):
+                raise ValueError(
+                    'ROISegmentation: Not a valid ID for ROI selection. '
+                    f'ID: {max(self.logicRois)}.\n'
+                    f'Valid ID are in the interval [0, {len(self.rois) - 1}].')
+            else:
+                self.last_valid_logic = logicStr
+                self.validLogic = True
+        except ValueError:
+            if callable(reset_field):
+                reset_field(self.last_valid_logic)
+            raise
 
-		for i in logicStr:
-			if i.isdigit():
-				numberStack += i
 
-			elif i == '|' or i == '&' or i == '^' or i == '(' or i == ')' or i == '!':
+    def parseLogicString(self, logicStr):
+        ''' Could get a list of valid ids '''
+        numberStack = ''
+        infix = []
 
-				if numberStack != '':
-					infix.append(int(numberStack))
-					if infix[-1] >= len(self.rois):
-						return False
-					numberStack = ''
+        for i in logicStr:
+            if i.isdigit():
+                numberStack += i
 
-				infix.append(i)
+            elif i == '|' or i == '&' or i == '^' or i == '(' or i == ')' or i == '!':
 
-			elif i == '+':
-				if numberStack != '':
-					infix.append(int(numberStack))
-					if infix[-1] >= len(self.rois):
-						return False
-					numberStack = ''
+                if numberStack != '':
+                    infix.append(int(numberStack))
+                    if infix[-1] >= len(self.rois):
+                        return False
+                    numberStack = ''
 
-				infix.append('|')
+                infix.append(i)
 
-			else:
-				return False
+            elif i == '+':
+                if numberStack != '':
+                    infix.append(int(numberStack))
+                    if infix[-1] >= len(self.rois):
+                        return False
+                    numberStack = ''
 
-		if numberStack != '':
-			infix.append(int(numberStack))
+                infix.append('|')
 
-		return infix
+            else:
+                return False
+
+        if numberStack != '':
+            infix.append(int(numberStack))
+
+        return infix
