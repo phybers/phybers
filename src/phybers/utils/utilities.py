@@ -1,10 +1,5 @@
-"""The utils subpackage is a compendium of tools used for both the
-pre-processing of a tractography as well as for evaluating the
-performance of the clustering and the segmentation. It includes 4 modules:
-    1) deform
-    2) sampling
-    3) intersection
-    4) postprocessing
+# -*- coding: utf-8 -*-
+"""Utils Module
 """
 import os
 import re
@@ -49,14 +44,39 @@ def check_output_path(out_file: str, ext="", dir=False, overwrite=True):
 
 
 
-def deform(deform_file: str, file_in: str, file_out: str):
-    """! Transforms a tractography file to another space using a non-linear deformation file. The inputs for the deform function are:
+def deform(deform_file: str, file_in: str, file_out: str) -> None:
+    """
+    Transforms a tractography file to another space using a non-linear deformation image file.
+    
+    Parameters
+    ----------
+    deform_file : str
+        Deformation image (image in NIfTI format containing the deformations).
+    file_in : str
+        Input tractography dataset in bundles format.
+    file_out : str
+        Path to the transformed tractography dataset.
 
-        <ol>
-            <li>**deform_file**: Deformation image. Has to be a .nii file.</li>
-            <li>**indir**: Fiber input file.</li>
-            <li>**outdir**: Result directory path.</li>
-        </ol>
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    This function generates the following files in the specified directory:
+
+    Tractography : bundles file
+        Tractography dataset that has been transformed into the MNI space.
+
+    Examples
+    --------
+    To test `deform()`,  download the data from the `link deform <https://www.dropbox.com/sh/ncu8sf1ifwz4wpv/AACDzOXEdSrf8kBaWrbjfEPla?dl=1>`_. 
+    Then, open a Python terminal and run the following commands.
+
+    >>> from phybers.utils import deform
+    >>> deform( deform_file = 'defnolineal.nii', file_in = 'fibers.bundles', file_out = 'fibers_MNI.bundles' )
+
+    Note: Make sure to replace the file paths with the actual paths to your data and directories. 
     """
     check_input_path(deform_file, ext='nii')
     check_input_path(file_in)
@@ -64,30 +84,84 @@ def deform(deform_file: str, file_in: str, file_out: str):
     _deform(deform_file, file_in, file_out)
 
 
-def sampling(dir_in: str, file_out: str, npoints: int = 21) -> None:
-    """! Fiber sampling at n equidistant points. The inputs for the sampling function are:
-        <ol>
-            <li>**dir_in**: Fiber input file</li>
-            <li>**npoints**: Number of points</li>
-            <li>**file_out**: Result directory path.</li>
-        </ol>
+def sampling(file_in: str, file_out: str, npoints: int = 21) -> None:
     """
-    check_input_path(dir_in, ext="bundles")
+    Performs a fiber sampling by recalculating their points using a specified number of equidistant points.
+    
+    Parameters
+    ----------
+    file_in : str
+        Tractography dataset file in *'.bundles'* format.
+    file_out : str
+        Path to save the sub-sampled fibers.
+    atlas_dir : str
+        Bundle atlas, with bundles in separated files, sampled at 21 equidistant points. The bundle atlases provided are in same folders.
+    npoints : str
+        number of sampling points (n). Default: *21*.
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    This function generates the following files in the specified directory:
+
+    Tractography : bundles file
+        Tractography dataset sampled at n equidistant points.
+
+    Examples
+    --------
+    To test `sampling()`,  download the data from the `link sampling <https://www.dropbox.com/sh/9tfxseo8uh68b32/AAAn56Xgiw7KhL2ILmkN6A23a?dl=1>`_. 
+    Then, open a Python terminal and run the following commands.
+    
+    >>> from phybers.utils import sampling
+    >>> sampling ( file_in = 'sub_01.bundles', file_out = 'sub_01_21points.bundles', npoints = 21 )
+
+    Note: Make sure to replace the file paths with the actual paths to your data and directories.    
+    """
+    check_input_path(file_in, ext="bundles")
     check_output_path(file_out, ext="bundles")
-    _sampling(dir_in, file_out, npoints)
+    _sampling(file_in, file_out, npoints)
 
 
 def inter2bundles(file1_in: str, file2_in: str, dir_out: str,
                   distance_thr: float = 10.0) -> Tuple[float, float]:
-    """! computes the intersection percentage between two fiber bundles.
-    The inputs for the intersection function are:
-        <ol>
-            <li>**file1_in**: First fiber bundle file ".bundles".</li>
-            <li>**file2_in**: Second fiber bundle file ".bundles".</li>
-            <li>**dir_out**: Result directory path.</li>
-            <li>**distance_thr**: TH_Dmax[mm]</li>
-        </ol>
     """
+    Calculates a similarity measure between two sets of brain fibers (fiber clusters or segmented bundles). 
+    The similarity measure yields a value between *0* and *100%*. 
+
+    Parameters
+    ----------
+    file1_in : str
+        Path of the first fiber bundle.
+    file2_in : str
+        Path of the second fiber bundle.
+    dir_out : str
+        Path to save the distance matrix
+    distance_thr : float
+        Distance threshold in millimeters used to consider similar two fibers, default: *10*.
+
+    Returns
+    -------
+    Tuple : [float, float] 
+        `[float, float]`, The first value indicates the percentage of intersection of the first set of fibers compared to the second set of fibers,
+        and the second value indicates the reverse scenario, intersection of the second set of fibers compared to the first set of fibers.
+
+    Examples
+    --------
+    To test `intersection()`, download the data from the `link intersection <https://www.dropbox.com/sh/dt196k65v03eh9m/AABKRW7ad2ssB0N_dpjqK4Dha?dl=1>`_.
+    The provided data is identical, therefore a *100%* intersection is expected.
+    Then, open a Python terminal and run the following commands.
+
+    >>> from phybers.utils import intersection
+    >>> result_inter=intersection ( file1_in = 'fib1.bundles', file2_in = 'fib2.bundles', dir_out = 'inter_result', distance_thr = 10.0 )
+    >>> print(' intersection fibers1 with fibers2 ', result_inter [0] )
+    >>> print(' intersection fibers2 with fibers1 ', result_inter [1] )
+    
+    Note: Make sure to replace the file paths with the actual paths to your data and directories.
+    """
+
 
     labelsb1 = os.path.split(file1_in)[1]  # m - rows
     labelsb2 = os.path.split(file2_in)[1]  # num - columns
@@ -127,20 +201,31 @@ def inter2bundles(file1_in: str, file2_in: str, dir_out: str,
 
 
 def postprocessing(dir_in: str) -> pd.DataFrame:
-    ##THIS IS THE DOC WAAAA
-    #
-    """! Contains a set of algorithms that are applied on the results of clustering and segmentation algorithms.
-        1) Fibers Lens (se calcula para el centroide del clúster)
-        2) Fibers Size ( cantidad de fibras por clúster)
-        3) Distancia intra-clúster mínima,  Distancia intra promedio y  Distancia intra máxima
-        4) Rij
-        5) DBindex
-
-        <ol>
-            <li>**dir_in**: Flies directory path.</li>
-        </ol>
     """
+    Sets of algorithms that can be applied on the results of clustering and segmentation algorithms.
+    
+    Parameters
+    ----------
+    dir_in : str
+        Root directory where all segmentation or clustering algorithm results are stored.
+        
+    Returns
+    -------
+    pd.DataFrame
+        `pd.DataFrame`, contains the following list of keys: 'id_bundle': bundle identifier, 'sizes': number of fibers in the bundle,
+        'lens': centroid length per bundle, 'intra_min': manimum intra-bundle Euclidean distance and intra_mean': mean intra-bundle Euclidean distance.
 
+    Examples
+    --------
+    To test postprocessing(), download the data from the provided link, or execute it on the results of a clustering or segmentation algorithm.
+    Then, open a Python terminal and run the following commands.
+
+
+    >>> from phybers.utils import postprocessing
+    >>> df = postprocessing ( dir_in = str )
+    
+    Note: Make sure to replace the file paths with the actual paths to your data and directories.    
+    """
     in_centroides=os.path.join(dir_in,'FinalCentroids','centroids.bundles')
     in_clusters_directory=os.path.join(dir_in,'FinalBundles')
 
@@ -188,7 +273,39 @@ def postprocessing(dir_in: str) -> pd.DataFrame:
 _p1 = re.compile(r'^.*\.bundles$')
 
 
-def read_bundle(fp: str, npoints: int = 0):
+def read_bundle(fp: str, npoints: int = 0) -> None:
+    """
+    Read bundles file.
+    
+    Parameters
+    ----------
+    file_in : str
+        Tractography dataset file in *'.bundles'* format.
+    npoints : str
+        Path to save the sub-sampled fibers.
+
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    This function generates the following files in the specified directory:
+
+    Tractography : bundles
+        Tractography dataset sampled at n equidistant points.
+
+    Examples
+    --------
+    To test `read_bundle()`,  download the data from the `link provided <https://www.dropbox.com/sh/9tfxseo8uh68b32/AAAn56Xgiw7KhL2ILmkN6A23a?dl=1>`_. 
+    Then, open a Python terminal and run the following commands.
+    
+    >>> from phybers.utils import sampling
+    >>> sampling ( file_in = 'sub_01.bundles', file_out = 'sub_01_21points.bundles', npoints = 21 )
+
+    Note: Make sure to replace the file paths with the actual paths to your data and directories.    
+    """
     if _p1.match(fp):
         fp += 'data'
     with open(fp, 'rb') as f:
@@ -221,8 +338,38 @@ _MINF_TEMPLATE = """attributes = {{
 """
 
 
-def write_bundle(file_out: str, points, buffer_size=1_048_576):
-    """Write bundles file."""
+def write_bundle(file_out: str, points, buffer_size=1_048_576)  -> None:
+    """
+    Write bundles file.
+    
+    Parameters
+    ----------
+    file_out : str
+        Tractography dataset file in *'.bundles'* format.
+    points : list
+        Tractography dataset sampled at n equidistant points.    
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    This function generates the following files in the specified directory:
+
+    Tractography : bundles
+        Tractography dataset sampled at n equidistant points.
+
+    Examples
+    --------
+    To test `write_bundle()`,  download the data from the `link provided <https://www.dropbox.com/sh/9tfxseo8uh68b32/AAAn56Xgiw7KhL2ILmkN6A23a?dl=1>`_. 
+    Then, open a Python terminal and run the following commands.
+    
+    >>> from phybers.utils import sampling
+    >>> sampling(dir_in='sub_01.bundles', file_out='sub_01_21points.bundles', npoints=21)
+
+    Note: Make sure to replace the file paths with the actual paths to your data and directories.    
+    """
     if not _p1.match(file_out):
         file_out += '.bundles'
     if isinstance(points, np.ndarray) and points.ndim == 3:
