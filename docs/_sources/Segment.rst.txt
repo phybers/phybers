@@ -1,0 +1,32 @@
+Segment
+=======
+This module includes a white matter fiber bundle segmentation algorithm :cite:`PGuevara-2012, LabraN2017, Andrea-Vazquez-2019` based on a multi-subject atlas.  
+The method uses as a measure of similarity between pairs of fibers the maximum Euclidean distance between corresponding points ($d_{ME}$), defined as:
+
+.. math::
+    \begin{equation}
+    \label{eq:ecua1}
+    d_{ME}(A,B) = \min(\max_{i}(|a_{i}-b_{i}|),\max_{i}(|a_{i}-b_{N_{p}-i}|)) \quad \qquad [1]
+    \end{equation}
+
+where :math:`a_{i}` and :math:`b_{i}` are the 3D coordinates of the points of fibers A and B respectively, in direct order,
+and :math:`b_{N_{p}-i}` are the 3D coordinates of the points of fibers B in flipped order. :math:`N_{p}` is the number of fiber points.
+
+It aims to classify the subject fibers according to a multi-subject bundle atlas. The bundle atlas consists of a set of representative bundles and an information file.
+The fibers of the atlas bundles are called centroids. The fibers of each subject are classified using a maximum :math:`d_{ME}` distance threshold for each bundle between the subject’s fibers and the atlas centroids.
+The fibers are labeled with the closest atlas bundle, given that the distance is smaller than the distance threshold.
+
+We provide one atlas of deep white matter (DWM) bundles :cite:t:`PGuevara-2012` and two atlases of superficial white matter (SWM) bundles, :cite:t:`Claudio-Roman-2017` and :cite:t:`Claudio-Roman-2022`. 
+The following links provide access to these three atlases:
+
+
+1. `Download Guevara atlas <https://www.dropbox.com/sh/h6aduv0z6qurc61/AACDDAgN0TVK3A0U1s4sgj4Ma?dl=1>`_
+2. `Download CRoman-2017 atlas <https://www.dropbox.com/sh/54x3l58o3lgt6u5/AACbGKF_XLZHGbwoX9WkWaq2a?dl=1>`_
+3. `Download CRoman-2022 atlas <https://www.dropbox.com/sh/hodvxo498l4v5io/AACYzfOitv2MQhoIGdmEuABRa?dl=1>`_
+
+
+In addition to these atlases, we have tested our algorithm with the atlas :cite:`Atlas-Fan-Zhang-2018`, which contains both  DWM and SWM bundle.
+If you need this atlas in data *'.bundle'* format, feel free to contact us via email.
+
+.. automodule:: phybers.segment.segment
+    :members: fiberseg

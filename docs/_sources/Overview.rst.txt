@@ -1,0 +1,9 @@
+Overview
+========
+
+Phybers is a Python library that provides several tools for cerebral tractography analysis. With the aim of improving its usability, the library has been separated into 4 primary modules:
+
+1. :doc:`Segmentation <Segment>`
+2. :doc:`Clustering <Clustering>`
+3. :doc:`Utils <Utils>`
+4. :doc:`Visualization <Utils>`
