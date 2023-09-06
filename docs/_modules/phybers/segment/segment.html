@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>phybers.segment.segment &mdash; Phybers 0.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Phybers
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Segment.html">Segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Clustering.html">Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../References.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Phybers</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">phybers.segment.segment</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for phybers.segment.segment</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Segmentation Module</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">.fiberseg.c_wrappers</span> <span class="kn">import</span> <span class="n">segment</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">sampling</span><span class="p">,</span> <span class="n">read_bundle</span><span class="p">,</span> <span class="n">write_bundle</span>
+
+
+<div class="viewcode-block" id="fiberseg"><a class="viewcode-back" href="../../../Segment.html#phybers.segment.segment.fiberseg">[docs]</a><span class="k">def</span> <span class="nf">fiberseg</span><span class="p">(</span><span class="n">file_in</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">id_subj</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">atlas_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">atlas_info</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dir_out</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    White matter fiber bundle segmentation algorithm based on a multi-subject atlas.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file_in : str</span>
+<span class="sd">        Tractography data file in *&#39;.bundles&#39;* format, contains the fibers of the whole brain of a subject.</span>
+<span class="sd">    id_subj : str</span>
+<span class="sd">        Subject identification number, used to label the results.</span>
+<span class="sd">    atlas_dir : str</span>
+<span class="sd">        Bundle atlas, with bundles in separated files, sampled at 21 equidistant points. The bundle atlases provided are in same folders.</span>
+<span class="sd">    atlas_info : str</span>
+<span class="sd">        Text file that stores information needed to apply the segmentation algorithm such as the name of the atlas fascicle and the segmentation threshold. </span>
+<span class="sd">        Note that the segmentation threshold can be adjusted depending on the database to be used.</span>
+<span class="sd">    dir_out : str</span>
+<span class="sd">        Directory name to store all the results generated by the algorithm.</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function generates the following files in the specified directory:    </span>
+<span class="sd">    </span>
+<span class="sd">    Segmented fibers : bundles file</span>
+<span class="sd">        Atlas fascicles extracted in the subject, which are labeled and saved in *&#39;.bundles&#39;* format.</span>
+<span class="sd">    Centroids : bundles file</span>
+<span class="sd">        Centroid of each segmented fascicle in *&#39;.bundles&#39;* format.</span>
+<span class="sd">    Index of fibers per fasciculus : text file</span>
+<span class="sd">        Text file containing the indexes of the fibers that were segmented by each fascicle of the atlas.</span>
+<span class="sd">        </span>
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    To use the `fiberseg()` function, you need to download the tractography data from the link provided [datafiberseg]. Then, you can run the following code in a Python terminal:</span>
+
+<span class="sd">    &gt;&gt;&gt; from phybers.segment import fiberseg</span>
+<span class="sd">    &gt;&gt;&gt; file_in = &#39;path_to_tractography_data.bundles&#39;</span>
+<span class="sd">    &gt;&gt;&gt; id_subj = &#39;01&#39;</span>
+<span class="sd">    &gt;&gt;&gt; atlas_dir = &#39;path_to_atlas/bundles&#39;</span>
+<span class="sd">    &gt;&gt;&gt; atlas_info = &#39;path_to_atlas/atlas_info.txt&#39;</span>
+<span class="sd">    &gt;&gt;&gt; dir_out = &#39;path_to_output_directory&#39;</span>
+<span class="sd">    &gt;&gt;&gt; fiberseg(file_in, id_subj, atlas_dir, atlas_info, dir_out)</span>
+
+<span class="sd">    Note: Make sure to replace &#39;path_to_tractography_data&#39;, &#39;path_to_atlas&#39;, and &#39;path_to_output_directory&#39; with the actual paths to your data and directories. </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="n">id_seg_result</span><span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_out</span><span class="p">,</span><span class="s1">&#39;idx_bundles&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">id_seg_result</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">has21points</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">read_bundle</span><span class="p">(</span><span class="n">file_in</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">has21points</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">break</span>
+
+    <span class="n">final_bundles21p_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_out</span><span class="p">,</span> <span class="s1">&#39;FinalBundles21p&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">final_bundles21p_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">has21points</span><span class="p">:</span>
+
+        <span class="n">final_bundles_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_out</span><span class="p">,</span> <span class="s1">&#39;FinalBundles&#39;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">final_bundles_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">outfile_dir</span><span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_out</span><span class="p">,</span> <span class="s1">&#39;outfile&#39;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">outfile_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">fibers21p</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outfile_dir</span><span class="p">,</span><span class="s1">&#39;fiberorig_21p.bundles&#39;</span><span class="p">)</span>
+
+        <span class="n">sampling</span><span class="p">(</span><span class="n">file_in</span><span class="p">,</span> <span class="n">fibers21p</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
+
+        <span class="n">segment</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="n">fibers21p</span><span class="p">,</span> <span class="n">id_subj</span><span class="p">,</span> <span class="n">atlas_dir</span><span class="p">,</span> <span class="n">atlas_info</span><span class="p">,</span>
+                <span class="n">final_bundles21p_dir</span><span class="p">,</span> <span class="n">id_seg_result</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">id_seg_result</span><span class="p">):</span>
+            <span class="n">index</span><span class="o">=</span><span class="p">[]</span>
+            <span class="k">with</span> <span class="nb">open</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">id_seg_result</span><span class="p">,</span><span class="n">i</span><span class="p">))</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+                    <span class="n">index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())))</span>
+            <span class="n">bun</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)[</span><span class="n">index</span><span class="p">]</span>
+            <span class="n">write_bundle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">final_bundles_dir</span><span class="p">,</span><span class="n">id_subj</span><span class="o">+</span><span class="s1">&#39;_to_&#39;</span><span class="o">+</span><span class="n">i</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.bundles&#39;</span><span class="p">),</span> <span class="n">bun</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">segment</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="n">file_in</span><span class="p">,</span> <span class="n">id_subj</span><span class="p">,</span> <span class="n">atlas_dir</span><span class="p">,</span> <span class="n">atlas_info</span><span class="p">,</span>
+                <span class="n">final_bundles21p_dir</span><span class="p">,</span> <span class="n">id_seg_result</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, L.Liset González Rodríguez.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

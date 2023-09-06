@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>phybers.clustering.ffclust.mainFFClust &mdash; Phybers 0.1 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            Phybers
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Segment.html">Segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Clustering.html">Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../References.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Phybers</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">phybers.clustering.ffclust.mainFFClust</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for phybers.clustering.ffclust.mainFFClust</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -- coding: utf-8 --</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">FFclust Sub-Module</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">joblib</span>
+<span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">read_bundle</span><span class="p">,</span> <span class="n">sampling</span>
+<span class="kn">from</span> <span class="nn">.clustering</span> <span class="kn">import</span> <span class="n">split_fibers</span><span class="p">,</span> <span class="n">parallel_points_clustering</span><span class="p">,</span> <span class="n">MapClustering</span><span class="p">,</span>\
+    <span class="n">small_clusters_reassignment</span><span class="p">,</span> <span class="n">get_groups</span><span class="p">,</span> <span class="n">parallel_group_join_clique</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">clusters_fibers21p</span><span class="p">,</span> <span class="n">save_clusters</span><span class="p">,</span> <span class="n">save_clusters_centroids</span>
+
+<div class="viewcode-block" id="ffclust"><a class="viewcode-back" href="../../../../Clustering.html#phybers.clustering.ffclust.mainFFClust.ffclust">[docs]</a><span class="k">def</span> <span class="nf">ffclust</span><span class="p">(</span><span class="n">file_in</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dir_out</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">assign_thr</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">join_thr</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Intra-subject clustering algorithm aims to identify compact and homogeneous fiber clusters on a large tractography dataset. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file_in : str</span>
+<span class="sd">        Tractography data file in *&#39;.bundles&#39;* format.</span>
+<span class="sd">    dir_out : str</span>
+<span class="sd">        Directory to store all the results generated by the algorithm.</span>
+<span class="sd">    assign_thr : str</span>
+<span class="sd">        Maximum distance threshold for the cluster reassignment in *mm*, default: *6*.</span>
+<span class="sd">    join_thr : str</span>
+<span class="sd">        Maximum distance threshold for the cluster merge in *mm*, default: *6*.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function generates the following files in the specified directory:</span>
+
+<span class="sd">    Clusters : *&#39;.bundles&#39;* format</span>
+<span class="sd">        Directory that stores all the fiber clusters found in different &#39;.bundles&#39; files. </span>
+<span class="sd">        The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters found.</span>
+<span class="sd">    Centroids : *&#39;.bundles&#39;* format</span>
+<span class="sd">        Directory that contains the centroid for each created cluster in same *&#39;.bundles&#39;* files. </span>
+<span class="sd">        The firt fiber of bundle centroid is corresponding with centroid calculated for cluster one an so on.</span>
+<span class="sd">    Index of fibers per clusters : text file</span>
+<span class="sd">        Text file that stores the fiber index input for each of the detected clusters. The fiber indexes are extracted from the tractography input.</span>
+<span class="sd">        The first line corresponds to cluster zero and so on.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    To test `ffclust()`,  download the data from the link provided [link to be provided][dataffclust]. Then, open a Python terminal and run the following commands.</span>
+
+<span class="sd">    &gt;&gt;&gt; from phybers.clustering import ffclust</span>
+<span class="sd">    &gt;&gt;&gt; ffclust.cluster (file_in =&#39;fibers_test.bundles&#39;, dir_out = &#39;ffclust_result&#39;, assign_thr = 6, join_thr = 6)</span>
+
+<span class="sd">    You will locate the clustering results in the &#39;ffclust_result&#39; directory.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">assign_thr</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">assign_thr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">assign_thr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">join_thr</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">join_thr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">join_thr</span><span class="p">)</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">20</span><span class="p">])</span>
+    <span class="n">ks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">200</span><span class="p">,</span><span class="mi">300</span><span class="p">,</span><span class="mi">300</span><span class="p">,</span><span class="mi">300</span><span class="p">,</span><span class="mi">200</span><span class="p">])</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dir_out</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">final_bundles21p_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_out</span><span class="p">,</span> <span class="s1">&#39;FinalBundles21p&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">final_bundles21p_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">final_centroids_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_out</span><span class="p">,</span><span class="s1">&#39;FinalCentroids&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">final_centroids_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">object_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_out</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">object_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">read_bundle</span><span class="p">(</span><span class="n">file_in</span><span class="p">)</span>
+
+    <span class="n">npf</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">npf</span><span class="o">=</span><span class="mi">21</span>
+            <span class="k">break</span>
+
+
+    <span class="k">if</span> <span class="n">npf</span> <span class="o">==</span> <span class="mi">21</span><span class="p">:</span>
+        <span class="n">fibers21p</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">object_dir</span><span class="p">,</span><span class="s1">&#39;fiberorig_21p.bundles&#39;</span><span class="p">)</span>
+        <span class="n">sampling</span><span class="p">(</span><span class="n">file_in</span><span class="p">,</span> <span class="n">fibers21p</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
+        <span class="n">fibers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">read_bundle</span><span class="p">(</span><span class="n">fibers21p</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fibers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># New logging file each time, changing filemode to a should append instead.</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">dir_out</span><span class="o">+</span><span class="s1">&#39;/info.log&#39;</span><span class="p">,</span> <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">split_fibers</span><span class="p">(</span><span class="n">fibers</span><span class="p">[:,</span><span class="n">points</span><span class="p">,:],</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">labels</span><span class="p">,</span> <span class="n">clusterers</span> <span class="o">=</span> <span class="n">parallel_points_clustering</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">ks</span><span class="o">=</span><span class="n">ks</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Tiempo Kmeans: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t1</span><span class="p">))</span>
+
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">MapClustering</span><span class="p">()</span>
+    <span class="n">map_clusters</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">fibers</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Tiempo Map: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t1</span><span class="p">))</span>
+
+    <span class="n">map_output_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">object_dir</span><span class="p">,</span> <span class="s1">&#39;clusters_map.txt&#39;</span><span class="p">)</span>
+    <span class="n">save_clusters</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">fibers</span><span class="p">,</span> <span class="n">clusters</span><span class="o">=</span><span class="n">map_clusters</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">map_output_filename</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dir_out</span><span class="o">+</span><span class="s1">&#39;/stats.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Number of clusters in map_clusters: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">map_clusters</span><span class="p">)))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Number of fibers in map_clusters: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">map_clusters</span><span class="o">.</span><span class="n">clusters_sizes</span><span class="p">())))</span>
+
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span><span class="n">k</span><span class="p">,</span> <span class="n">clusterer</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">clusterers</span><span class="p">):</span>
+        <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">clusterer</span><span class="p">,</span> <span class="n">object_dir</span> <span class="o">+</span> <span class="s1">&#39;/clusterer-Point</span><span class="si">{}</span><span class="s1">-k</span><span class="si">{}</span><span class="s1">.pkl&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">k</span><span class="p">))</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write .bundles .bundlesdata of small (&lt; 1 fiber) and long centroids (&gt; 1 fiber) of clusters</span>
+<span class="sd">    and reassign small clasters to large clusters. Input:</span>
+<span class="sd">    ouput: path of output file directory to write the clusters</span>
+<span class="sd">    min_size_filter = minimum size to get the largest clusters</span>
+<span class="sd">    max_size_filter = maximum size to get the clusters with only 1 fiber</span>
+<span class="sd">    input_dir = path of the input dir that contains the results of segmetation/reassignation</span>
+<span class="sd">    threshold = minimum distance for the segmentation&#39;s method</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Compenzando la reasignación.</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">actual_clusters</span> <span class="o">=</span> <span class="n">small_clusters_reassignment</span><span class="p">(</span><span class="n">clusters</span><span class="o">=</span><span class="n">map_clusters</span><span class="p">,</span>
+                                                  <span class="n">min_size_filter</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                                  <span class="n">max_size_filter</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                                                  <span class="n">input_dir</span> <span class="o">=</span> <span class="s1">&#39;segmentation/bundles/result/parallelFastCPU&#39;</span><span class="p">,</span>
+                                                  <span class="n">threshold</span> <span class="o">=</span> <span class="n">assign_thr</span><span class="p">,</span>
+                                                  <span class="n">refdata</span> <span class="o">=</span> <span class="n">fibers</span><span class="p">)</span>
+
+    <span class="n">ident_clusters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">actual_clusters</span><span class="p">):</span>
+        <span class="n">ident_clusters</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">indices</span><span class="p">)]</span> <span class="o">=</span> <span class="n">i</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Tiempo Segmentacion </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t1</span><span class="p">))</span>
+
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">point_index</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">ngroups</span> <span class="o">=</span> <span class="n">ks</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">ks</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">centroids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">centroid</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">actual_clusters</span><span class="p">])</span>
+    <span class="n">centroids_points</span> <span class="o">=</span> <span class="n">centroids</span><span class="p">[:,</span><span class="n">point_index</span><span class="p">]</span>
+    <span class="n">clusterer</span><span class="o">=</span><span class="n">clusterers</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">clusterer</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">centroids_points</span><span class="p">)</span>
+
+    <span class="n">groups</span> <span class="o">=</span> <span class="n">get_groups</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">ngroups</span><span class="o">=</span><span class="n">ngroups</span><span class="p">)</span>
+    <span class="n">joined_clusters</span> <span class="o">=</span> <span class="n">parallel_group_join_clique</span><span class="p">(</span><span class="n">actual_clusters</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">fibers</span><span class="p">,</span><span class="n">final_bundles21p_dir</span><span class="p">,</span><span class="n">final_centroids_dir</span><span class="p">,</span><span class="n">ident_clusters</span><span class="p">,</span><span class="n">object_dir</span><span class="p">,</span><span class="n">join_thr</span><span class="p">)</span>
+
+
+    <span class="n">final_clusters</span> <span class="o">=</span> <span class="n">joined_clusters</span>
+    <span class="n">final_centroids_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">object_dir</span><span class="p">,</span> <span class="s1">&#39;final_centroids.txt&#39;</span><span class="p">)</span>
+    <span class="n">save_clusters_centroids</span><span class="p">(</span><span class="n">clusters</span><span class="o">=</span><span class="n">final_clusters</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">final_centroids_filename</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">npf</span> <span class="o">==</span> <span class="mi">21</span><span class="p">:</span>
+        <span class="n">final_bundles_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_out</span><span class="p">,</span><span class="s1">&#39;FinalBundles&#39;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">final_bundles_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">clusters_fibers21p</span><span class="p">(</span><span class="n">final_clusters</span><span class="p">,</span> <span class="n">final_bundles_dir</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, L.Liset González Rodríguez.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
