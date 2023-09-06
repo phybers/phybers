@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clustering &mdash; Phybers 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utils" href="Utils.html" />
+    <link rel="prev" title="Segment" href="Segment.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Phybers
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Segment.html">Segment</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Clustering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hclust-description">HClust Description</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#phybers.clustering.hclust.mainHClust.hclust"><code class="docutils literal notranslate"><span class="pre">hclust()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ffclust-description">FFClust Description</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#phybers.clustering.ffclust.mainFFClust.ffclust"><code class="docutils literal notranslate"><span class="pre">ffclust()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="References.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Phybers</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Clustering</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Clustering.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="clustering">
+<h1>Clustering<a class="headerlink" href="#clustering" title="Permalink to this heading"></a></h1>
+<p>The module comprises two algorithms for clustering cerebral fibers, HClust (Clustering Hierarchical, <span id="id1">[<a class="reference internal" href="References.html#id6" title="Claudio Román, Miguel Guevara, Ronald Valenzuela, Miguel Figueroa, Josselin Houenou, Delphine Duclap, Cyril Poupon, Jean-François Mangin, and Pamela Guevara. Clustering of whole-brain white matter short association bundles using hardi data. Frontiers in Neuroinformatics, 11:73, 2017 2017. doi:10.3389/fninf.2017.00073.">4</a>, <a class="reference internal" href="References.html#id7" title="Claudio Román, Cecilia Hernández, Miguel Figueroa, Josselin Houenou, Cyril Poupon, Jean-François Mangin, and Pamela Guevara. Superficial white matter bundle atlas based on hierarchical fiber clustering over probabilistic tractography data. NeuroImage, 262:119550, 2022. doi:10.1016/j.neuroimage.2022.119550.">5</a>]</span>) y FFClust (Fast Fiber Clustering, <span id="id2">[<a class="reference internal" href="References.html#id9" title="A. Vázquez, N. López-López, A. Sánchez, J. Houenou, C. Poupon, J. F. Mangin, C. Hernández, and P. Guevara. Ffclust: fast fiber clustering for large tractography datasets for a detailed study of brain connectivity. Neuroimage, 220:117070, 2020. doi:10.1016/j.neuroimage.2020.117070.">7</a>]</span>)</p>
+<section id="hclust-description">
+<h2>HClust Description<a class="headerlink" href="#hclust-description" title="Permalink to this heading"></a></h2>
+<p>HClust is an average-link hierarchical agglomerative clustering algorithm which allows finding bundles based on a pairwise fiber distance measure.
+The algorithm calculates a distance matrix between all fiber pairs for a bundles dataset (<span class="math notranslate nohighlight">\(d_{ij}\)</span>), by using the maximum of the Euclidean distance between fiber pairs (Equation [1]).
+Then, it computes an affinity graph on the <span class="math notranslate nohighlight">\(d_{ij}\)</span> matrix for the fiber pairs that have Euclidean distance below a maximum distance threshold (<em>MaxDistance_Threshold</em>).
+The Affinity <span id="id3">[<a class="reference internal" href="References.html#id11" title="L. J. O' Donnell and C. Westin. Automatic tractography segmentation using a high-dimensional white matter atlas. IEEE Transactions on Medical Imaging, 26(11):1562-75, 2007. doi:10.1109/TMI.2007.906785.">8</a>]</span> is given by the following equation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+a_{ij} = e^{\frac{-d_{ij}}{\sigma^{2}}}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(d_{ij}\)</span> is the distance between the elements <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>, and <span class="math notranslate nohighlight">\(\sigma\)</span> is a parameter that defines the similarity scale in $mm$.</p>
+<p>From the affinity graph, the hierarchical tree is generated using an agglomerative average-link hierarchical clustering algorithm.
+The tree is adaptively partitioned using a distance threshold (<em>PartDistance_Threshold</em>).</p>
+<span class="target" id="module-phybers.clustering.hclust.mainHClust"></span><p>HClust Sub-Module.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="phybers.clustering.hclust.mainHClust.hclust">
+<span class="sig-prename descclassname"><span class="pre">phybers.clustering.hclust.mainHClust.</span></span><span class="sig-name descname"><span class="pre">hclust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiber_thr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partition_thr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/phybers/clustering/hclust/mainHClust.html#hclust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#phybers.clustering.hclust.mainHClust.hclust" title="Permalink to this definition"></a></dt>
+<dd><p>Average-link hierarchical agglomerative clustering algorithm which allows finding bundles based on a pairwise fiber distance measure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_in</strong> (<em>str</em>) – Tractography data file in <em>‘.bundles’</em> format.</p></li>
+<li><p><strong>dir_out</strong> (<em>str</em>) – Directory to store all the results generated by the algorithm.</p></li>
+<li><p><strong>fiber_thr</strong> (<em>str</em>) – Maximum distance threshold in <em>mm</em>, default: <em>30</em>.</p></li>
+<li><p><strong>partition_thr</strong> (<em>str</em>) – Partition threshold in <em>mm</em>, default: <em>40</em>.</p></li>
+<li><p><strong>variance</strong> (<em>str</em>) – Variance squared and provides a similarity scale in <em>mm</em>, default: <em>3600</em>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function generates the following files in the specified directory:</p>
+<dl>
+<dt>Clusters<span class="classifier"><em>‘.bundles’</em> format</span></dt><dd><p>Directory that stores all the fiber clusters found in different ‘.bundles’ files.
+The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters found.</p>
+</dd>
+<dt>Centroids<span class="classifier"><em>‘.bundles’</em> format</span></dt><dd><p>Directory that contains the centroid for each created cluster in same <em>‘.bundles’</em> files.
+The firt fiber of bundle centroid is corresponding with centroid calculated for cluster one and so on</p>
+</dd>
+<dt>Index of fibers per clusters<span class="classifier">text file</span></dt><dd><p>Text file that stores the fiber index input for each of the detected clusters.
+The fiber indexes are extracted from the tractography input. The first line corresponds to cluster zero and so on.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>To test <cite>hclust()</cite>,  download the data from the link provided [link to be provided][datahclust]. Then, open a Python terminal and run the following commands.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">phybers.clustering</span> <span class="kn">import</span> <span class="n">hclust</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hclust</span><span class="o">.</span><span class="n">cluster</span> <span class="p">(</span><span class="n">file_in</span> <span class="o">=</span> <span class="s1">&#39;fibers_test.bundles&#39;</span><span class="p">,</span> <span class="n">dir_out</span> <span class="o">=</span> <span class="s1">&#39;hclust_result&#39;</span><span class="p">,</span> <span class="n">fiber_thr</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="n">partition_thr</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">variance</span> <span class="o">=</span> <span class="mi">3600</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You will locate the clustering results in the ‘hclust_result’ directory.</p>
+</dd></dl>
+
+</section>
+<section id="ffclust-description">
+<h2>FFClust Description<a class="headerlink" href="#ffclust-description" title="Permalink to this heading"></a></h2>
+<p>FFClust is an intra-subject clustering algorithm aims to identify compact and homogeneous fiber clusters on a large tractography dataset.
+The algorithm consists of four stages. The stage 1 applies Minibatch K-Means clustering on five fiber points, and it merges fibers sharing the same point clusters (map clustering) in stage 2.
+Next, it reassigns small clusters to bigger ones (stage 3) considering distance of fibers in direct and reverse order.
+Finally, at stage 4, the algorithm groups clusters sharing the central point and merges close clusters represented by their centroids.
+The distance among fibers is defined as the maximum of the Euclidean distance between corresponding points.</p>
+<span class="target" id="module-phybers.clustering.ffclust.mainFFClust"></span><p>FFclust Sub-Module</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="phybers.clustering.ffclust.mainFFClust.ffclust">
+<span class="sig-prename descclassname"><span class="pre">phybers.clustering.ffclust.mainFFClust.</span></span><span class="sig-name descname"><span class="pre">ffclust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assign_thr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_thr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/phybers/clustering/ffclust/mainFFClust.html#ffclust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#phybers.clustering.ffclust.mainFFClust.ffclust" title="Permalink to this definition"></a></dt>
+<dd><p>Intra-subject clustering algorithm aims to identify compact and homogeneous fiber clusters on a large tractography dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_in</strong> (<em>str</em>) – Tractography data file in <em>‘.bundles’</em> format.</p></li>
+<li><p><strong>dir_out</strong> (<em>str</em>) – Directory to store all the results generated by the algorithm.</p></li>
+<li><p><strong>assign_thr</strong> (<em>str</em>) – Maximum distance threshold for the cluster reassignment in <em>mm</em>, default: <em>6</em>.</p></li>
+<li><p><strong>join_thr</strong> (<em>str</em>) – Maximum distance threshold for the cluster merge in <em>mm</em>, default: <em>6</em>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function generates the following files in the specified directory:</p>
+<dl>
+<dt>Clusters<span class="classifier"><em>‘.bundles’</em> format</span></dt><dd><p>Directory that stores all the fiber clusters found in different ‘.bundles’ files.
+The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters found.</p>
+</dd>
+<dt>Centroids<span class="classifier"><em>‘.bundles’</em> format</span></dt><dd><p>Directory that contains the centroid for each created cluster in same <em>‘.bundles’</em> files.
+The firt fiber of bundle centroid is corresponding with centroid calculated for cluster one an so on.</p>
+</dd>
+<dt>Index of fibers per clusters<span class="classifier">text file</span></dt><dd><p>Text file that stores the fiber index input for each of the detected clusters. The fiber indexes are extracted from the tractography input.
+The first line corresponds to cluster zero and so on.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>To test <cite>ffclust()</cite>,  download the data from the link provided [link to be provided][dataffclust]. Then, open a Python terminal and run the following commands.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">phybers.clustering</span> <span class="kn">import</span> <span class="n">ffclust</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ffclust</span><span class="o">.</span><span class="n">cluster</span> <span class="p">(</span><span class="n">file_in</span> <span class="o">=</span><span class="s1">&#39;fibers_test.bundles&#39;</span><span class="p">,</span> <span class="n">dir_out</span> <span class="o">=</span> <span class="s1">&#39;ffclust_result&#39;</span><span class="p">,</span> <span class="n">assign_thr</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="n">join_thr</span> <span class="o">=</span> <span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You will locate the clustering results in the ‘ffclust_result’ directory.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Segment.html" class="btn btn-neutral float-left" title="Segment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Utils.html" class="btn btn-neutral float-right" title="Utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, L.Liset González Rodríguez.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
