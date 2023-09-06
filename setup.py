@@ -155,7 +155,8 @@ setup(
         "scikit-image",
         "scipy",
         "openpyxl",
-        "regex"
+        "regex",
+        "importlib_resources"
     ],
     package_dir={'': "src"},
     packages=find_packages(where="./src",
