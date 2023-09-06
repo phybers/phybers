@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Segment &mdash; Phybers 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Clustering" href="Clustering.html" />
+    <link rel="prev" title="Prerequisites" href="Prerequisites.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Phybers
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Segment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#phybers.segment.segment.fiberseg"><code class="docutils literal notranslate"><span class="pre">fiberseg()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Clustering.html">Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="References.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Phybers</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Segment</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Segment.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="segment">
+<h1>Segment<a class="headerlink" href="#segment" title="Permalink to this heading"></a></h1>
+<p>This module includes a white matter fiber bundle segmentation algorithm <span id="id1">[<a class="reference internal" href="References.html#id3" title="P. Guevara, D. Duclap, C. Poupon, L. Marrakchi-Kacem, P. Fillard, D. Le Bihan, M. Leboyer, J. Houenou, and J. F. Mangin. Automatic fiber bundle segmentation in massive tractography datasets using a multi-subject bundle atlas. Neuroimage, 61(4):1083-99, 2012. doi:10.1016/j.neuroimage.2012.02.071.">1</a>, <a class="reference internal" href="References.html#id4" title="Nicole Labra, Pamela Guevara, Delphine Duclap, Josselin Houenou, Cyril Poupon, Jean-François Mangin, and Miguel Figueroa. Fast automatic segmentation of white matter streamlines based on a multi-subject bundle atlas. Neuroinformatics, 15(1):71-86, 2017. doi:10.1007/s12021-016-9316-7.">2</a>, <a class="reference internal" href="References.html#id8" title="Andrea Vázquez, Narciso López-López, Nicole Labra, Miguel Figueroa, Cyril Poupon, Jean-François Mangin, Cecilia Hernández, and Pamela Guevara. Parallel optimization of fiber bundle segmentation for massive tractography datasets. In 2019 IEEE 16th International Symposium on Biomedical Imaging (ISBI 2019), 178-181. IEEE, 2019. doi:10.1109/ISBI.2019.8759208.">3</a>]</span> based on a multi-subject atlas.
+The method uses as a measure of similarity between pairs of fibers the maximum Euclidean distance between corresponding points ($d_{ME}$), defined as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\label{eq:ecua1}
+d_{ME}(A,B) = \min(\max_{i}(|a_{i}-b_{i}|),\max_{i}(|a_{i}-b_{N_{p}-i}|)) \quad \qquad [1]
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(a_{i}\)</span> and <span class="math notranslate nohighlight">\(b_{i}\)</span> are the 3D coordinates of the points of fibers A and B respectively, in direct order,
+and <span class="math notranslate nohighlight">\(b_{N_{p}-i}\)</span> are the 3D coordinates of the points of fibers B in flipped order. <span class="math notranslate nohighlight">\(N_{p}\)</span> is the number of fiber points.</p>
+<p>It aims to classify the subject fibers according to a multi-subject bundle atlas. The bundle atlas consists of a set of representative bundles and an information file.
+The fibers of the atlas bundles are called centroids. The fibers of each subject are classified using a maximum <span class="math notranslate nohighlight">\(d_{ME}\)</span> distance threshold for each bundle between the subject’s fibers and the atlas centroids.
+The fibers are labeled with the closest atlas bundle, given that the distance is smaller than the distance threshold.</p>
+<p>We provide one atlas of deep white matter (DWM) bundles <span id="id2">Guevara <em>et al.</em> [<a class="reference internal" href="References.html#id3" title="P. Guevara, D. Duclap, C. Poupon, L. Marrakchi-Kacem, P. Fillard, D. Le Bihan, M. Leboyer, J. Houenou, and J. F. Mangin. Automatic fiber bundle segmentation in massive tractography datasets using a multi-subject bundle atlas. Neuroimage, 61(4):1083-99, 2012. doi:10.1016/j.neuroimage.2012.02.071.">1</a>]</span> and two atlases of superficial white matter (SWM) bundles, <span id="id3">Román <em>et al.</em> [<a class="reference internal" href="References.html#id6" title="Claudio Román, Miguel Guevara, Ronald Valenzuela, Miguel Figueroa, Josselin Houenou, Delphine Duclap, Cyril Poupon, Jean-François Mangin, and Pamela Guevara. Clustering of whole-brain white matter short association bundles using hardi data. Frontiers in Neuroinformatics, 11:73, 2017 2017. doi:10.3389/fninf.2017.00073.">4</a>]</span> and <span id="id4">Román <em>et al.</em> [<a class="reference internal" href="References.html#id7" title="Claudio Román, Cecilia Hernández, Miguel Figueroa, Josselin Houenou, Cyril Poupon, Jean-François Mangin, and Pamela Guevara. Superficial white matter bundle atlas based on hierarchical fiber clustering over probabilistic tractography data. NeuroImage, 262:119550, 2022. doi:10.1016/j.neuroimage.2022.119550.">5</a>]</span>.
+The following links provide access to these three atlases:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://www.dropbox.com/sh/h6aduv0z6qurc61/AACDDAgN0TVK3A0U1s4sgj4Ma?dl=1">Download Guevara atlas</a></p></li>
+<li><p><a class="reference external" href="https://www.dropbox.com/sh/54x3l58o3lgt6u5/AACbGKF_XLZHGbwoX9WkWaq2a?dl=1">Download CRoman-2017 atlas</a></p></li>
+<li><p><a class="reference external" href="https://www.dropbox.com/sh/hodvxo498l4v5io/AACYzfOitv2MQhoIGdmEuABRa?dl=1">Download CRoman-2022 atlas</a></p></li>
+</ol>
+<p>In addition to these atlases, we have tested our algorithm with the atlas <span id="id5">[<a class="reference internal" href="References.html#id10" title="Fan Zhang, Ye Wu, Isaiah Norton, Laura Rigolo, Yogesh Rathi, Nikos Makris, and Lauren J. O'Donnell. An anatomically curated fiber clustering white matter atlas for consistent white matter tract parcellation across the lifespan. NeuroImage, 179:429-447, 2018. doi:10.1016/j.neuroimage.2018.06.027.">6</a>]</span>, which contains both  DWM and SWM bundle.
+If you need this atlas in data <em>‘.bundle’</em> format, feel free to contact us via email.</p>
+<span class="target" id="module-phybers.segment.segment"></span><p>Segmentation Module.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="phybers.segment.segment.fiberseg">
+<span class="sig-prename descclassname"><span class="pre">phybers.segment.segment.</span></span><span class="sig-name descname"><span class="pre">fiberseg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_subj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlas_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlas_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_out</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/phybers/segment/segment.html#fiberseg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#phybers.segment.segment.fiberseg" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><p>White matter fiber bundle segmentation algorithm based on a multi-subject atlas.</p>
+</div></blockquote>
+<dl>
+<dt>Parameters</dt><dd><blockquote>
+<div><dl class="simple">
+<dt>file_in<span class="classifier">str</span></dt><dd><p>Tractography data file in bundles format, contains the fibers of the whole brain of a subject.</p>
+</dd>
+<dt>id_subj<span class="classifier">str</span></dt><dd><p>Subject identification number, used to label the results.</p>
+</dd>
+<dt>atlas_dir<span class="classifier">str</span></dt><dd><p>Bundle atlas, with bundles in separated files, sampled at 21 equidistant points. The bundle atlases provided are in same folders.</p>
+</dd>
+<dt>atlas_info<span class="classifier">str</span></dt><dd><p>Text file that stores information needed to apply the segmentation algorithm such as the name of the atlas fascicle and the segmentation threshold. Note that the segmentation threshold can be adjusted depending on the database to be used.</p>
+</dd>
+<dt>dir_out<span class="classifier">str</span></dt><dd><p>Directory name to store all the results generated by the algorithm.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd>
+<dt>Returns (in file)</dt><dd><dl class="simple">
+<dt>Segmented fibers<span class="classifier">bundles</span></dt><dd><p>Atlas fascicles extracted in the subject, which are labeled and saved in bundles format.</p>
+</dd>
+<dt>Centroids<span class="classifier">bundles</span></dt><dd><p>Centroid of each segmented fascicle.</p>
+</dd>
+<dt>Index of fibers per fasciculus<span class="classifier">text file</span></dt><dd><p>Text file containing the indexes of the fibers that were segmented by each fascicle of the atlas.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>To use the <cite>fiberseg()</cite> function, you need to download the tractography data from the link provided [datafiberseg]. Then, you can run the following code in a Python terminal:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">phybers.segment</span> <span class="kn">import</span> <span class="n">fiberseg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file_in</span> <span class="o">=</span> <span class="s1">&#39;path_to_tractography_data.bundles&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">id_subj</span> <span class="o">=</span> <span class="s1">&#39;01&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atlas_dir</span> <span class="o">=</span> <span class="s1">&#39;path_to_atlas/bundles&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atlas_info</span> <span class="o">=</span> <span class="s1">&#39;path_to_atlas/atlas_info.txt&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dir_out</span> <span class="o">=</span> <span class="s1">&#39;path_to_output_directory&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fiberseg</span><span class="p">(</span><span class="n">file_in</span><span class="p">,</span> <span class="n">id_subj</span><span class="p">,</span> <span class="n">atlas_dir</span><span class="p">,</span> <span class="n">atlas_info</span><span class="p">,</span> <span class="n">dir_out</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note: Make sure to replace ‘path_to_tractography_data’, ‘path_to_atlas’, and ‘path_to_output_directory’ with the actual paths to your data and directories.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Prerequisites.html" class="btn btn-neutral float-left" title="Prerequisites" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Clustering.html" class="btn btn-neutral float-right" title="Clustering" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, L.Liset González Rodríguez.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
