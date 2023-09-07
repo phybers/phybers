@@ -1,4 +1,7 @@
-from importlib_resources import files
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 from OpenGL import GL
 import numpy as np
 from .VisualizationBaseObject import VisualizationBaseObject, config

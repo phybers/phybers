@@ -4,7 +4,10 @@ Dictionary is keeping a reference to the segmentations objects... not deleting
 
 import PyQt5
 from PyQt5 import QtGui, QtWidgets, uic, QtCore
-from importlib_resources import files
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 from .InPlaceSegmentationDialog import InPlaceSegmentationDialog
 from .ROIsSegmentationDialog import ROIsSegmentationDialog
 from .AtlasBasedParallelSegmentationDialog import AtlasBasedParallelSegmentationDialog
@@ -338,9 +341,6 @@ class VisDialog(QtWidgets.QDialog):
 			windowToggleAction.setChecked(dialog.isVisible())
 			contextMenu.addAction(windowToggleAction)
 
-		# test
-		testAction = contextMenu.addAction('Test')
-
 		action = contextMenu.exec_(self.ui.treeWidget.mapToGlobal(pos))
 
 		modifyObject = None
@@ -354,9 +354,6 @@ class VisDialog(QtWidgets.QDialog):
 		elif action == windowToggleAction:
 			dialog = self.windows[retrieveItemIteratively(reference, number)]
 			dialog.setVisible(not dialog.isVisible())
-			return
-		elif action == testAction:
-			print('testAction')
 			return
 		elif action in segmentationAction.keys():
 			modifyObject = self.prepareDictionary(item, VisualizationActions.AddSegmentation, data=segmentationAction[action])

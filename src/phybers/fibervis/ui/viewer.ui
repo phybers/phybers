@@ -31,15 +31,6 @@
     <addaction name="actionOpenMesh"/>
     <addaction name="actionOpenMRI"/>
    </widget>
-   <widget class="QMenu" name="menuTesting">
-    <property name="title">
-     <string>Testing</string>
-    </property>
-    <addaction name="actionIlumination"/>
-    <addaction name="actionBackground"/>
-    <addaction name="actionCamera"/>
-    <addaction name="actionTest"/>
-   </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
@@ -55,7 +46,6 @@
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
-   <addaction name="menuTesting"/>
    <addaction name="actionAddROI"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -148,11 +138,6 @@
   <action name="actionAddROISphere">
    <property name="text">
     <string>Sphere</string>
-   </property>
-  </action>
-  <action name="actionTest">
-   <property name="text">
-    <string>Test!</string>
    </property>
   </action>
  </widget>

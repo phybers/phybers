@@ -4,11 +4,11 @@ from .glm import Quaternion, lookAt
 
 
 class Camera():
-    ro_up = np.frombuffer(np.array([0, 1, 0], np.float32), np.float32)
-    ro_down = np.frombuffer(np.array([0, -1, 0], np.float32), np.float32)
-    ro_left = np.frombuffer(np.array([-1, 0, 0], np.float32), np.float32)
     ro_right = np.frombuffer(np.array([1, 0, 0], np.float32), np.float32)
+    ro_up = np.frombuffer(np.array([0, 1, 0], np.float32), np.float32)
     ro_front = np.frombuffer(np.array([0, 0, 1], np.float32), np.float32)
+    ro_left = np.frombuffer(np.array([-1, 0, 0], np.float32), np.float32)
+    ro_down = np.frombuffer(np.array([0, -1, 0], np.float32), np.float32)
     ro_back = np.frombuffer(np.array([0, 0, -1], np.float32), np.float32)
 
     def __init__(self, radius):
@@ -21,7 +21,7 @@ class Camera():
         self.up = self.ro_up
         self.forward = self.ro_back
         self.right = self.ro_right
-        self.center = np.array([0, 0, 0])
+        self.center = np.array([0, 0, 0], dtype=np.float32)
         self.eye = self.ro_front * radius
         self.p_speed = 0.5 / radius
         self.r_speed = np.pi / 360
@@ -33,7 +33,7 @@ class Camera():
         rot_phi = Quaternion.fromAngleAxis(self.phi, self.up)
         rot_theta = Quaternion.fromAngleAxis(self.theta, self.right)
         self.rotation = rot_phi * rot_theta
-        eye_vector = -self.forward * self.radius
+        eye_vector = self.forward * self.radius
         self.eye = self.center - self.rotation.rotateVector(eye_vector)
         if np.round(np.abs(self.theta) - (np.pi / 2), decimals=10) == 0:
             up = rot_phi.rotateVector(self.forward * -np.sign(self.theta))
@@ -60,7 +60,7 @@ class Camera():
     def panning(self, dx, dy, dz=0):
         up = self.rotation.rotateVector(self.up)
         right = self.rotation.rotateVector(self.right)
-        self.center += (right * dx + up * dy) * self.p_speed * self.radius
+        self.center += (right * -dx + up * dy) * self.p_speed * self.radius
         if dz:
             forward = self.rotation.rotateVector(self.forward)
             self.center += forward * dz * self.p_speed * self.radius
@@ -95,7 +95,9 @@ class Camera():
         return axis, magnitude
 
     def vectorFromScreen(self, dx, dy):
-        translateV = self.rotation.rotateVector([dx, -dy, 0])
+        up = self.rotation.rotateVector(self.up)
+        right = self.rotation.rotateVector(self.right)
+        translateV = (dx * right + dy * up) * self.p_speed * self.radius
         return translateV
 
     def zooming(self, zoom):

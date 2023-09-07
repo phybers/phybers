@@ -37,13 +37,11 @@ class SegmentationTypes(Enum):
 	ROIs = 1
 	AtlasBased = 2
 	FFClust = 3
-	Test = 23
 
 segmentations = {	'In place segmentation' : SegmentationTypes.InPlace,
 					'Roi segmentation' : SegmentationTypes.ROIs,
 					'Euclidean distance segmentation' : SegmentationTypes.AtlasBased,
-					'FFClust' : SegmentationTypes.FFClust,
-					'Test segmentation' : SegmentationTypes.Test}
+					'FFClust' : SegmentationTypes.FFClust}
 
 mriVisualizations = {	'Volume render' : VisualizationObject.MRIVolume,
 						'Slice' : VisualizationObject.MRISlice}

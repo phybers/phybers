@@ -6,7 +6,10 @@
 import math
 import numpy as np
 from OpenGL import GL
-from importlib_resources import files
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 from ..VisualizationBaseObject import VisualizationBaseObject, propagateToChildren, drawable, config
 from ..Tools.visualizationEnums import VisualizationObject
 from ..Shaders import Shader

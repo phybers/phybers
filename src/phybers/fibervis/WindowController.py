@@ -6,7 +6,10 @@ from .GLContext import GLWidget
 from PyQt5 import QtGui, QtWidgets, uic, QtCore
 from .ui.Controllers.VisDialog import VisDialog
 from .Framework.Tools.performance import timeit
-from importlib_resources import files
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 
 _viewer = files('phybers.fibervis.ui').joinpath('viewer.ui')
 
@@ -49,9 +52,6 @@ class WindowController(QtWidgets.QMainWindow):
 			lambda: self.contextHandler.set_draw_bbox(self.ui.actionBoundingBoxes.isChecked()))
 		self.ui.actionBoundingBoxes.setChecked(True)
 
-		# testing action
-		self.ui.actionTest.triggered.connect(self.contextHandler.testingModule)
-
 		# Visualization objects window
 		# changed
 		# hovered
@@ -80,8 +80,6 @@ class WindowController(QtWidgets.QMainWindow):
 		self.visObj.roisReference = self.contextHandler.rois
 
 		self.setAcceptDrops(True)
-		# Hide testing tab
-		self.menuTesting.menuAction().setVisible(False)
 
 	def dragEnterEvent(self, event):
 		if (event.mimeData().hasUrls()):

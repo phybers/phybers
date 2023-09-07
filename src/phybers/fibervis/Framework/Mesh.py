@@ -7,7 +7,10 @@ import numpy as np
 import ctypes as ct
 from pathlib import Path
 from OpenGL import GL
-from importlib_resources import files
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 from .VisualizationBaseObject import VisualizationBaseObject, fSize, propagateToChildren, drawable, config
 from .Tools.visualizationEnums import VisualizationObject
 from .Shaders import Shader
@@ -101,7 +104,7 @@ class Mesh(VisualizationBaseObject):
         self.clean = True
 
     def get_center(self):
-        return self.boundingbox.get_center()
+        return self.boundingbox.get_center() + self.translateMat[:3, 3].flat
 
     def get_size(self):
         return self.boundingbox.get_size()

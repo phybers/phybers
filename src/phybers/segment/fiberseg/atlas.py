@@ -1,6 +1,9 @@
 """Module for finding and checking atlases."""
 from pathlib import Path
-from importlib_resources import files
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 
 _atlas_folder: Path = files('phybers.segment.fiberseg').joinpath('data')  # type: ignore
 atlases = {k.stem: str(k) for k in _atlas_folder.glob('*')}

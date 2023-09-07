@@ -5,7 +5,10 @@ from .Tools.visualizationEnums import VisualizationObject
 from .Shaders import Shader
 from .Tools import glm
 from .BoundingBox import BoundingBox
-from importlib_resources import files
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 
 _vs_vs = files('phybers.fibervis.shaders').joinpath('volume-slice.vs')
 _s_fs = files('phybers.fibervis.shaders').joinpath('slice.fs')
@@ -93,7 +96,7 @@ class Slice(VisualizationBaseObject):
         self.clean = True
 
     def get_center(self):
-        return self.boundingbox.get_center()
+        return self.boundingbox.get_center() + self.translateMat[:3, 3].flat
 
     def get_size(self):
         return self.boundingbox.get_size()

@@ -8,7 +8,10 @@ import random
 from pathlib import Path
 from OpenGL import GL
 import numpy as np
-from importlib_resources import files
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 from .VisualizationBaseObject import VisualizationBaseObject, \
     VisualizationObject, propagateToChildren, drawable, config
 from .Shaders import Shader
@@ -99,7 +102,7 @@ class Bundle(VisualizationBaseObject):
 
 
     def get_center(self):
-        return self.boundingbox.get_center()
+        return self.boundingbox.get_center() + self.translateMat[:3, 3].flat
 
     def get_size(self):
         return self.boundingbox.get_size()

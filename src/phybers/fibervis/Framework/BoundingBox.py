@@ -2,7 +2,10 @@ from .VisualizationBaseObject import VisualizationBaseObject, drawable, config
 from .Shaders import Shader
 from .Tools import glm
 from OpenGL import GL
-from importlib_resources import files
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 import numpy as np
 
 _bbox_vs = files('phybers.fibervis.shaders').joinpath('boundingbox.vs')

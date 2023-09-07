@@ -1,6 +1,9 @@
 from PyQt5 import QtGui, QtWidgets, uic, QtCore
 from functools import wraps
-from importlib_resources import files
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 from ...Framework.VisualizationBaseObject import VisualizationObject
 
 _roisd_ui = files('phybers.fibervis.ui.Segmentations').joinpath(

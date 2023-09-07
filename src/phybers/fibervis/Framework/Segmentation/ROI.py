@@ -9,7 +9,10 @@ from ..VisualizationBaseObject import VisualizationBaseObject, VisualizationObje
 from ..Shaders import Shader
 from ..Tools.visualizationEnums import SegmentationTypes, ROIType
 from ..Tools.Quaternion import Quaternion
-from importlib_resources import files
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 
 _b_vs = files('phybers.fibervis.shaders').joinpath('bundle.vs')
 _sfs_vs = files('phybers.fibervis.shaders').joinpath('standardFragmentShader.fs')
@@ -63,7 +66,7 @@ class ROI(VisualizationBaseObject):
         return self.center
 
     def get_size(self):
-        return self.boundingbox.get_size()
+        return (self.radius * 2).repeat(3)
 
 
     def cleanOpenGL(self):
@@ -80,19 +83,14 @@ class ROI(VisualizationBaseObject):
     def createROI(self):
         if self.roiType == ROIType.Sphere:
             self.createSphere()
-
             self.translation = glm.translateMatrix(self.center)
             self.scalation = glm.scaleMatrix((self.radius, self.radius, self.radius))
-
-
         elif self.roiType == ROIType.Aabb:
-            raise TypeError('ROI type not implemented: ', self.roiType)
-
+            raise NotImplementedError('ROI type not implemented: ', self.roiType)
         elif self.roiType == ROIType.Obb:
-            raise TypeError('ROI type not implemented: ', self.roiType)
-
+            raise NotImplementedError('ROI type not implemented: ', self.roiType)
         elif self.roiType == ROIType.Plane:
-            raise TypeError('ROI type not implemented: ', self.roiType)
+            raise NotImplementedError('ROI type not implemented: ', self.roiType)
 
 
     def _loadColorTexture(self):

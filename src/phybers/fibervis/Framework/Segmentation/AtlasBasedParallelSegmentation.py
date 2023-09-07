@@ -11,7 +11,10 @@ from ..Tools.visualizationEnums import VisualizationObject
 from ..Shaders import Shader
 from ...FiberVis_core import reSampleBundle, AtlasBasedSegmentation, AtlasBasedSegmentationExportbundlesdata
 from ..Bundle import Bundle
-from importlib_resources import files
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 
 _abs_vs = files('phybers.fibervis.shaders').joinpath(
     'atlasbasedsegmentation.vs')
@@ -50,7 +53,7 @@ class Atlas(VisualizationBaseObject):
         self.boundingbox = BoundingBox(shaderDict, self, [0,0,0], [0,0,0])
 
     def get_center(self):
-        return self.boundingbox.get_center()
+        return self.boundingbox.get_center() + self.translateMat[:3, 3].flat
 
     def get_size(self):
         return self.boundingbox.get_size()

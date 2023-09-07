@@ -70,7 +70,7 @@ class MRI(VisualizationBaseObject):
         self.clean = True
 
     def get_center(self):
-        return self.boundingbox.get_center()
+        return self.boundingbox.get_center() + self.translateMat[:3, 3].flat
 
     def get_size(self):
         return self.boundingbox.get_size()

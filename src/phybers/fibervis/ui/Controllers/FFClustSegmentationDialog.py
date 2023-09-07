@@ -1,5 +1,8 @@
 from PyQt5 import QtGui, QtWidgets, uic, QtCore
-from importlib_resources import files
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 
 _ffcsd_ui = files('phybers.fibervis.ui.Segmentations').joinpath(
 	'FFClustSegmentationDialog.ui')
