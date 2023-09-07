@@ -35,7 +35,7 @@ To install Phybers, it is recommended to create a Python environment. If you are
    
 >```$ conda deactivate```
 
-Once your environment is activated, install Phybers with the following command:
+To install the Phybers package, activate the environment and run the following command:
 
 >```$ pip install phybers```
 
