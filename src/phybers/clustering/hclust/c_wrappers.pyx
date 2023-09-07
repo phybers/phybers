@@ -3,7 +3,7 @@
 
 cdef extern from "distances.hpp":
     cdef int fDM_main(char *fp_input, char *fp_output)
-    cdef int gAGFDM_main(char *fp_input, char *fp_output, float maxdist)
+    cdef int gAGFDM_main(char *fp_input, char *fp_output, float maxdist) except +
     cdef int gALHCFGF_main(char * fp_input, char * fp_output)
 
 def fiberDistanceMax(fp_input: str, fp_output: str):

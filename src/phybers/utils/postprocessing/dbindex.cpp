@@ -67,8 +67,7 @@ vector<float> read_bundles(string path, unsigned short int ndata_fiber)
     // Open subject file.
     if (fp == NULL)
     {
-        fputs("File error opening file\n", stderr);
-        exit(1);
+        throw std::runtime_error("File error opening file.");
     }
     fseek(fp, 0, SEEK_END);
     long lSize = ftell(fp);                                               // Get file size.

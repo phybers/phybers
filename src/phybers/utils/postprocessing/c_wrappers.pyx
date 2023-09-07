@@ -2,7 +2,7 @@
 # distutils: language=c++
 
 cdef extern from "dbindex.hpp":
-    cdef int main(int argc, char *argv[])
+    cdef int main(int argc, char *argv[]) except +
 
 def postprocessing(in_centroides, in_clusters_directory, output_path, points):
     cdef char * argv[4]

@@ -7,6 +7,7 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
+#include <stdexcept>
 
 struct bundle {
     int32_t nfibers;

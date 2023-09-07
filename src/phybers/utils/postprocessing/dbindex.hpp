@@ -16,6 +16,7 @@
 #include <fstream>
 #include <ctime>
 #include <cstdint>
+#include <stdexcept>
 
 using namespace std;
 

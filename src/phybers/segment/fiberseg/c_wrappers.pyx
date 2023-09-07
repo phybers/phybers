@@ -7,7 +7,7 @@ from libcpp.string cimport string
 
 cdef extern from "main.hpp":
     cdef int main_segmentation(unsigned short n_points, string subject_path, string subject_name,
-                               string atlas_path, string atlas_inf, string output_dir, string indices_output_dir)
+                               string atlas_path, string atlas_inf, string output_dir, string indices_output_dir) except +
 
 def segment(unsigned short n_points, fibers, idsubj, atlasdir, atlasInformation, final_bundles_dir, id_seg_result):
     cdef char * argv[6]

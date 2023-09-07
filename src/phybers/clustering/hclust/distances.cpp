@@ -51,8 +51,7 @@ int gAGFDM_main(char *fp_input, char *fp_output, float maxdist)
 
     if (!in.is_open())
     { // comprobación para saber si se ha abierto el fichero
-        std::cout << "Error opening file";
-        exit(1);
+        throw std::runtime_error("Error opening file.");
     }
 
     std::string str;
@@ -98,7 +97,7 @@ int gAGFDM_main(char *fp_input, char *fp_output, float maxdist)
     //   std::cout << "Execution Time: " << ((double)(clock() - t_start)*1000)/CLOCKS_PER_SEC  << " ms" << std::endl;	// mostrar tiempo de ejecución
     std::cout << "Execution Time: " << ((double)(clock() - t_start)) / CLOCKS_PER_SEC << " secs" << std::endl; // mostrar tiempo de ejecución
 
-    return EXIT_SUCCESS;
+    return 0;
 }
 
 struct smax floatmax(std::vector<float> &dvector, int lenght)
@@ -154,7 +153,7 @@ int gALHCFGF_main(char *fp_input, char *fp_output)
     {
         std::cout << "Fail" << std::endl
              << std::flush;
-        return EXIT_FAILURE;
+        return 1;
     }
     std::cout << "File Opened" << std::endl
             << std::flush;
@@ -451,5 +450,5 @@ int gALHCFGF_main(char *fp_input, char *fp_output)
     std::cout << "done" << std::endl
          << std::flush;
 
-    return EXIT_SUCCESS;
+    return 0;
 }

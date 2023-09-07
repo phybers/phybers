@@ -16,6 +16,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <stdexcept>
 #include "bundleTools.hpp"
 
 int fDM_main(char *fp_input, char *fp_output);

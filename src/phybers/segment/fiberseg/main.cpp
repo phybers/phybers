@@ -210,8 +210,7 @@ void write_indices(const std::string &path, vector<string> &names, const std::ve
 
 		const int dir_err = mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		if(dir_err == -1) {
-			perror("Error creating directory!");
-			exit( EXIT_FAILURE );
+            throw runtime_error("Error creating directory!");
 		}
 	}
 	closedir (dir);
@@ -257,8 +256,12 @@ void write_bundles(string subject_name, string output_path, vector<vector<unsign
             string bundlesdata_path = output_path+"/"+subject_name+"_to_"+names[i]+".bundlesdata";
             char * bundlesdata_file = str_to_char_array(bundlesdata_path);
             FILE *fp = fopen(bundlesdata_file, "wb"); 	// Opening and writing .bundlesdata file.
-            if (fp == NULL) {fputs ("File error opening .bundlesdata file\n",stderr); exit (1);}
-            for (unsigned int j = 0; j < assignment[i].size(); j ++) {
+            if (fp == NULL)
+            {
+                throw runtime_error("File error opening .bundlesdata file.");
+            }
+            for (unsigned int j = 0; j < assignment[i].size(); j++)
+            {
                 int fiber_index = assignment[i][j];
                 fwrite(&npoints, sizeof(uint32_t),1, fp);
 
@@ -293,7 +296,12 @@ vector<float> read_bundles(string path, unsigned short int ndata_fiber) {
     path2[length - 1] = 0;
     FILE *fp = fopen(path2, "rb");
 	 // Open subject file.
-    if (fp == NULL) {fprintf(stderr, "File error opening file %s.\n", path2); exit (1);}
+    if (fp == NULL)
+    {
+        stringstream err;
+        err << "File error opening file " << path2 << ".";
+        throw runtime_error(err.str());
+    }
     fseek (fp, 0 , SEEK_END);
     long lSize = ftell(fp);                                // Get file size.
     unsigned int sfiber = sizeof(uint32_t) + ndata_fiber*sizeof(float); // Size of a fiber (bytes).  // Add 1 element (uint32_t) because in .bundles/.bundlesdata format the first element of each fiber/centroid corresponds to the amount of points in the fiber/centroid. In this case that number should be always the same.

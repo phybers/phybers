@@ -2,6 +2,7 @@
 #define BUNDLETOOLS_H_INCLUDED
 
 #include <stdint.h>
+#include <stdexcept>
 
 struct bundle {
     int32_t nfibers;

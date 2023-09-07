@@ -23,11 +23,13 @@ Last modification: 24-10-2018 */
 
 
 #include <iostream>
+#include <stdexcept>
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
 #include <fstream>
+#include <sstream>
 #include <cstdio>
 #include <cstdint>
 #include <cstring>

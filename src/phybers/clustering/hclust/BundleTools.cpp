@@ -7,7 +7,10 @@ struct bundle read_bundle(char* bunfile)
 
     FILE *fb;
     fb = fopen(bunfile, "r");
-    if (fb == NULL) {fputs ("File error",stderr); exit (1);}
+    if (fb == NULL)
+    {
+        throw std::runtime_error("File error.");
+    }
 
     char buffer[100];   //buffer para la linea
     fgets(buffer,100,fb);//Lecturas para llegar la liena 5 del archivo
@@ -44,7 +47,10 @@ struct bundle read_bundle(char* bunfile)
     FILE *fp;
     //printf(" bunfileb %s\n", bunfileb);
     fp = fopen(bunfileb, "rb");
-    if (fp == NULL) {fputs ("File error",stderr); exit (1);}
+    if (fp == NULL)
+    {
+        throw std::runtime_error("File error.");
+    }
 
     float** points; // puntero a cada fibra
     points = (float**) malloc (nfibers*sizeof(float*));
@@ -58,9 +64,11 @@ struct bundle read_bundle(char* bunfile)
 
        //printf(" npoints %d\n", *(npoints+i));
        points[i]=(float*) malloc((*(npoints+i))*3*sizeof(float));//Asigna memoria para toda una fibra
-       if (points[i] == NULL) {fputs ("Memory error",stderr); exit (2);}
-       fread( points[i], sizeof(float), *(npoints+i)*3, fp );//Lee todos los puntos de la fibra
-
+       if (points[i] == NULL)
+       {
+            throw std::runtime_error("Memory error.");
+       }
+       fread(points[i], sizeof(float), *(npoints + i) * 3, fp); // Lee todos los puntos de la fibra
     }
     fas.npoints=npoints;
     fas.points=points;
