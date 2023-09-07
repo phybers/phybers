@@ -1,0 +1,20 @@
+Visualization
+=============
+The tractography files can be rendered with lines or cilynders.
+In the case of lines, the software loads the streamlines with a fixed normal per vertex, which correspond to the normalized direction for the particular segment of the streamline.
+Furthermore, a phong lighting algorithm :cite:`ABrainVis` is implemented in a vertex shader to compute the color fetched for the streamline.
+The MRI data is rendered by using specific shaders for slice visualization and volume rendering. Meshes can be displayed using points, wireframes or shaded triangles.
+The user interface (GUI) allows viewing several objects simultaneously, performing camera operations (zoom, rotate and pan), modifying material properties (color and adding transparency)
+and applying linear transformation on the brain tractography.
+
+*Fiber selection based on 3D ROIs*
+
+This function allows users to extract bundles using 3D objects and labeled 3D images, creating a point-based data structure for fast queries (called Octree).
+It is based on storing points inside a bounding box with a capacity of N. When a node is filled and a new point is added,
+the node subdivides his bounding box in eight new nodes (no overlapping each other) and the points are moved in the new nodes.
+The resulting selected fiber for each object can be used into logical mathematical operations (and, or, xor, not).
+This allows the use of multiple ROIs in order to find fibers that connect some areas, while excluding others that are selected by others areas.
+
+ .. automodule:: phybers.fibervis.FiberVis
+    :members: main
+

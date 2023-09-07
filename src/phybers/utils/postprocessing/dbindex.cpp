@@ -304,7 +304,7 @@ int main(int argc, char *argv[])
     t1 = clock();
 
     double time = (double(t1 - t0) / CLOCKS_PER_SEC);
-    cout << "Execution Time: " << time << endl;
+    /*cout << "Execution Time: " << time << endl;*/
 
     return 0;
 }

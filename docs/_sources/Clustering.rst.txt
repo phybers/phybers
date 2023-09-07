@@ -1,0 +1,46 @@
+Clustering
+==========
+
+
+The module comprises two algorithms for clustering cerebral fibers, HClust (Clustering Hierarchical, :cite:`Claudio-Roman-2017, Claudio-Roman-2022`) y FFClust (Fast Fiber Clustering, :cite:`Andrea-Vazquez-2020`)
+
+
+HClust Description
+------------------
+
+
+HClust is an average-link hierarchical agglomerative clustering algorithm which allows finding bundles based on a pairwise fiber distance measure.
+The algorithm calculates a distance matrix between all fiber pairs for a bundles dataset (:math:`d_{ij}`), by using the maximum of the Euclidean distance between fiber pairs (Equation [1]).
+Then, it computes an affinity graph on the :math:`d_{ij}` matrix for the fiber pairs that have Euclidean distance below a maximum distance threshold (*MaxDistance_Threshold*). 
+The Affinity :cite:`ODonnell-2007` is given by the following equation:
+
+.. math::
+    \begin{equation}
+    a_{ij} = e^{\frac{-d_{ij}}{\sigma^{2}}}
+    \end{equation}
+
+
+where :math:`d_{ij}` is the distance between the elements :math:`i` and :math:`j`, and :math:`\sigma` is a parameter that defines the similarity scale in $mm$.
+
+From the affinity graph, the hierarchical tree is generated using an agglomerative average-link hierarchical clustering algorithm.
+The tree is adaptively partitioned using a distance threshold (*PartDistance_Threshold*). 
+
+.. automodule:: phybers.clustering.hclust.mainHClust
+    :members: hclust
+
+
+FFClust Description
+-------------------
+
+
+FFClust is an intra-subject clustering algorithm aims to identify compact and homogeneous fiber clusters on a large tractography dataset.
+The algorithm consists of four stages. The stage 1 applies Minibatch K-Means clustering on five fiber points, and it merges fibers sharing the same point clusters (map clustering) in stage 2.
+Next, it reassigns small clusters to bigger ones (stage 3) considering distance of fibers in direct and reverse order.
+Finally, at stage 4, the algorithm groups clusters sharing the central point and merges close clusters represented by their centroids.
+The distance among fibers is defined as the maximum of the Euclidean distance between corresponding points.
+
+
+.. automodule:: phybers.clustering.ffclust.mainFFClust
+    :members: ffclust
+
+

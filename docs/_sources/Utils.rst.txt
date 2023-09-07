@@ -1,0 +1,59 @@
+Utils
+=====
+
+The utils are a set of tools used for tractography preprocessing and the analysis of brain fiber clustering and segmentation results.
+The module includes tools for reading and writing brain fiber files in *'.bundles'* format, transform the fibers to a reference coordinate system based on a deformation field,
+sampling of fibers at n equidistant points, calculation of intersection between sets of brain fibers,
+and tools for extracting measures and filtering fiber clusters or segmented bundles.
+
+
+
+.. automodule:: phybers.utils
+    :members:
+
+Deformation
+-----------
+
+The *deformation* sub-module transforms a tractography file to another space using a non-linear deformation file. 
+The maps must be stored in NIfTI format, where the voxels contain the transformation to be applied to each voxel 3D space location.
+*deformation* applies the deformation to the 3D coordinates of the fiber points. 
+The *deformation* can be employed on HCP(Human Conectome Project) data during the preprocessing stage before applying the segmentation algorithm.
+
+.. autofunction:: deform
+
+
+Sampling
+--------
+
+
+The *sampling* sub-module performs a sampling of the fibers, recalculating their points using a defined number of equidistant points.
+The sampling sub-module is used in the preprocessing stage of the segmentation and clustering algorithms.
+
+.. autofunction:: sampling
+
+
+Intersection
+------------ 
+
+
+The *bundle intersection* sub-module calculates a similarity measure between two sets of brain fibers (fiber clusters or segmented bundles).
+It uses a maximum distance threshold to consider two fibers as similar. Both sets of fibers must be in the same space. 
+First, a Euclidean distance matrix is calculated between the fibers of the two sets. 
+Then, the maximum distance threshold is applied between fiber pairs and the number of fibers from one set that have a similar fibers in the other set are count, for both sets. 
+The similarity measure yields a value between *0* and *100%*. 
+
+
+.. autofunction:: intersection
+
+
+Postprocessing
+--------------
+
+
+The *Postprocessing* sub-module contains a set of algorithms that can be applied on the results of clustering and segmentation algorithms.
+This algorithm constructs a `pandas.DataFrame object` , where each key corresponds to the name of the fiber set (cluster or segmented fascicle),
+followed by measures defined on the fiber set such as: size (number of fibers), intra-set distance and mean length (in *mm*).
+It can be used to perform single or multiple feature filtering on the clustering or segmentation results. 
+
+
+.. autofunction:: postprocessing

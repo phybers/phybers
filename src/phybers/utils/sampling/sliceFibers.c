@@ -6,7 +6,7 @@ int main(char* fp_input, char* fp_output, int point_count)
 	//struct bundle read_bundle(char* bunfile)
 
 	//printf("%s\n%s\n%i\nok\n",argv[1],argv[2],string2int(argv[3]));
-	printf("%s\n%s\n%i\nok\n", fp_input, fp_output, point_count);
+	//printf("%s\n%s\n%i\nok\n", fp_input, fp_output, point_count);
 
 	f1 = read_bundle(fp_input);
 

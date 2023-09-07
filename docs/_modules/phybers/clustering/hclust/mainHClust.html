@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>phybers.clustering.hclust.mainHClust &mdash; Phybers 0.1 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            Phybers
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Segment.html">Segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Clustering.html">Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Utils.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../References.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Phybers</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">phybers.clustering.hclust.mainHClust</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for phybers.clustering.hclust.mainHClust</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -- coding: utf-8 --</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">HClust Sub-Module.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">gc</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">rmtree</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">clusterTools</span> <span class="k">as</span> <span class="n">CT</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">mkdtemp</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">read_bundle</span><span class="p">,</span> <span class="n">write_bundle</span>
+<span class="kn">from</span> <span class="nn">.c_wrappers</span> <span class="kn">import</span> <span class="n">fiberDistanceMax</span><span class="p">,</span> <span class="n">getAffinityGraphFromDistanceMatrix</span><span class="p">,</span> <span class="n">getAverageLinkHCFromGraphFile</span>
+<span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">sampling</span>
+
+
+<span class="k">def</span> <span class="nf">hierarchical</span><span class="p">(</span><span class="n">fiber_input</span><span class="p">,</span> <span class="n">outfile_dir</span><span class="p">,</span> <span class="n">MaxDistance_Threshold</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run to Hierarchical clustering</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">MatrixDist_output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outfile_dir</span><span class="p">,</span> <span class="s1">&#39;matrixd.bin&#39;</span><span class="p">)</span>
+    <span class="n">affinities_graph_output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outfile_dir</span><span class="p">,</span><span class="s1">&#39;affin.txt&#39;</span><span class="p">)</span>
+    <span class="n">dendogram_output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outfile_dir</span><span class="p">,</span><span class="s1">&#39;dendogram.txt&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Step1. Distance Matrix</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">fiberDistanceMax</span><span class="p">(</span><span class="n">fiber_input</span><span class="p">,</span> <span class="n">MatrixDist_output</span><span class="p">)</span>
+    <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Distance Matrix Delay: &quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Step2. Affinities Graph</span>
+    <span class="n">t0</span><span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">getAffinityGraphFromDistanceMatrix</span><span class="p">(</span>
+        <span class="n">MatrixDist_output</span><span class="p">,</span> <span class="n">affinities_graph_output</span><span class="p">,</span> <span class="n">MaxDistance_Threshold</span><span class="p">)</span>
+    <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Affinities Graph Delay: &quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Step3. Dendogram</span>
+    <span class="n">t0</span><span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">getAverageLinkHCFromGraphFile</span><span class="p">(</span>
+        <span class="n">affinities_graph_output</span><span class="p">,</span> <span class="n">dendogram_output</span><span class="p">)</span>
+    <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dendogram Delay: &quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">particional_hierarchical</span><span class="p">(</span><span class="n">fiber_input</span><span class="p">,</span> <span class="n">outfile_dir</span><span class="p">,</span> <span class="n">PartDistance_Threshold</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">final_bundles_dir</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Writes the cluster bundles (bundles format) and fiber indexes per cluster (file &#39;.txt&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">arbfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outfile_dir</span><span class="p">,</span> <span class="s1">&#39;dendogram.txt&#39;</span><span class="p">)</span>
+    <span class="n">afffile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outfile_dir</span><span class="p">,</span> <span class="s1">&#39;affin.txt&#39;</span><span class="p">)</span>
+    <span class="n">partfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outfile_dir</span><span class="p">,</span> <span class="s1">&#39;index_fiberscluster.txt&#39;</span><span class="p">)</span>
+
+    <span class="n">t0</span><span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">wfv</span><span class="o">=</span><span class="n">CT</span><span class="o">.</span><span class="n">wforest_partition_maxdist_from_graph</span><span class="p">(</span><span class="n">arbfile</span><span class="p">,</span><span class="n">PartDistance_Threshold</span><span class="p">,</span><span class="kc">True</span><span class="p">,</span><span class="n">afffile</span><span class="p">,</span><span class="n">var</span><span class="p">)</span>
+
+    <span class="n">clusteres</span><span class="o">=</span><span class="n">wfv</span><span class="o">.</span><span class="n">clusters</span>
+
+    <span class="n">ar</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">partfile</span><span class="p">,</span><span class="s1">&#39;wt&#39;</span><span class="p">)</span>
+    <span class="n">ar</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">clusteres</span><span class="p">))</span>
+    <span class="n">ar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">tractography</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">read_bundle</span><span class="p">(</span><span class="n">fiber_input</span><span class="p">))</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">final_bundles_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">clusteres</span><span class="p">):</span>
+
+        <span class="n">write_bundle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">final_bundles_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.bundles&quot;</span><span class="p">),</span> <span class="n">tractography</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Particional Hierarchical Delay: &quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">is_reversed</span><span class="p">(</span><span class="n">cluster</span><span class="p">):</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">cluster</span><span class="p">,</span> <span class="n">cluster</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">base</span> <span class="o">-</span> <span class="n">cluster</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">cal_centroide</span><span class="p">(</span><span class="n">cluster</span><span class="p">):</span>
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">is_reversed</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+            <span class="n">c_copy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+            <span class="n">c_copy</span><span class="p">[</span><span class="o">~</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">cluster</span><span class="p">[</span><span class="o">~</span><span class="n">r</span><span class="p">]</span>
+            <span class="n">c_copy</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">cluster</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">cluster</span> <span class="o">=</span> <span class="n">c_copy</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cluster</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">write_centroids</span><span class="p">(</span><span class="n">clusters_dir</span><span class="p">,</span> <span class="n">file_out</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">clusters_dir</span><span class="p">)</span>
+    <span class="n">centroids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">clusters_paths</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.bundles&quot;</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">stem</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">cluster_path</span> <span class="ow">in</span> <span class="n">clusters_paths</span><span class="p">:</span>
+        <span class="n">cluster</span> <span class="o">=</span> <span class="n">read_bundle</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cluster_path</span><span class="p">))</span>
+        <span class="n">centroids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cal_centroide</span><span class="p">(</span><span class="n">cluster</span><span class="p">))</span>
+    <span class="n">write_bundle</span><span class="p">(</span><span class="n">file_out</span><span class="p">,</span> <span class="n">centroids</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="hclust"><a class="viewcode-back" href="../../../../Clustering.html#phybers.clustering.hclust.mainHClust.hclust">[docs]</a><span class="k">def</span> <span class="nf">hclust</span><span class="p">(</span><span class="n">file_in</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dir_out</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fiber_thr</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">partition_thr</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">variance</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Average-link hierarchical agglomerative clustering algorithm which allows finding bundles based on a pairwise fiber distance measure. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file_in : str</span>
+<span class="sd">        Tractography data file in *&#39;.bundles&#39;* format.</span>
+<span class="sd">    dir_out : str</span>
+<span class="sd">        Directory to store all the results generated by the algorithm.</span>
+<span class="sd">    fiber_thr : str</span>
+<span class="sd">        Maximum distance threshold in *mm*, default: *30*.</span>
+<span class="sd">    partition_thr : str</span>
+<span class="sd">        Partition threshold in *mm*, default: *40*.</span>
+<span class="sd">    variance : str</span>
+<span class="sd">        Variance squared and provides a similarity scale in *mm*, default: *3600*.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function generates the following files in the specified directory:</span>
+
+<span class="sd">    Clusters : *&#39;.bundles&#39;* format</span>
+<span class="sd">        Directory that stores all the fiber clusters found in different &#39;.bundles&#39; files. </span>
+<span class="sd">        The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters found.</span>
+<span class="sd">    Centroids : *&#39;.bundles&#39;* format</span>
+<span class="sd">        Directory that contains the centroid for each created cluster in same *&#39;.bundles&#39;* files. </span>
+<span class="sd">        The firt fiber of bundle centroid is corresponding with centroid calculated for cluster one and so on</span>
+<span class="sd">    Index of fibers per clusters : text file</span>
+<span class="sd">        Text file that stores the fiber index input for each of the detected clusters. </span>
+<span class="sd">        The fiber indexes are extracted from the tractography input. The first line corresponds to cluster zero and so on.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    To test `hclust()`,  download the data from the link provided [link to be provided][datahclust]. Then, open a Python terminal and run the following commands.</span>
+
+<span class="sd">    &gt;&gt;&gt; from phybers.clustering import hclust</span>
+<span class="sd">    &gt;&gt;&gt; hclust.cluster (file_in = &#39;fibers_test.bundles&#39;, dir_out = &#39;hclust_result&#39;, fiber_thr = 30, partition_thr = 40, variance = 3600)</span>
+
+<span class="sd">    You will locate the clustering results in the &#39;hclust_result&#39; directory.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dir_out</span><span class="p">):</span>
+      <span class="n">rmtree</span><span class="p">(</span><span class="n">dir_out</span><span class="p">)</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dir_out</span><span class="p">)</span>
+
+    <span class="n">final_bundles_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_out</span><span class="p">,</span> <span class="s1">&#39;FinalBundles&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">final_bundles_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">final_centroids_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_out</span><span class="p">,</span> <span class="s1">&#39;FinalCentroids&#39;</span><span class="p">)</span>
+    <span class="n">final_centroids_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">final_centroids_dir</span><span class="p">,</span> <span class="s1">&#39;centroids.bundles&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">final_centroids_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">outfile_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_out</span><span class="p">,</span> <span class="s1">&#39;outfile&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">outfile_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">np</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">read_bundle</span><span class="p">(</span><span class="n">file_in</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">np</span> <span class="o">=</span> <span class="mi">21</span>
+            <span class="k">break</span>
+
+    <span class="k">if</span> <span class="n">np</span> <span class="o">==</span> <span class="mi">21</span><span class="p">:</span>
+
+        <span class="n">final_bundles21p_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_out</span><span class="p">,</span> <span class="s1">&#39;FinalBundles21p&#39;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">final_centroids_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">fibers21p</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outfile_dir</span><span class="p">,</span> <span class="s1">&#39;fiberorig_21p.bundles&#39;</span><span class="p">)</span>
+        <span class="n">sampling</span><span class="p">(</span><span class="n">file_in</span><span class="p">,</span> <span class="n">fibers21p</span><span class="p">,</span> <span class="n">np</span><span class="p">)</span>
+
+        <span class="n">hierarchical</span><span class="p">(</span><span class="n">fibers21p</span><span class="p">,</span> <span class="n">outfile_dir</span><span class="p">,</span>
+                                <span class="n">fiber_thr</span><span class="p">)</span>
+        <span class="n">particional_hierarchical</span><span class="p">(</span>
+            <span class="n">fibers21p</span><span class="p">,</span> <span class="n">outfile_dir</span><span class="p">,</span> <span class="n">partition_thr</span><span class="p">,</span> <span class="n">variance</span><span class="p">,</span> <span class="n">final_bundles21p_dir</span><span class="p">)</span>
+        <span class="n">write_centroids</span><span class="p">(</span><span class="n">final_bundles_dir</span><span class="p">,</span> <span class="n">final_centroids_file</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">hierarchical</span><span class="p">(</span><span class="n">file_in</span><span class="p">,</span> <span class="n">outfile_dir</span><span class="p">,</span> <span class="n">fiber_thr</span><span class="p">)</span>
+        <span class="n">particional_hierarchical</span><span class="p">(</span>
+            <span class="n">file_in</span><span class="p">,</span> <span class="n">outfile_dir</span><span class="p">,</span> <span class="n">partition_thr</span><span class="p">,</span> <span class="n">variance</span><span class="p">,</span> <span class="n">final_bundles_dir</span><span class="p">)</span>
+        <span class="n">write_centroids</span><span class="p">(</span><span class="n">final_bundles_dir</span><span class="p">,</span> <span class="n">final_centroids_file</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, L.Liset González Rodríguez.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

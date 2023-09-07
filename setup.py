@@ -132,11 +132,10 @@ fibervis_ext = Extension("phybers.fibervis.FiberVis_core.FiberVis_core",
 
 setup(
     name="phybers",
-    version="0.1.0b2",
-    description="Integration of multiple tractography and neural-fibers"
-                "related tools and algorithms.",
+    version="0.1.0b3",
+    description="Phybers: A Package for Brain Tractography Analysis.",
     url="https://github.com/phybers/phybers",
-    author="L. Liset Gonzales, Alejandro Cofre, Gonzalo Sabat",
+    author="L. Liset Gonzalez, Alejandro Cofre",
     author_email="phybers.dmris@gmail.com",
     license="GNU",
     classifiers=['Development Status :: 4 - Beta'],
@@ -156,7 +155,8 @@ setup(
         "scikit-image",
         "scipy",
         "openpyxl",
-        "regex"
+        "regex",
+        "importlib_resources"
     ],
     package_dir={'': "src"},
     packages=find_packages(where="./src",

@@ -76,7 +76,29 @@ def parse_args_and_run():
 
 def main(bundles=(), mri=(), mesh=(), args: list[str] = []):
     from .WindowController import WindowController
+    """
+    Initializes the graphical user interface (GUI).
+    
+    Parameters
+    ----------
+    None
 
+    Examples
+    --------
+    To test `fibervis()`, download the data from the links provided above. Then, open a Python terminal and run the following commands:
+
+    >>> from phybers.fibervis import start_fibervis
+    >>> start_fibervis()
+    
+    `fibervis()` is installed as a program, allowing you to run it through the command line in Windows or Ubuntu. To execute it on both platforms, use the following command:
+
+    .. code-block:: bash
+
+       fibervis
+
+    For your convenience in using `fibervis()`, a video demonstrating all its features is accessible through the following link:
+    :video_link: [Video Link][video].    
+    """
     app = QtWidgets.QApplication(args)
     fiber = WindowController()
     fiber.show()
