@@ -628,7 +628,7 @@ class GLWidget(QtWidgets.QOpenGLWidget):
 
 			elif self.pan:
 				self.panning = True
-				translateV = self.camera.vectorFromScreen(dx, dy)
+				translateV = self.camera.vectorFromScreen(dx, -dy)
 
 				if isinstance(self.currentObject, list):
 					for cObject_i in self.currentObject:
