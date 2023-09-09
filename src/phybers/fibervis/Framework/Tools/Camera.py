@@ -46,7 +46,7 @@ class Camera():
 
     def orbit(self, dx, dy):
         self.phi = (self.phi - dx * self.r_speed) % (np.pi * 2)
-        self.theta = np.clip(self.theta + dy * self.r_speed, -np.pi / 2, np.pi / 2)
+        self.theta = np.clip(self.theta - dy * self.r_speed, -np.pi / 2, np.pi / 2)
         return self.calculateView()
 
     def spin(self, theta):
@@ -151,9 +151,9 @@ class Camera():
         return self.calculateView()
 
     def bottomView(self):
-        self.up = self.ro_front
+        self.up = self.ro_back
         self.forward = self.ro_up
-        self.right = self.ro_right
+        self.right = self.ro_left
         self.phi = 0
         self.theta = 0
         return self.calculateView()

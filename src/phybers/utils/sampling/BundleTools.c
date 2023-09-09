@@ -159,7 +159,7 @@ struct bundle sliceFiber( struct bundle fibras, int sliceNum)
         acc_length[0] = 0;
 
         int j;
-        for (j = 0; j < *(fibras.npoints+k)-3; j++)
+        for (j = 0; j < *(fibras.npoints+k) - 1; j++)
         {
             fiberlength += sqrt( pow(*(fibras.points[k]+(j*3)) - *(fibras.points[k]+(j*3)+3),2) +
                                  pow(*(fibras.points[k]+(j*3)+1) - *(fibras.points[k]+(j*3)+1+3),2) +

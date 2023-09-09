@@ -2,6 +2,7 @@
 .vscode/
 dist/
 build/
+src/phybers/segment/fiberseg/data/**
 **/__pycache__/
 c_wrappers.*
 *.pyd

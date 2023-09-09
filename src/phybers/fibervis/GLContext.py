@@ -471,13 +471,13 @@ class GLWidget(QtWidgets.QOpenGLWidget):
 
 		# Shader selection
 		elif action == VisualizationActions.ShaderSelection:
-			data = options['data']
+			selected_shader = options['data'][0]
 
 			if index == -1:
 				for i in objectRoot:
-					i.setSelectedShader(data)
+					i.setSelectedShader(selected_shader)
 			else:
-				itemObject.setSelectedShader(data)
+				itemObject.setSelectedShader(selected_shader)
 		# Focus camera on object
 		elif action == VisualizationActions.FocusObject:
 			size = None
@@ -491,6 +491,14 @@ class GLWidget(QtWidgets.QOpenGLWidget):
 				for shaders in self.shaderList:
 					for shader in shaders:
 						self._configView(shader)
+		elif action == VisualizationActions.ColorSelection:
+			data = options['data']
+
+			if index == -1:
+				for i in objectRoot:
+					i.set_color(data)
+			else:
+				itemObject.set_color(data)
 		else:
 			raise TypeError('Unrecognise visualization objects action')
 

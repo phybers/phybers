@@ -365,6 +365,13 @@ class Mesh(VisualizationBaseObject):
     def getRGB256(self):
         return self.triangleColor*255
 
+    def getRGBA256(self):
+        r = int(self.triangleColor[0])
+        g = int(self.triangleColor[1])
+        b = int(self.triangleColor[2])
+        a = int(self.alpha * 255)
+        return  r, g, b, a
+
 
     @propagateToChildren
     @drawable

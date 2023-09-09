@@ -100,6 +100,9 @@ class Bundle(VisualizationBaseObject):
 
         print("Loading ready:\n\t", self.curvescount, " fibers.\n\t", len(self.bundlesName), " bundles.")
 
+    def set_color(self, data):
+        self.colorTable[:, :3] = data[0]
+        self._loadColorTexture()
 
     def get_center(self):
         return self.boundingbox.get_center() + self.translateMat[:3, 3].flat

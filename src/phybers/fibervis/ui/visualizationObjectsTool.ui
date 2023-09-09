@@ -632,6 +632,13 @@
                 </item>
                </layout>
               </item>
+              <item row="1" column="0">
+                <widget class="QPushButton" name="changeBundleColorButton">
+                  <property name="text">
+                    <string>Change Color</string>
+                  </property>
+                </widget>
+              </item>
              </layout>
             </widget>
            </item>
@@ -675,7 +682,7 @@
                   <item>
                    <widget class="QPushButton" name="setColorButton">
                     <property name="text">
-                     <string>Set color</string>
+                     <string>Change color</string>
                     </property>
                    </widget>
                   </item>

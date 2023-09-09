@@ -14,6 +14,7 @@ from .AtlasBasedParallelSegmentationDialog import AtlasBasedParallelSegmentation
 from .FFClustSegmentationDialog import FFClustSegmentationDialog
 from ...Framework.Tools.visualizationEnums import SegmentationTypes, segmentations, mriVisualizations, VisualizationActions, VisualizationObject
 from ...Framework.Segmentation.SegmentationHandler import SegmentationHandler
+from ...Framework.Mesh import Mesh
 
 _vot_ui = files('phybers.fibervis.ui').joinpath(
 	'visualizationObjectsTool.ui')
@@ -524,6 +525,7 @@ class VisDialog(QtWidgets.QDialog):
 
 			# --------------------MESH--------------------
 			if current.identifier == VisualizationObject.Mesh and len(number) != 0:
+				assert isinstance(refObj, Mesh)
 				self.meshGroupBox.show()
 
 				self.configMeshGB(action='disconnect')
@@ -531,7 +533,7 @@ class VisDialog(QtWidgets.QDialog):
 				self.ui.opacitySlider.setValue(int(self.ui.opacitySlider.maximum()*refObj.alpha))
 
 				self.ui.colorWidget.setAutoFillBackground(True)
-				self.ui.colorWidget.setPalette(QtGui.QPalette(QtGui.QColor(*(refObj.getRGB256()))))
+				self.ui.colorWidget.setPalette(QtGui.QPalette(QtGui.QColor(*refObj.getRGBA256())))
 
 				if refObj.back2frontSorting:
 					self.ui.back2frontRadioButton.setChecked(True)
@@ -651,10 +653,18 @@ class VisDialog(QtWidgets.QDialog):
 	@QtCore.pyqtSlot()
 	def modifyBundleObject(self):
 		item = self.ui.treeWidget.currentItem()
-		shaderSelected = 0 if self.ui.shaderRadioButton_0.isChecked() else 1
+		if self.sender() in {self.ui.shaderRadioButton_0, self.ui.shaderRadioButton_1}:
+			shaderSelected = 0 if self.ui.shaderRadioButton_0.isChecked() else 1
+			action = VisualizationActions.ShaderSelection
+			data = [shaderSelected]
+		else:
+			color = QtWidgets.QColorDialog.getColor()
+			if not color.isValid():
+				return
+			action = VisualizationActions.ColorSelection
+			data = [(color.red()/255, color.green()/255, color.blue()/255)]
 
-		modifyObject = self.prepareDictionary(item, VisualizationActions.ShaderSelection, data=(shaderSelected))
-
+		modifyObject = self.prepareDictionary(item, action, data=data)
 		self.changeObject.emit(modifyObject)
 
 
@@ -774,6 +784,7 @@ class VisDialog(QtWidgets.QDialog):
 	def bundleGBSignals(self, action='connect'):
 		getattr(self.ui.shaderRadioButton_0.clicked, action) (self.modifyBundleObject)
 		getattr(self.ui.shaderRadioButton_1.clicked, action) (self.modifyBundleObject)
+		getattr(self.ui.changeBundleColorButton.clicked, action) (self.modifyBundleObject)
 
 	def sliceGBSignals(self, action='connect'):
 		getattr(self.ui.linearInterpCheckBox.clicked, action) (self.modifySliceObject)
