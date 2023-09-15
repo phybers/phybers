@@ -54,8 +54,8 @@ def curve_to_str_slopes(curve, sign=True):
 # data for minhashing.
 # Here curves is just an iterable.
 def encode_curves(curves, encoding_function):
-   for curve in curves:
-       yield encoding_function(curve)
+    for curve in curves:
+        yield encoding_function(curve)
 
 def flatten_lists(clusters_streamlines):
     return list(itertools.chain.from_iterable(clusters_streamlines))

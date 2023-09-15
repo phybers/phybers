@@ -90,7 +90,7 @@ class Atlas(VisualizationBaseObject):
         # # point bundles.points to atlas.points?
 
         # self.colorTable = np.empty(len(self.bundlesNames)*4, dtype=np.float32)
-        # np.concatenate([i.colorTable for i in self.children], out=self.colorTable)			# Color for each Bundle
+        # np.concatenate([i.colorTable for i in self.children], out=self.colorTable)                    # Color for each Bundle
 
         # # We set the boundingbox parameters
         # x = self.points[0::3]
@@ -326,11 +326,11 @@ class AtlasBasedParallelSegmentation(SegmentationHandler):
                 self.fiberLengthTimes3//3)
 
             # cfuncs.reSampleBundle(
-            # 	self.points.ctypes.data,
-            # 	self.fiberSizes.ctypes.data,
-            # 	self.curvescount,
-            # 	self.fixedPoints.ctypes.data,
-            # 	self.fiberLengthTimes3//3)
+            #   self.points.ctypes.data,
+            #   self.fiberSizes.ctypes.data,
+            #   self.curvescount,
+            #   self.fixedPoints.ctypes.data,
+            #   self.fiberLengthTimes3//3)
             print('Done.')
         else:
             self.fixedPoints = self.points
@@ -370,14 +370,14 @@ class AtlasBasedParallelSegmentation(SegmentationHandler):
             self.fiberValidator)
 
         # cfuncs.AtlasBasedSegmentation(
-        # 	self.atlas.validPoints.ctypes.data,					# ctypes.c_void_p,			# float *atlas_data				vector with all the 3d points for the atlas
-        # 	self.atlas.validPoints.size,						# ctypes.c_int,				# unsigned int atlas_data_size	size of the vector with all the points for the atlas
-        # 	self.fixedPoints.ctypes.data,						# ctypes.c_void_p,			# float *subject_data 			vector with all the 3d points for the subject
-        # 	self.fixedPoints.size,								# ctypes.c_int,				# unsigned int subject_data_size 	size of the vector with all the points for the subject
-        # 	self.fiberLengthTimes3, 							# ctypes.c_int,				# unsigned short int ndata_fiber	number of points per fiber (*3) so 21 points = 63
-        # 	self.atlas.validThreshold.ctypes.data,				# ctypes.c_void_p,			# unsigned char *thresholds		vector with the thresholds for each fascicle on the atlas
-        # 	self.atlas.validFiber2Bundle.ctypes.data,			# ctypes.c_void_p,			# unsigned int *bundle_of_fiber	vector of atlas_points_size with id for the fascicle that correspondence
-        # 	self.fiberValidator.ctypes.data)					# ctypes.c_void_p)			# unsigned char *assignment 		size nfibers_subject. And all data set to 254 - result vector
+        #       self.atlas.validPoints.ctypes.data,                                     # ctypes.c_void_p,                      # float *atlas_data                             vector with all the 3d points for the atlas
+        #       self.atlas.validPoints.size,                                            # ctypes.c_int,                         # unsigned int atlas_data_size  size of the vector with all the points for the atlas
+        #       self.fixedPoints.ctypes.data,                                           # ctypes.c_void_p,                      # float *subject_data                   vector with all the 3d points for the subject
+        #       self.fixedPoints.size,                                                          # ctypes.c_int,                         # unsigned int subject_data_size        size of the vector with all the points for the subject
+        #       self.fiberLengthTimes3,                                                         # ctypes.c_int,                         # unsigned short int ndata_fiber        number of points per fiber (*3) so 21 points = 63
+        #       self.atlas.validThreshold.ctypes.data,                          # ctypes.c_void_p,                      # unsigned char *thresholds             vector with the thresholds for each fascicle on the atlas
+        #       self.atlas.validFiber2Bundle.ctypes.data,                       # ctypes.c_void_p,                      # unsigned int *bundle_of_fiber vector of atlas_points_size with id for the fascicle that correspondence
+        #       self.fiberValidator.ctypes.data)                                        # ctypes.c_void_p)                      # unsigned char *assignment             size nfibers_subject. And all data set to 254 - result vector
 
         self.segmentedBundles = [(self.atlas.bundlesNames[self.atlas.validBundlesIndex[i]], (self.fiberValidator[:self.curvescount] == i).sum(), i)
                                     for i in range(len(self.atlas.validBundles))
@@ -476,16 +476,16 @@ class AtlasBasedParallelSegmentation(SegmentationHandler):
         # VBO positions
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo[0])
 
-        positionAttribute =	self.shader[0].attributeLocation('vertexPos')
+        positionAttribute =     self.shader[0].attributeLocation('vertexPos')
         GL.glEnableVertexAttribArray(positionAttribute)
         GL.glVertexAttribPointer(positionAttribute,3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
 
         # VBO normals
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo[1])
 
-        normalAttribute =	self.shader[0].attributeLocation('vertexNor')
+        normalAttribute =       self.shader[0].attributeLocation('vertexNor')
         GL.glEnableVertexAttribArray(normalAttribute)
-        GL.glVertexAttribPointer(normalAttribute,	3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
+        GL.glVertexAttribPointer(normalAttribute,       3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
 
         # EBO
         GL.glBindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, self.ebo)
@@ -508,13 +508,13 @@ class AtlasBasedParallelSegmentation(SegmentationHandler):
                     self.fiberValidator)
 
         # cfuncs.AtlasBasedSegmentationExportbundlesdata(
-        # 	(outfile+'data').encode('utf-8'),
-        # 	len(self.segmentedBundles),
-        # 	bundlesSelected.ctypes.data,
-        # 	self.fiberSizes.ctypes.data,
-        # 	self.points.ctypes.data,
-        # 	self.fiberSizes.size,
-        # 	self.fiberValidator.ctypes.data)
+        #       (outfile+'data').encode('utf-8'),
+        #       len(self.segmentedBundles),
+        #       bundlesSelected.ctypes.data,
+        #       self.fiberSizes.ctypes.data,
+        #       self.points.ctypes.data,
+        #       self.fiberSizes.size,
+        #       self.fiberValidator.ctypes.data)
 
         # wrtie minf file
         minf = """attributes = {\n    'binary' : 1,\n    'bundles' : %s,\n    'byte_order' : 'DCBA',\n    'curves_count' : %s,\n    'data_file_name' : '*.bundlesdata',\n    'format' : 'bundles_1.0',\n    'space_dimension' : 3\n  }\n"""

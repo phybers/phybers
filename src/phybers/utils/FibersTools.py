@@ -9,15 +9,15 @@ import regex
 #%%
 _curves_count_p = regex.compile(r"\s*'curves_count'\s*:\s*(\d+),")
 def getBundleSize( bundlefile ):
-  """ Get Bundles Size from file.
-  """
-  #get center names from bundle file
-  with open(bundlefile, 'rt') as f:
-      m = _curves_count_p.search(f.read())
-      if m:
-         return int(m.group(1))
-      else:
-         raise Exception
+    """ Get Bundles Size from file.
+    """
+    #get center names from bundle file
+    with open(bundlefile, 'rt') as f:
+        m = _curves_count_p.search(f.read())
+        if m:
+            return int(m.group(1))
+        else:
+            raise Exception
 
 def fiber_lens(fiber):
     """

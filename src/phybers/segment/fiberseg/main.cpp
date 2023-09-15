@@ -343,8 +343,11 @@ void read_atlas_info(string path, vector<string> &names, vector<unsigned char> &
                      unsigned int &nfibers_atlas, vector<unsigned int> &fibers_per_bundle){
 
     ifstream infile(path, ios::in );
-    if( !infile )
-        cerr << "Cant open " << endl;
+    if( !infile ){
+        stringstream err;
+        err << "File error opening file " << path << ".";
+        throw runtime_error(err.str());
+    }
 
     string name;
     unsigned short int t;

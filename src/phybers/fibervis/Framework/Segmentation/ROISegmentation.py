@@ -65,7 +65,7 @@ class ROISegmentation(SegmentationHandler):
         else:
             roisResults = np.zeros((n, self.curvescount), dtype=np.int8)
 
-            dt = np.dtype([	('center', np.float32, 3),
+            dt = np.dtype([     ('center', np.float32, 3),
                             ('radius', np.float32, 3),
                             ('roiType', np.int32, (1,))])
 

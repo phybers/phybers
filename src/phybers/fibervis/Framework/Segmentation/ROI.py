@@ -152,7 +152,7 @@ class ROI(VisualizationBaseObject):
         # VBO
         bufferSize = self.points.nbytes + self.normals.nbytes + self.color.nbytes
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo)
-        GL.glBufferData(GL.GL_ARRAY_BUFFER, bufferSize, None, GL.GL_STATIC_DRAW)	# Create empty buffer
+        GL.glBufferData(GL.GL_ARRAY_BUFFER, bufferSize, None, GL.GL_STATIC_DRAW)        # Create empty buffer
 
         # Populate buffer with points
         GL.glBufferSubData(GL.GL_ARRAY_BUFFER,
@@ -173,19 +173,19 @@ class ROI(VisualizationBaseObject):
             self.color.flatten())
 
         # Enable attributes
-        positionAttribute =	self.shader[0].attributeLocation('vertexPos')
-        normalAttribute =	self.shader[0].attributeLocation('vertexNor')
-        colorAttribute =	self.shader[0].attributeLocation('vertexCol')
+        positionAttribute =     self.shader[0].attributeLocation('vertexPos')
+        normalAttribute =       self.shader[0].attributeLocation('vertexNor')
+        colorAttribute =        self.shader[0].attributeLocation('vertexCol')
 
         # # Connect attributes
         GL.glEnableVertexAttribArray(positionAttribute)
         GL.glVertexAttribPointer(positionAttribute,3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
 
         GL.glEnableVertexAttribArray(normalAttribute)
-        GL.glVertexAttribPointer(normalAttribute,	3, GL.GL_FLOAT, GL.GL_FALSE, 0, ct.c_void_p(self.points.nbytes))
+        GL.glVertexAttribPointer(normalAttribute,       3, GL.GL_FLOAT, GL.GL_FALSE, 0, ct.c_void_p(self.points.nbytes))
 
         GL.glEnableVertexAttribArray(colorAttribute)
-        GL.glVertexAttribPointer(colorAttribute,	1, GL.GL_INT, GL.GL_FALSE, 0, ct.c_void_p(2*self.points.nbytes))
+        GL.glVertexAttribPointer(colorAttribute,        1, GL.GL_INT, GL.GL_FALSE, 0, ct.c_void_p(2*self.points.nbytes))
 
     def createSphere(self):
         def subdivideTriangles(triangles):
@@ -193,22 +193,22 @@ class ROI(VisualizationBaseObject):
 
             for triangle in triangles:
                 # first triangle
-                result.append([	triangle[0],
+                result.append([ triangle[0],
                                 (triangle[1]-triangle[0])*0.5 + triangle[0],
                                 (triangle[2]-triangle[0])*0.5 + triangle[0]])
 
                 # second triangle
-                result.append([	triangle[1],
+                result.append([ triangle[1],
                                 (triangle[0]-triangle[1])*0.5 + triangle[1],
                                 (triangle[2]-triangle[1])*0.5 + triangle[1]])
 
                 # third triangle
-                result.append([	triangle[2],
+                result.append([ triangle[2],
                                 (triangle[0]-triangle[2])*0.5 + triangle[2],
                                 (triangle[1]-triangle[2])*0.5 + triangle[2]])
 
                 # fourth triangle
-                result.append([	(triangle[1]-triangle[0])*0.5 + triangle[0],
+                result.append([ (triangle[1]-triangle[0])*0.5 + triangle[0],
                                 (triangle[2]-triangle[0])*0.5 + triangle[0],
                                 (triangle[2]-triangle[1])*0.5 + triangle[1]])
 

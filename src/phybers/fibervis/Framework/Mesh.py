@@ -266,11 +266,11 @@ class Mesh(VisualizationBaseObject):
         normals = np.zeros(vertex.shape, dtype=np.float32)
 
         for triangle in triangles:
-            # n = np.cross(vertex[triangle[1]]-vertex[triangle[0]],	vertex[triangle[2]]-vertex[triangle[0]])
+            # n = np.cross(vertex[triangle[1]]-vertex[triangle[0]],     vertex[triangle[2]]-vertex[triangle[0]])
             # n = n/np.linalg.norm(n)
 
             # normals[triangle] += n
-            normals[triangle] += np.cross(vertex[triangle[1]]-vertex[triangle[0]],	vertex[triangle[2]]-vertex[triangle[0]])
+            normals[triangle] += np.cross(vertex[triangle[1]]-vertex[triangle[0]],      vertex[triangle[2]]-vertex[triangle[0]])
 
         normals /= np.linalg.norm(normals, axis=1).reshape(normals.shape[0],1)
 
@@ -303,7 +303,7 @@ class Mesh(VisualizationBaseObject):
         # VBO
         bufferSize = self.points.nbytes + self.normals.nbytes
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo)
-        GL.glBufferData(GL.GL_ARRAY_BUFFER, bufferSize, None, GL.GL_STATIC_DRAW)	# Create empty buffer
+        GL.glBufferData(GL.GL_ARRAY_BUFFER, bufferSize, None, GL.GL_STATIC_DRAW)        # Create empty buffer
 
         # Populate buffer with points
         GL.glBufferSubData(GL.GL_ARRAY_BUFFER,
@@ -322,15 +322,15 @@ class Mesh(VisualizationBaseObject):
         GL.glBufferData(GL.GL_ELEMENT_ARRAY_BUFFER, self.faces.nbytes, None, GL.GL_STATIC_DRAW)
 
         # Enable attributes
-        positionAttribute =	self.shader[0].attributeLocation('vertexPos')
-        normalAttribute =	self.shader[0].attributeLocation('vertexNor')
+        positionAttribute =     self.shader[0].attributeLocation('vertexPos')
+        normalAttribute =       self.shader[0].attributeLocation('vertexNor')
 
         # # Connect attributes
         GL.glEnableVertexAttribArray(positionAttribute)
         GL.glVertexAttribPointer(positionAttribute,3, GL.GL_FLOAT, GL.GL_FALSE, 3*fSize, None)
 
         GL.glEnableVertexAttribArray(normalAttribute)
-        GL.glVertexAttribPointer(normalAttribute,	3, GL.GL_FLOAT, GL.GL_FALSE, 3*fSize, ct.c_void_p(self.points.nbytes))
+        GL.glVertexAttribPointer(normalAttribute,       3, GL.GL_FLOAT, GL.GL_FALSE, 3*fSize, ct.c_void_p(self.points.nbytes))
 
 
     def _loadMeshAttributes(self):

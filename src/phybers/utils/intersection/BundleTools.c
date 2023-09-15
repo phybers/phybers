@@ -13,7 +13,12 @@ struct bundle read_bundle(char* bunfile)
 
     FILE *fb;
     fb = fopen(bunfile, "r");
-    if (fb == NULL) {fputs ("File error",stderr); exit (1);}
+    if (fb == NULL)
+    {
+        fputs("File error.\n", stderr);
+        fputs(bunfile, stderr);
+        exit(1);
+    }
 
     char buffer[100];   //buffer para la linea
     fgets(buffer,100,fb);//Lecturas para llegar la liena 5 del archivo

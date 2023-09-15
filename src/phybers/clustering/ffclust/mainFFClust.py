@@ -14,8 +14,8 @@ from .utils import clusters_fibers21p, save_clusters, save_clusters_centroids
 
 def ffclust(file_in: str, dir_out: str, assign_thr: int=6, join_thr: int=6) -> bool:
     """
-    Intra-subject clustering algorithm aims to identify compact and homogeneous fiber clusters on a large tractography dataset. 
-    
+    Intra-subject clustering algorithm aims to identify compact and homogeneous fiber clusters on a large tractography dataset.
+
     Parameters
     ----------
     file_in : str
@@ -36,10 +36,10 @@ def ffclust(file_in: str, dir_out: str, assign_thr: int=6, join_thr: int=6) -> b
     This function generates the following files in the specified directory:
 
     Clusters : bundles files
-        Directory that stores all the fiber clusters found in different '.bundles' files. 
+        Directory that stores all the fiber clusters found in different '.bundles' files.
         The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters found.
     Centroids : bundles file
-        Directory that contains the centroid for each created cluster in same *'.bundles'* files. 
+        Directory that contains the centroid for each created cluster in same *'.bundles'* files.
         The firt fiber of bundle centroid is corresponding with centroid calculated for cluster one an so on.
     Index of fibers per clusters : text file
         Text file that stores the fiber index input for each of the detected clusters. The fiber indexes are extracted from the tractography input.
@@ -55,7 +55,7 @@ def ffclust(file_in: str, dir_out: str, assign_thr: int=6, join_thr: int=6) -> b
 
     You will locate the clustering results in the 'ffclust_result' directory.
     """
-        
+
     if isinstance(assign_thr, str):
         assign_thr = int(assign_thr)
     if isinstance(join_thr, str):
@@ -146,15 +146,15 @@ def ffclust(file_in: str, dir_out: str, assign_thr: int=6, join_thr: int=6) -> b
     labels = clusterer.predict(centroids_points)
 
     groups = get_groups(labels, ngroups=ngroups)
-    joined_clusters = parallel_group_join_clique(actual_clusters, groups, fibers,final_bundles21p_dir,final_centroids_dir,ident_clusters,object_dir,join_thr)
 
-
-    final_clusters = joined_clusters
+    final_clusters = parallel_group_join_clique(actual_clusters, groups, fibers, final_bundles21p_dir, final_centroids_dir, ident_clusters, object_dir, join_thr)
     final_centroids_filename = os.path.join(object_dir, 'final_centroids.txt')
     save_clusters_centroids(clusters=final_clusters, filename=final_centroids_filename)
 
+    final_bundles_dir = os.path.join(dir_out, 'FinalBundles')
     if npf == 21:
-        final_bundles_dir = os.path.join(dir_out,'FinalBundles')
         os.makedirs(final_bundles_dir, exist_ok=True)
         clusters_fibers21p(final_clusters, final_bundles_dir, data)
+    else:
+        os.rename(final_bundles21p_dir, final_bundles_dir)
     return True

@@ -138,23 +138,23 @@ class SegmentationHandler(VisualizationBaseObject):
         # VBO position
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo[0])
 
-        positionAttribute =	self.shader[0].attributeLocation('vertexPos')
+        positionAttribute =     self.shader[0].attributeLocation('vertexPos')
         GL.glEnableVertexAttribArray(positionAttribute)
         GL.glVertexAttribPointer(positionAttribute,3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
 
         # VBO normals
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo[1])
 
-        normalAttribute =	self.shader[0].attributeLocation('vertexNor')
+        normalAttribute =       self.shader[0].attributeLocation('vertexNor')
         GL.glEnableVertexAttribArray(normalAttribute)
-        GL.glVertexAttribPointer(normalAttribute,	3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
+        GL.glVertexAttribPointer(normalAttribute,       3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
 
         # VBO colors
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo[2])
 
-        colorAttribute =	self.shader[0].attributeLocation('vertexCol')
+        colorAttribute =        self.shader[0].attributeLocation('vertexCol')
         GL.glEnableVertexAttribArray(colorAttribute)
-        GL.glVertexAttribPointer(colorAttribute,	1, GL.GL_INT, GL.GL_FALSE, 0, None)
+        GL.glVertexAttribPointer(colorAttribute,        1, GL.GL_INT, GL.GL_FALSE, 0, None)
 
         # EBO
         GL.glBindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, self.ebo)
@@ -316,13 +316,13 @@ class SegmentationHandler(VisualizationBaseObject):
 
 
         # cfuncs.ROISegmentationExportbundlesdata(
-        # 	(outfile+'data').encode('utf-8'),
-        # 	len(self.bundlesName),
-        # 	self.bundlesStart.ctypes.data,
-        # 	self.fiberSizes.ctypes.data,
-        # 	bundleCount.ctypes.data,
-        # 	self.points.ctypes.data,
-        # 	self.fiberValidator.ctypes.data)
+        #       (outfile+'data').encode('utf-8'),
+        #       len(self.bundlesName),
+        #       self.bundlesStart.ctypes.data,
+        #       self.fiberSizes.ctypes.data,
+        #       bundleCount.ctypes.data,
+        #       self.points.ctypes.data,
+        #       self.fiberValidator.ctypes.data)
 
         ncount = (self.fiberValidator[:self.curvescount] != 0).sum()
 

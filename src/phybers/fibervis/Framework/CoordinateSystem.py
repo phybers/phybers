@@ -55,22 +55,22 @@ class CoordinateSystem(VisualizationBaseObject):
         # Parameters
         # ----------
         # rCilinder : float
-        # 	radius for the cilinder.
+        #       radius for the cilinder.
         # lCilinder : float
-        # 	lengh for the arrow before the head.
+        #       lengh for the arrow before the head.
         # rCone : float
-        #	radius for the arrow head.
+        #       radius for the arrow head.
         # lCone : float
-        #	length of the arrow head.
+        #       length of the arrow head.
         # detail : int
-        #	number of faces to build the arrow.
+        #       number of faces to build the arrow.
         #
         # Returns
         # -------
         # arrowPoints : numpy.array
-        # 	An array with the points.
+        #       An array with the points.
         # elements : numpy.array
-        #	Array with the order of the drawing.
+        #       Array with the order of the drawing.
 
         if not isinstance(detail, int):
             raise TypeError('Variable detail must be a integer major than 2.')
@@ -82,8 +82,8 @@ class CoordinateSystem(VisualizationBaseObject):
         arrowPoints[6] = lCilinder+lCone
 
         angle = 2.0*np.pi/detail
-        line = [0.0,		rCilinder,	0.0,
-                lCilinder,	rCilinder,	0.0]
+        line = [0.0,            rCilinder,      0.0,
+                lCilinder,      rCilinder,      0.0]
 
         for i in range(detail):
             rotation = glm.Quaternion.fromAngleAxis(angle*i, [1,0,0])
@@ -159,20 +159,20 @@ class CoordinateSystem(VisualizationBaseObject):
         # VBO
         # bufferSize = self.points.nbytes
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo)
-        GL.glBufferData(GL.GL_ARRAY_BUFFER, self.points.nbytes, self.points.flatten(), GL.GL_STATIC_DRAW)	# Create empty buffer
+        GL.glBufferData(GL.GL_ARRAY_BUFFER, self.points.nbytes, self.points.flatten(), GL.GL_STATIC_DRAW)       # Create empty buffer
 
         # Populate buffer with points
         # GL.glBufferSubData(GL.GL_ARRAY_BUFFER,
-        # 	0,
-        # 	self.points.nbytes,
-        # 	self.points.flatten())
+        #       0,
+        #       self.points.nbytes,
+        #       self.points.flatten())
 
         # EBO
         GL.glBindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, self.ebo)
         GL.glBufferData(GL.GL_ELEMENT_ARRAY_BUFFER, self.elements.nbytes, self.elements.flatten(), GL.GL_STATIC_DRAW)
 
         # Enable attributes
-        positionAttribute =	self.shader[0].attributeLocation('vertexPos')
+        positionAttribute =     self.shader[0].attributeLocation('vertexPos')
 
         # # Connect attributes
         GL.glEnableVertexAttribArray(positionAttribute)

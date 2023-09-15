@@ -12,7 +12,7 @@ from ..utils import sampling, read_bundle, write_bundle
 def fiberseg(file_in: str, id_subj: str, atlas_dir: str, atlas_info: str, dir_out: str) -> None:
     """
     White matter fiber bundle segmentation algorithm based on a multi-subject atlas.
-    
+
     Parameters
     ----------
     file_in : str
@@ -33,16 +33,16 @@ def fiberseg(file_in: str, id_subj: str, atlas_dir: str, atlas_info: str, dir_ou
 
     Notes
     -----
-    This function generates the following files in the specified directory:    
-    
+    This function generates the following files in the specified directory:
+
     Segmented fibers : bundles files
-        Directory contains all atlas fascicles extracted from the subject, saved as separate files in the '.bundles' format. 
+        Directory contains all atlas fascicles extracted from the subject, saved as separate files in the '.bundles' format.
         Each file's name is composed of the atlas label followed by the subject's ID
     Centroids : bundles file
-        Directory that contains the centroid for each fascicle segmented in same *'.bundles'* files. 
+        Directory that contains the centroid for each fascicle segmented in same *'.bundles'* files.
     Index of fibers per fasciculus : text file
         Text file containing the indexes of the fibers that were segmented by each fascicle of the atlas.
-        
+
     Examples
     --------
     To use the `fiberseg()` function, you need to download the tractography data from the `link fiberseg  <https://www.dropbox.com/sh/tj67742sxvmqfg1/AAD_J41rw4E70OVFayAy18T6a?dl=1>`_ .
@@ -56,8 +56,8 @@ def fiberseg(file_in: str, id_subj: str, atlas_dir: str, atlas_info: str, dir_ou
     >>> dir_out = 'path_to_output_directory'
     >>> fiberseg(file_in, id_subj, atlas_dir, atlas_info, dir_out)
 
-    Note: Make sure to replace 'path_to_tractography_data', 'path_to_atlas', and 'path_to_output_directory' with the actual paths to your data and directories. 
-    
+    Note: Make sure to replace 'path_to_tractography_data', 'path_to_atlas', and 'path_to_output_directory' with the actual paths to your data and directories.
+
     """
 
 

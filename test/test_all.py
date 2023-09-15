@@ -1,7 +1,7 @@
 from pathlib import Path
 from json import load
 
-def load_config(file = "config.json"):
+def load_config(file="config.json"):
     p = Path(file)
 
     if p.is_absolute():
@@ -20,6 +20,7 @@ def load_config(file = "config.json"):
     with open(str(p), 'rt') as config_file:
         return load(config_file)
 
+
 def try_import() -> bool:
     try:
         import phybers
@@ -27,8 +28,6 @@ def try_import() -> bool:
     except ImportError:
         return False
 
-def call_exit() -> None:
-    exit()
 
 def ffclust():
     from phybers.clustering import ffclust
@@ -37,6 +36,7 @@ def ffclust():
         return True
     except SystemError:
         return False
+
 
 def hclust():
     from phybers.clustering import hclust
@@ -64,6 +64,7 @@ def deform():
     except SystemError:
         return False
 
+
 def intersection():
     from phybers.utils import intersection
     try:
@@ -72,6 +73,7 @@ def intersection():
     except SystemError:
         return False
 
+
 def sampling():
     from phybers.utils import sampling
     try:
@@ -79,6 +81,7 @@ def sampling():
         return True
     except SystemError:
         return False
+
 
 def postprocessing():
     from phybers.utils import postprocessing
@@ -93,23 +96,30 @@ def test_import_succes():
     print(Path.cwd())
     assert try_import()
 
+
 def test_ffclust():
     assert ffclust()
+
 
 def test_hclust():
     assert hclust()
 
+
 def test_segmentation():
     assert segmentation()
+
 
 def test_deform():
     assert deform()
 
+
 def test_intersection():
     assert intersection()
 
+
 def test_sampling():
     assert sampling()
+
 
 def test_postprocessing():
     assert postprocessing()

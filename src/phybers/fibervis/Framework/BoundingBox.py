@@ -50,16 +50,16 @@ class BoundingBox(VisualizationBaseObject):
         self.vbo = GL.glGenBuffers(1)
         self.ebo = GL.glGenBuffers(1)
 
-        boundingbox = np.array([1,	1,	0,
-                                1,	1,	1,
-                                0,	1,	1,
-                                0,	1,	0,
-                                1,	0,	0,
-                                1,	0,	1,
-                                0,	0,	0,
-                                0,	0,	1], dtype=np.float32)
+        boundingbox = np.array([1,      1,      0,
+                                1,      1,      1,
+                                0,      1,      1,
+                                0,      1,      0,
+                                1,      0,      0,
+                                1,      0,      1,
+                                0,      0,      0,
+                                0,      0,      1], dtype=np.float32)
 
-        boundingElements = np.array([	0, 1, 1, 2, 2, 3, 3, 6, 0, 3, 0, 4,
+        boundingElements = np.array([   0, 1, 1, 2, 2, 3, 3, 6, 0, 3, 0, 4,
                                         1, 5, 2, 7, 4, 6, 4, 5, 5, 7, 6, 7], dtype=np.uint32)
 
         # VBO
@@ -71,7 +71,7 @@ class BoundingBox(VisualizationBaseObject):
         GL.glBufferData(GL.GL_ELEMENT_ARRAY_BUFFER, boundingElements.nbytes, boundingElements, GL.GL_STATIC_DRAW)
 
         # Enable attributes
-        positionAttribute =	self.shader[0].attributeLocation('vertexPos')
+        positionAttribute =     self.shader[0].attributeLocation('vertexPos')
 
         # # Connect attributes
         GL.glEnableVertexAttribArray(positionAttribute)

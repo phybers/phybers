@@ -96,7 +96,7 @@ class MRI(VisualizationBaseObject):
 
         # DICOM file
         # elif extension == 'dicom':
-        # 	self.openDICOM()
+        #       self.openDICOM()
 
         # Unsopported file
         else:

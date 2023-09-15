@@ -86,10 +86,10 @@ def cal_centroide(cluster):
     cluster = np.asarray(cluster)
     r = is_reversed(cluster)
     if np.any(r):
-            c_copy = np.empty_like(cluster)
-            c_copy[~r] = cluster[~r]
-            c_copy[r] = cluster[r, ::-1]
-            cluster = c_copy
+        c_copy = np.empty_like(cluster)
+        c_copy[~r] = cluster[~r]
+        c_copy[r] = cluster[r, ::-1]
+        cluster = c_copy
     return np.sum(cluster, axis=0) / len(cluster)
 
 def write_centroids(clusters_dir, file_out):
@@ -103,9 +103,9 @@ def write_centroids(clusters_dir, file_out):
 
 
 def hclust(file_in: str, dir_out: str, fiber_thr: int, partition_thr: int, variance: int) -> None:
-    """ 
-    Average-link hierarchical agglomerative clustering algorithm which allows finding bundles based on a pairwise fiber distance measure. 
-    
+    """
+    Average-link hierarchical agglomerative clustering algorithm which allows finding bundles based on a pairwise fiber distance measure.
+
     Parameters
     ----------
     file_in : str
@@ -128,16 +128,16 @@ def hclust(file_in: str, dir_out: str, fiber_thr: int, partition_thr: int, varia
     This function generates the following files in the specified directory:
 
     Clusters : bundles files
-        Directory that stores all the fiber clusters found in different '.bundles' files. 
+        Directory that stores all the fiber clusters found in different '.bundles' files.
         The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters found.
     Centroids : bundles file
-        Directory that contains the centroid for each created cluster in same *'.bundles'* files. 
+        Directory that contains the centroid for each created cluster in same *'.bundles'* files.
         The firt fiber of bundle centroid is corresponding with centroid calculated for cluster one and so on
     Index of fibers per clusters : text file
-        Text file that stores the fiber index input for each of the detected clusters. 
+        Text file that stores the fiber index input for each of the detected clusters.
         The fiber indexes are extracted from the tractography input. The first line corresponds to cluster zero and so on.
 
-    Examples 
+    Examples
     --------
     To test `hclust()`,  download the data from the `link hclust  <https://www.dropbox.com/sh/dt196k65v03eh9m/AABKRW7ad2ssB0N_dpjqK4Dha?dl=1>`_.
     Then, open a Python terminal and run the following commands.
@@ -148,7 +148,7 @@ def hclust(file_in: str, dir_out: str, fiber_thr: int, partition_thr: int, varia
     You will locate the clustering results in the 'hclust_result' directory.
     """
     if os.path.exists(dir_out):
-      rmtree(dir_out)
+        rmtree(dir_out)
 
     os.mkdir(dir_out)
 

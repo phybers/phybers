@@ -3,10 +3,11 @@
 """
 import os
 import re
-import numpy as np
-import pandas as pd
+from shutil import rmtree
 from typing import Tuple
 from pathlib import Path
+import numpy as np
+import pandas as pd
 from .FibersTools import getBundleSize, fiber_lens, Stadistics_txt_toxlsx
 from .deform import deform as _deform
 from .sampling import slice_fibers as _sampling
@@ -39,6 +40,8 @@ def check_output_path(out_file: str, ext="", dir=False, overwrite=True):
     else:
         if p.exists() and not overwrite:
             raise ValueError(f"File {p} already exist and will not be deleted.")
+        if p.is_dir():
+            rmtree(str(p))
         if not p.parent.exists():
             os.makedirs(str(p.parent))
 
@@ -47,7 +50,7 @@ def check_output_path(out_file: str, ext="", dir=False, overwrite=True):
 def deform(deform_file: str, file_in: str, file_out: str) -> None:
     """
     Transforms a tractography file to another space using a non-linear deformation image file.
-    
+
     Parameters
     ----------
     deform_file : str
@@ -70,13 +73,13 @@ def deform(deform_file: str, file_in: str, file_out: str) -> None:
 
     Examples
     --------
-    To test `deform()`,  download the data from the `link deform <https://www.dropbox.com/sh/ncu8sf1ifwz4wpv/AACDzOXEdSrf8kBaWrbjfEPla?dl=1>`_. 
+    To test `deform()`,  download the data from the `link deform <https://www.dropbox.com/sh/ncu8sf1ifwz4wpv/AACDzOXEdSrf8kBaWrbjfEPla?dl=1>`_.
     Then, open a Python terminal and run the following commands.
 
     >>> from phybers.utils import deform
     >>> deform( deform_file = 'defnolineal.nii', file_in = 'fibers.bundles', file_out = 'fibers_MNI.bundles' )
 
-    Note: Make sure to replace the file paths with the actual paths to your data and directories. 
+    Note: Make sure to replace the file paths with the actual paths to your data and directories.
     """
     check_input_path(deform_file, ext='nii')
     check_input_path(file_in)
@@ -87,7 +90,7 @@ def deform(deform_file: str, file_in: str, file_out: str) -> None:
 def sampling(file_in: str, file_out: str, npoints: int = 21) -> None:
     """
     Performs a fiber sampling by recalculating their points using a specified number of equidistant points.
-    
+
     Parameters
     ----------
     file_in : str
@@ -112,13 +115,13 @@ def sampling(file_in: str, file_out: str, npoints: int = 21) -> None:
 
     Examples
     --------
-    To test `sampling()`,  download the data from the `link sampling <https://www.dropbox.com/sh/9tfxseo8uh68b32/AAAn56Xgiw7KhL2ILmkN6A23a?dl=1>`_. 
+    To test `sampling()`,  download the data from the `link sampling <https://www.dropbox.com/sh/9tfxseo8uh68b32/AAAn56Xgiw7KhL2ILmkN6A23a?dl=1>`_.
     Then, open a Python terminal and run the following commands.
-    
+
     >>> from phybers.utils import sampling
     >>> sampling ( file_in = 'sub_01.bundles', file_out = 'sub_01_21points.bundles', npoints = 21 )
 
-    Note: Make sure to replace the file paths with the actual paths to your data and directories.    
+    Note: Make sure to replace the file paths with the actual paths to your data and directories.
     """
     check_input_path(file_in, ext="bundles")
     check_output_path(file_out, ext="bundles")
@@ -128,8 +131,8 @@ def sampling(file_in: str, file_out: str, npoints: int = 21) -> None:
 def inter2bundles(file1_in: str, file2_in: str, dir_out: str,
                   distance_thr: float = 10.0) -> Tuple[float, float]:
     """
-    Calculates a similarity measure between two sets of brain fibers (fiber clusters or segmented bundles). 
-    The similarity measure yields a value between *0* and *100%*. 
+    Calculates a similarity measure between two sets of brain fibers (fiber clusters or segmented bundles).
+    The similarity measure yields a value between *0* and *100%*.
 
     Parameters
     ----------
@@ -144,7 +147,7 @@ def inter2bundles(file1_in: str, file2_in: str, dir_out: str,
 
     Returns
     -------
-    Tuple : [float, float] 
+    Tuple : [float, float]
         `[float, float]`, The first value indicates the percentage of intersection of the first set of fibers compared to the second set of fibers,
         and the second value indicates the reverse scenario, intersection of the second set of fibers compared to the first set of fibers.
 
@@ -158,7 +161,7 @@ def inter2bundles(file1_in: str, file2_in: str, dir_out: str,
     >>> result_inter=intersection ( file1_in = 'fib1.bundles', file2_in = 'fib2.bundles', dir_out = 'inter_result', distance_thr = 10.0 )
     >>> print(' intersection fibers1 with fibers2 ', result_inter [0] )
     >>> print(' intersection fibers2 with fibers1 ', result_inter [1] )
-    
+
     Note: Make sure to replace the file paths with the actual paths to your data and directories.
     """
 
@@ -167,13 +170,14 @@ def inter2bundles(file1_in: str, file2_in: str, dir_out: str,
     labelsb2 = os.path.split(file2_in)[1]  # num - columns
 
 
-    p1=0
-    p2=0
+    p1 = 0
+    p2 = 0
 
     str_out = labelsb1.split('.')[0]+'-'+labelsb2.split('.')[0]
 
-
-    outfile=os.path.join(dir_out,str_out+'.txt')
+    check_output_path(dir_out, dir=True)
+    outfile = os.path.join(dir_out,str_out+'.txt')
+    check_output_path(outfile)
 
     # computes the distance matrix between two fiber bundles.
     _intersection(file1_in, file2_in, outfile)
@@ -203,12 +207,12 @@ def inter2bundles(file1_in: str, file2_in: str, dir_out: str,
 def postprocessing(dir_in: str) -> pd.DataFrame:
     """
     Sets of algorithms that can be applied on the results of clustering and segmentation algorithms.
-    
+
     Parameters
     ----------
     dir_in : str
         Root directory where all segmentation or clustering algorithm results are stored.
-        
+
     Returns
     -------
     pd.DataFrame
@@ -223,8 +227,8 @@ def postprocessing(dir_in: str) -> pd.DataFrame:
 
     >>> from phybers.utils import postprocessing
     >>> df = postprocessing ( dir_in = str )
-    
-    Note: Make sure to replace the file paths with the actual paths to your data and directories.    
+
+    Note: Make sure to replace the file paths with the actual paths to your data and directories.
     """
     in_centroides=os.path.join(dir_in,'FinalCentroids','centroids.bundles')
     in_clusters_directory=os.path.join(dir_in,'FinalBundles')
@@ -276,7 +280,7 @@ _p1 = re.compile(r'^.*\.bundles$')
 def read_bundle(fp: str, npoints: int = 0) -> None:
     """
     Read bundles file.
-    
+
     Parameters
     ----------
     file_in : str
@@ -298,13 +302,13 @@ def read_bundle(fp: str, npoints: int = 0) -> None:
 
     Examples
     --------
-    To test `read_bundle()`,  download the data from the `link provided <https://www.dropbox.com/sh/9tfxseo8uh68b32/AAAn56Xgiw7KhL2ILmkN6A23a?dl=1>`_. 
+    To test `read_bundle()`,  download the data from the `link provided <https://www.dropbox.com/sh/9tfxseo8uh68b32/AAAn56Xgiw7KhL2ILmkN6A23a?dl=1>`_.
     Then, open a Python terminal and run the following commands.
-    
+
     >>> from phybers.utils import sampling
     >>> sampling ( file_in = 'sub_01.bundles', file_out = 'sub_01_21points.bundles', npoints = 21 )
 
-    Note: Make sure to replace the file paths with the actual paths to your data and directories.    
+    Note: Make sure to replace the file paths with the actual paths to your data and directories.
     """
     if _p1.match(fp):
         fp += 'data'
@@ -341,13 +345,13 @@ _MINF_TEMPLATE = """attributes = {{
 def write_bundle(file_out: str, points, buffer_size=1_048_576)  -> None:
     """
     Write bundles file.
-    
+
     Parameters
     ----------
     file_out : str
         Tractography dataset file in *'.bundles'* format.
     points : list
-        Tractography dataset sampled at n equidistant points.    
+        Tractography dataset sampled at n equidistant points.
 
     Returns
     -------
@@ -362,13 +366,13 @@ def write_bundle(file_out: str, points, buffer_size=1_048_576)  -> None:
 
     Examples
     --------
-    To test `write_bundle()`,  download the data from the `link provided <https://www.dropbox.com/sh/9tfxseo8uh68b32/AAAn56Xgiw7KhL2ILmkN6A23a?dl=1>`_. 
+    To test `write_bundle()`,  download the data from the `link provided <https://www.dropbox.com/sh/9tfxseo8uh68b32/AAAn56Xgiw7KhL2ILmkN6A23a?dl=1>`_.
     Then, open a Python terminal and run the following commands.
-    
+
     >>> from phybers.utils import sampling
     >>> sampling(dir_in='sub_01.bundles', file_out='sub_01_21points.bundles', npoints=21)
 
-    Note: Make sure to replace the file paths with the actual paths to your data and directories.    
+    Note: Make sure to replace the file paths with the actual paths to your data and directories.
     """
     if not _p1.match(file_out):
         file_out += '.bundles'

@@ -216,15 +216,15 @@ class Bundle(VisualizationBaseObject):
         self.bundlesInterval = np.array(self.bundlesStart+[self.curvescount], dtype=np.int32)
 
         # cfuncs.readBundleFile(
-        # 	bunFile.encode('utf-8'),
-        # 	self.points.ctypes.data,
-        # 	self.normals.ctypes.data,
-        # 	self.color.ctypes.data,
-        # 	self.elements.ctypes.data,
-        # 	self.fiberSizes.ctypes.data,
-        # 	self.bundlesInterval.ctypes.data,
-        # 	self.curvescount,
-        # 	self.bundlesInterval.size)
+        #       bunFile.encode('utf-8'),
+        #       self.points.ctypes.data,
+        #       self.normals.ctypes.data,
+        #       self.color.ctypes.data,
+        #       self.elements.ctypes.data,
+        #       self.fiberSizes.ctypes.data,
+        #       self.bundlesInterval.ctypes.data,
+        #       self.curvescount,
+        #       self.bundlesInterval.size)
 
         data = readBundle(bunFile,self.curvescount,self.bundlesInterval,self.bundlesInterval.size)
         self.points = data['points']
@@ -266,13 +266,13 @@ class Bundle(VisualizationBaseObject):
 
 
         # cfuncs.readTrkHeader(self.path.encode('utf-8'),
-        # 	voxelSize.ctypes.data,
-        # 	nScalars.ctypes.data,
-        # 	nProperties.ctypes.data,
-        # 	vox2RasMat.ctypes.data,
-        # 	nCount.ctypes.data,
-        # 	fileSize.ctypes.data,
-        # 	headerSize.ctypes.data)
+        #       voxelSize.ctypes.data,
+        #       nScalars.ctypes.data,
+        #       nProperties.ctypes.data,
+        #       vox2RasMat.ctypes.data,
+        #       nCount.ctypes.data,
+        #       fileSize.ctypes.data,
+        #       headerSize.ctypes.data)
 
         # self.curvescount = nCount[0]
         # self.bundlesName = [self.fileName]
@@ -293,16 +293,16 @@ class Bundle(VisualizationBaseObject):
 
 
         # cfuncs.readTrkBody(self.path.encode('utf-8'),
-        # 	headerSize,
-        # 	nScalars,
-        # 	nProperties,
-        # 	self.points.ctypes.data,
-        # 	self.normals.ctypes.data,
-        # 	self.elements.ctypes.data,
-        # 	self.fiberSizes.ctypes.data,
-        # 	self.curvescount,
-        # 	scalars.ctypes.data,
-        # 	properties.ctypes.data)
+        #       headerSize,
+        #       nScalars,
+        #       nProperties,
+        #       self.points.ctypes.data,
+        #       self.normals.ctypes.data,
+        #       self.elements.ctypes.data,
+        #       self.fiberSizes.ctypes.data,
+        #       self.curvescount,
+        #       scalars.ctypes.data,
+        #       properties.ctypes.data)
 
         inverseVoxelSize = glm.scaleMatrix([1/voxelSize[0], 1/voxelSize[1], 1/voxelSize[2]])
         trkMat = np.matmul(vox2RasMat, inverseVoxelSize)
@@ -310,8 +310,8 @@ class Bundle(VisualizationBaseObject):
         trkMat = np.matmul(trkMat, halfVoxelSize)
 
         # cfuncs.applyMatrix(self.points.ctypes.data,
-        # 	self.points.size,
-        # 	trkMat.ctypes.data)
+        #       self.points.size,
+        #       trkMat.ctypes.data)
         applyMatrix(self.points, trkMat)
 
         normal = np.empty(3, dtype=np.float32)
@@ -322,10 +322,10 @@ class Bundle(VisualizationBaseObject):
             print('reCalculateNormals')
 
             # cfuncs.reCalculateNormals(
-            # 	self.points.ctypes.data,
-            # 	self.normals.ctypes.data,
-            # 	self.fiberSizes.ctypes.data,
-            # 	self.curvescount)
+            #   self.points.ctypes.data,
+            #   self.normals.ctypes.data,
+            #   self.fiberSizes.ctypes.data,
+            #   self.curvescount)
             reCalculateNormals(
                             self.points,
                             self.normals,
@@ -359,9 +359,9 @@ class Bundle(VisualizationBaseObject):
         # headerSize = np.empty(1, dtype=np.int32)
 
         # cfuncs.readTckHeader(self.path.encode('utf-8'),
-        # 	nCount.ctypes.data,
-        # 	fileSize.ctypes.data,
-        # 	headerSize.ctypes.data)
+        #       nCount.ctypes.data,
+        #       fileSize.ctypes.data,
+        #       headerSize.ctypes.data)
 
         # self.curvescount = nCount[0]
         # self.bundlesName = [self.fileName]
@@ -377,12 +377,12 @@ class Bundle(VisualizationBaseObject):
         # self.fiberSizes = np.zeros(nCount, dtype=np.int32)
 
         # cfuncs.readTckBody(self.path.encode('utf-8'),
-        # 	headerSize,
-        # 	self.points.ctypes.data,
-        # 	self.normals.ctypes.data,
-        # 	self.elements.ctypes.data,
-        # 	self.fiberSizes.ctypes.data,
-        # 	self.curvescount)
+        #       headerSize,
+        #       self.points.ctypes.data,
+        #       self.normals.ctypes.data,
+        #       self.elements.ctypes.data,
+        #       self.fiberSizes.ctypes.data,
+        #       self.curvescount)
 
 
         # trkObj = nib.streamlines.load(self.path)
@@ -406,14 +406,14 @@ class Bundle(VisualizationBaseObject):
         # bun = np.array(self.bundlesStart+[self.curvescount], dtype=np.int32)
 
         # cfuncs.createVBOAndEBOFromPoints(
-        # 	self.points.ctypes.data,
-        # 	self.normals.ctypes.data,
-        # 	self.color.ctypes.data,
-        # 	self.elements.ctypes.data,
-        # 	self.fiberSizes.ctypes.data,
-        # 	bun.ctypes.data,
-        # 	self.curvescount,
-        # 	bun.size)
+        #       self.points.ctypes.data,
+        #       self.normals.ctypes.data,
+        #       self.color.ctypes.data,
+        #       self.elements.ctypes.data,
+        #       self.fiberSizes.ctypes.data,
+        #       bun.ctypes.data,
+        #       self.curvescount,
+        #       bun.size)
 
 
 
@@ -446,8 +446,8 @@ class Bundle(VisualizationBaseObject):
     def applyMatrix(self, transform):
         applyMatrix(self.points,transform)
         # cfuncs.applyMatrix(self.points.ctypes.data,
-        # 	self.points.size,
-        # 	transform.ctypes.data)
+        #       self.points.size,
+        #       transform.ctypes.data)
 
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo[0])
         GL.glBufferSubData(GL.GL_ARRAY_BUFFER, 0, self.points.nbytes, self.points)
@@ -463,10 +463,10 @@ class Bundle(VisualizationBaseObject):
                             self.fiberSizes,
                             self.curvescount)
             # cfuncs.reCalculateNormals(
-            # 	self.points.ctypes.data,
-            # 	self.normals.ctypes.data,
-            # 	self.fiberSizes.ctypes.data,
-            # 	self.curvescount)
+            #   self.points.ctypes.data,
+            #   self.normals.ctypes.data,
+            #   self.fiberSizes.ctypes.data,
+            #   self.curvescount)
 
             GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo[1])
             GL.glBufferSubData(GL.GL_ARRAY_BUFFER,
@@ -710,25 +710,25 @@ class Bundle(VisualizationBaseObject):
         GL.glBindVertexArray(self.vao[0])
 
         # Enable attributes
-        positionAttribute =	self.shader[0].attributeLocation('vertexPos')
-        normalAttribute =	self.shader[0].attributeLocation('vertexNor')
-        colorAttribute =	self.shader[0].attributeLocation('vertexCol')
+        positionAttribute =     self.shader[0].attributeLocation('vertexPos')
+        normalAttribute =       self.shader[0].attributeLocation('vertexNor')
+        colorAttribute =        self.shader[0].attributeLocation('vertexCol')
 
         # VBO
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo[0])
-        GL.glBufferData(GL.GL_ARRAY_BUFFER, self.points.nbytes, self.points, GL.GL_STATIC_DRAW)	# Create empty buffer
+        GL.glBufferData(GL.GL_ARRAY_BUFFER, self.points.nbytes, self.points, GL.GL_STATIC_DRAW) # Create empty buffer
         GL.glEnableVertexAttribArray(positionAttribute)
         GL.glVertexAttribPointer(positionAttribute,3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
 
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo[1])
-        GL.glBufferData(GL.GL_ARRAY_BUFFER, self.normals.nbytes, self.normals, GL.GL_STATIC_DRAW)	# Create empty buffer
+        GL.glBufferData(GL.GL_ARRAY_BUFFER, self.normals.nbytes, self.normals, GL.GL_STATIC_DRAW)       # Create empty buffer
         GL.glEnableVertexAttribArray(normalAttribute)
-        GL.glVertexAttribPointer(normalAttribute,	3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
+        GL.glVertexAttribPointer(normalAttribute,       3, GL.GL_FLOAT, GL.GL_FALSE, 0, None)
 
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo[2])
-        GL.glBufferData(GL.GL_ARRAY_BUFFER, self.color.nbytes, self.color, GL.GL_STATIC_DRAW)	# Create empty buffer
+        GL.glBufferData(GL.GL_ARRAY_BUFFER, self.color.nbytes, self.color, GL.GL_STATIC_DRAW)   # Create empty buffer
         GL.glEnableVertexAttribArray(colorAttribute)
-        GL.glVertexAttribPointer(colorAttribute,	1, GL.GL_INT, GL.GL_FALSE, 0, None)
+        GL.glVertexAttribPointer(colorAttribute,        1, GL.GL_INT, GL.GL_FALSE, 0, None)
 
         # EBO
         GL.glBindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, self.ebo)
@@ -740,8 +740,8 @@ class Bundle(VisualizationBaseObject):
         GL.glBindVertexArray(self.vao[1])
 
         # Enable attributes
-        positionAttribute =	self.shader[1].attributeLocation('vertexPos')
-        colorAttribute =	self.shader[1].attributeLocation('vertexCol')
+        positionAttribute =     self.shader[1].attributeLocation('vertexPos')
+        colorAttribute =        self.shader[1].attributeLocation('vertexCol')
 
         # VBO
         GL.glBindBuffer(GL.GL_ARRAY_BUFFER, self.vbo[0])
