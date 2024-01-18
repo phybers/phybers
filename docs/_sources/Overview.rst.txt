@@ -1,0 +1,13 @@
+Overview
+########
+
+Welcome to Phybers, a powerful Python tool designed for advanced analysis of brain tractography data. 
+This library has been carefully crafted to address the inherent complexities in processing tractography data, providing a comprehensive range of specialized modules. 
+From fiber segmentation to clustering techniques and visualization, Phybers offers an all-encompassing solution for researchers and professionals in neuroscience.
+A standout feature of this library is its utility module, which adds significant value to result analysis. 
+The included tools allow for calculating essential metrics such as the size of fibers, intra-fiber distance in millimeters, and mean length in millimeters. 
+Additionally, Phybers facilitates the deformation of tractographies to the MNI space. 
+The utility module also tackles key analysis aspects by providing functionalities for tractography point sampling and fiber intersection. 
+
+In summary, Phybers serves as a useful tool for those engaged in the research and analysis of brain tractography. With its specialized modules and utility tools, 
+this library offers a practical approach to understanding the complexities of brain tractography, contributing to progress in neuroscience.
