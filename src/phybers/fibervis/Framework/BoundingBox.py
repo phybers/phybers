@@ -8,8 +8,8 @@ except ImportError:
     from importlib_resources import files
 import numpy as np
 
-_bbox_vs = files('phybers.fibervis.shaders').joinpath('boundingbox.vs')
-_sfs_fs = files('phybers.fibervis.shaders').joinpath('standardFragmentShader.fs')
+_bbox_vs = files('phybers.fibervis') / 'shaders' / 'boundingbox.vs'
+_sfs_fs = files('phybers.fibervis') / 'shaders' / 'standardFragmentShader.fs'
 
 class BoundingBox(VisualizationBaseObject):
     def __init__(self, shaderDict, parent, dims, center, bbM=None):

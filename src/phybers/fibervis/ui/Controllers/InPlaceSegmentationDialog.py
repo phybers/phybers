@@ -4,8 +4,7 @@ try:
 except ImportError:
     from importlib_resources import files
 
-_aipsd_ui = files('phybers.fibervis.ui.Segmentations').joinpath(
-        'InPlaceSegmentationDialog.ui')
+_aipsd_ui = files('phybers.fibervis.ui') / 'Segmentations' / 'InPlaceSegmentationDialog.ui'
 
 class InPlaceSegmentationDialog(QtWidgets.QDialog):
     updateObject = QtCore.pyqtSignal(dict)

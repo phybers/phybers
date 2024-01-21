@@ -4,8 +4,7 @@ try:
 except ImportError:
     from importlib_resources import files
 
-_ffcsd_ui = files('phybers.fibervis.ui.Segmentations').joinpath(
-        'FFClustSegmentationDialog.ui')
+_ffcsd_ui = files('phybers.fibervis.ui') / 'Segmentations' / 'FFClustSegmentationDialog.ui'
 
 class FFClustSegmentationDialog(QtWidgets.QDialog):
     updateObject = QtCore.pyqtSignal(dict)

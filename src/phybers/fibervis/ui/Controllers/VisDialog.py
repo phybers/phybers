@@ -16,8 +16,7 @@ from ...Framework.Tools.visualizationEnums import SegmentationTypes, segmentatio
 from ...Framework.Segmentation.SegmentationHandler import SegmentationHandler
 from ...Framework.Mesh import Mesh
 
-_vot_ui = files('phybers.fibervis.ui').joinpath(
-        'visualizationObjectsTool.ui')
+_vot_ui = files('phybers.fibervis') / 'ui' / 'visualizationObjectsTool.ui'
 
 
 def identifyNumberRecursively(item, number):

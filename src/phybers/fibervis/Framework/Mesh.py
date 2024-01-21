@@ -16,9 +16,8 @@ from .Tools.visualizationEnums import VisualizationObject
 from .Shaders import Shader
 from .BoundingBox import BoundingBox
 
-_m_vs = files('phybers.fibervis.shaders').joinpath('mesh.vs')
-_sfs_fs = files('phybers.fibervis.shaders').joinpath(
-    'standardFragmentShader.fs')
+_m_vs = files('phybers.fibervis') / 'shaders' / 'mesh.vs'
+_sfs_fs = files('phybers.fibervis') / 'shaders' / 'standardFragmentShader.fs'
 
 
 class Mesh(VisualizationBaseObject):

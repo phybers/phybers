@@ -16,12 +16,9 @@ try:
 except ImportError:
     from importlib_resources import files
 
-_abs_vs = files('phybers.fibervis.shaders').joinpath(
-    'atlasbasedsegmentation.vs')
-_sfs_fs = files('phybers.fibervis.shaders').joinpath(
-    'standardFragmentShader.fs')
-_abs_gs = files('phybers.fibervis.shaders').joinpath(
-    'atlasbasedsegmentation.gs')
+_abs_vs = files('phybers.fibervis') / 'shaders' / 'atlasbasedsegmentation.vs'
+_sfs_fs = files('phybers.fibervis') / 'shaders' / 'standardFragmentShader.fs'
+_abs_gs = files('phybers.fibervis') / 'shaders' / 'atlasbasedsegmentation.gs'
 
 
 class Atlas(VisualizationBaseObject):

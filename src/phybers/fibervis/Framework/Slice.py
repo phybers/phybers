@@ -10,8 +10,8 @@ try:
 except ImportError:
     from importlib_resources import files
 
-_vs_vs = files('phybers.fibervis.shaders').joinpath('volume-slice.vs')
-_s_fs = files('phybers.fibervis.shaders').joinpath('slice.fs')
+_vs_vs = files('phybers.fibervis') / 'shaders' / 'volume-slice.vs'
+_s_fs = files('phybers.fibervis') / 'shaders' / 'slice.fs'
 
 def configTexture(func):
     ''' Decorator for set the texture filter

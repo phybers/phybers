@@ -17,9 +17,9 @@ from ..Bundle import Bundle
 from ...FiberVis_core import ROISegmentationExportBundlesdata
 from ..Tools.performance import timeit
 
-_s_vs = files('phybers.fibervis.shaders').joinpath('segmentation.vs')
-_sfs_vs = files('phybers.fibervis.shaders').joinpath('standardFragmentShader.fs')
-_s_gs = files('phybers.fibervis.shaders').joinpath('segmentation.gs')
+_s_vs = files('phybers.fibervis') / 'shaders' / 'segmentation.vs'
+_sfs_vs = files('phybers.fibervis') / 'shaders' / 'standardFragmentShader.fs'
+_s_gs = files('phybers.fibervis') / 'shaders' / 'segmentation.gs'
 
 class SegmentationHandler(VisualizationBaseObject):
     '''

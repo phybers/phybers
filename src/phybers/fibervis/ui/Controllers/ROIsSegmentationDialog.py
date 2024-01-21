@@ -6,8 +6,7 @@ except ImportError:
     from importlib_resources import files
 from ...Framework.VisualizationBaseObject import VisualizationObject
 
-_roisd_ui = files('phybers.fibervis.ui.Segmentations').joinpath(
-        'ROIsSegmentationDialog.ui')
+_roisd_ui = files('phybers.fibervis.ui') / 'Segmentations' / 'ROIsSegmentationDialog.ui'
 
 
 # MUST DELETE

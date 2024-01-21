@@ -4,8 +4,7 @@ try:
 except ImportError:
     from importlib_resources import files
 
-_abpsd_ui = files('phybers.fibervis.ui.Segmentations').joinpath(
-        'AtlasBasedParallelSegmentationDialog.ui')
+_abpsd_ui = files('phybers.fibervis.ui') / 'Segmentations' / 'AtlasBasedParallelSegmentationDialog.ui'
 
 class AtlasBasedParallelSegmentationDialog(QtWidgets.QDialog):
     updateObject = QtCore.pyqtSignal(dict)

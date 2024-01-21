@@ -22,11 +22,11 @@ from .Tools import glm
 from .Tools.performance import timeit
 from ..FiberVis_core import readBundle, readTrk, applyMatrix, reCalculateNormals, readTck
 
-_b_vs = files('phybers.fibervis.shaders').joinpath('bundle.vs')
-_sfs_fs = files('phybers.fibervis.shaders').joinpath('standardFragmentShader.fs')
-_c_vs = files('phybers.fibervis.shaders').joinpath('cylinder.vs')
-_c_gs = files('phybers.fibervis.shaders').joinpath('cylinder.gs')
-_q_glsl = files('phybers.fibervis.shaders').joinpath('quaternion.glsl')
+_b_vs = files('phybers.fibervis') / 'shaders' / 'bundle.vs'
+_sfs_fs = files('phybers.fibervis') / 'shaders' / 'standardFragmentShader.fs'
+_c_vs = files('phybers.fibervis') / 'shaders' / 'cylinder.vs'
+_c_gs = files('phybers.fibervis') / 'shaders' / 'cylinder.gs'
+_q_glsl = files('phybers.fibervis') / 'shaders' / 'quaternion.glsl'
 
 
 class Bundle(VisualizationBaseObject):

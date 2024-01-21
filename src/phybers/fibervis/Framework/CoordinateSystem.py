@@ -8,9 +8,8 @@ from .VisualizationBaseObject import VisualizationBaseObject, config
 from .Shaders import Shader
 from .Tools import glm
 
-_cs_vs = files('phybers.fibervis.shaders').joinpath('coordinateSystem.vs')
-_sfs_fs = files('phybers.fibervis.shaders').joinpath(
-    'standardFragmentShader.fs')
+_cs_vs = files('phybers.fibervis') / 'shaders' / 'coordinateSystem.vs'
+_sfs_fs = files('phybers.fibervis') / 'shaders' / 'standardFragmentShader.fs'
 
 class CoordinateSystem(VisualizationBaseObject):
     def __init__(self, shaderProgram):

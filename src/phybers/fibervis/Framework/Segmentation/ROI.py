@@ -14,8 +14,8 @@ try:
 except ImportError:
     from importlib_resources import files
 
-_b_vs = files('phybers.fibervis.shaders').joinpath('bundle.vs')
-_sfs_vs = files('phybers.fibervis.shaders').joinpath('standardFragmentShader.fs')
+_b_vs = files('phybers.fibervis') / 'shaders' / 'bundle.vs'
+_sfs_vs = files('phybers.fibervis') / 'shaders' / 'standardFragmentShader.fs'
 
 class ROI(VisualizationBaseObject):
     '''

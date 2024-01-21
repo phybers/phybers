@@ -11,7 +11,7 @@ try:
 except ImportError:
     from importlib_resources import files
 
-_viewer = files('phybers.fibervis.ui').joinpath('viewer.ui')
+_viewer = files('phybers.fibervis') / 'ui' / 'viewer.ui'
 
 class WindowController(QtWidgets.QMainWindow):
     ''' Window controller for the app. It has function for several action.
