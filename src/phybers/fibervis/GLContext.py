@@ -33,7 +33,7 @@ def defaultLighting():
     return {
     "lightPos" : [0.0, 100.0, 0.0],
     "lightAttr" : [0.5, 0.6, 1.0],
-    "materialAttr" : [1.0, 0.8, 0.7],
+    "materialAttr" : [1.0, 1.0, 1.0], # White background for the GUI
     "shininess" : 5.0
     }
 
