@@ -17,7 +17,7 @@ from ...Framework.Segmentation.SegmentationHandler import SegmentationHandler
 from ...Framework.Mesh import Mesh
 
 _vot_ui = files('phybers.fibervis.ui').joinpath(
-        'visualizationObjectsTool.ui')
+                'visualizationObjectsTool.ui')
 
 
 def identifyNumberRecursively(item, number):
@@ -57,7 +57,6 @@ class VisDialog(QtWidgets.QDialog):
     modifySegmentation = QtCore.pyqtSignal(dict)
     selectedObject = QtCore.pyqtSignal(dict)
 
-
     def __init__(self, parent):
         super().__init__(parent)
         self.ui = uic.loadUi(str(_vot_ui), self)
@@ -66,6 +65,7 @@ class VisDialog(QtWidgets.QDialog):
 
         # signal when closing
         oldCloseEvent = self.ui.closeEvent
+
         def newCloseEvent(*args, **kwargs):
             self.closed.emit()
             return oldCloseEvent(*args, **kwargs)
@@ -76,7 +76,6 @@ class VisDialog(QtWidgets.QDialog):
         self.meshReference = None
         self.mriReference = None
         self.roisReference = None
-
 
         # Context menu
         self.ui.treeWidget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -89,8 +88,10 @@ class VisDialog(QtWidgets.QDialog):
         self.connectAndConfigRotateGB()
         self.connectAndConfigTranslateGB()
         self.connectAndConfigScaleGB()
-        self.ui.resetTransformsButton.clicked.connect(self.resetTransformsItemSelected)
-        self.ui.loadMatrixFromFileButton.clicked.connect(self.loadMatrixFromFile)
+        self.ui.resetTransformsButton.clicked.connect(
+            self.resetTransformsItemSelected)
+        self.ui.loadMatrixFromFileButton.clicked.connect(
+            self.loadMatrixFromFile)
 
         self.connectAndConfigBundleGB()
         self.connectAndConfigSliceGB()
@@ -113,14 +114,14 @@ class VisDialog(QtWidgets.QDialog):
         self.windows = dict()
 
         # segmentation dialogs for identifier
-        self.segmentationDialogs = {SegmentationTypes.InPlace : InPlaceSegmentationDialog,
-                                                                SegmentationTypes.ROIs : ROIsSegmentationDialog,
-                                                                SegmentationTypes.AtlasBased : AtlasBasedParallelSegmentationDialog,
-                                                                SegmentationTypes.FFClust : FFClustSegmentationDialog}
-
+        self.segmentationDialogs = {SegmentationTypes.InPlace: InPlaceSegmentationDialog,
+                                    SegmentationTypes.ROIs: ROIsSegmentationDialog,
+                                    SegmentationTypes.AtlasBased: AtlasBasedParallelSegmentationDialog,
+                                    SegmentationTypes.FFClust: FFClustSegmentationDialog}
 
     def connectAndConfigRotateGB(self):
-        self.ui.rotateAngleLineEdit.returnPressed.connect(self.rotateItemSelected)
+        self.ui.rotateAngleLineEdit.returnPressed.connect(
+            self.rotateItemSelected)
         self.ui.rotateXLineEdit.returnPressed.connect(self.rotateItemSelected)
         self.ui.rotateYLineEdit.returnPressed.connect(self.rotateItemSelected)
         self.ui.rotateZLineEdit.returnPressed.connect(self.rotateItemSelected)
@@ -132,18 +133,19 @@ class VisDialog(QtWidgets.QDialog):
         self.ui.rotateYLineEdit.setValidator(validator)
         self.ui.rotateZLineEdit.setValidator(validator)
 
-
     def connectAndConfigTranslateGB(self):
-        self.ui.translateXLineEdit.returnPressed.connect(self.translateItemSelected)
-        self.ui.translateYLineEdit.returnPressed.connect(self.translateItemSelected)
-        self.ui.translateZLineEdit.returnPressed.connect(self.translateItemSelected)
+        self.ui.translateXLineEdit.returnPressed.connect(
+            self.translateItemSelected)
+        self.ui.translateYLineEdit.returnPressed.connect(
+            self.translateItemSelected)
+        self.ui.translateZLineEdit.returnPressed.connect(
+            self.translateItemSelected)
         self.ui.translateButton.clicked.connect(self.translateItemSelected)
 
         validator = QtGui.QDoubleValidator(-1000, 1000, 2, self)
         self.ui.translateXLineEdit.setValidator(validator)
         self.ui.translateYLineEdit.setValidator(validator)
         self.ui.translateZLineEdit.setValidator(validator)
-
 
     def connectAndConfigScaleGB(self):
         self.ui.scaleXLineEdit.returnPressed.connect(self.scaleItemSelected)
@@ -156,10 +158,8 @@ class VisDialog(QtWidgets.QDialog):
         self.ui.scaleYLineEdit.setValidator(validator)
         self.ui.scaleZLineEdit.setValidator(validator)
 
-
     def connectAndConfigBundleGB(self):
         self.bundleGBSignals()
-
 
     def connectAndConfigSliceGB(self):
         self.sliceGBSignals()
@@ -169,37 +169,37 @@ class VisDialog(QtWidgets.QDialog):
         self.ui.axisCYLE.setValidator(validator)
         self.ui.axisCZLE.setValidator(validator)
 
-
     def connectAndConfigVolumeGB(self):
         self.volumeGBSignals()
 
-
     def configMeshGB(self, action='connect'):
-        getattr(self.ui.drawLinesCheckBox.clicked, action)(self.modifyMeshObject)
-        getattr(self.ui.opacitySlider.valueChanged, action)(self.modifyMeshObject)
+        getattr(self.ui.drawLinesCheckBox.clicked,
+                action)(self.modifyMeshObject)
+        getattr(self.ui.opacitySlider.valueChanged,
+                action)(self.modifyMeshObject)
         getattr(self.ui.setColorButton.clicked, action)(self.modifyMeshObject)
-        getattr(self.ui.front2backRadioButton.clicked, action)(self.modifyMeshObject)
-        getattr(self.ui.back2frontRadioButton.clicked, action)(self.modifyMeshObject)
-
+        getattr(self.ui.front2backRadioButton.clicked,
+                action)(self.modifyMeshObject)
+        getattr(self.ui.back2frontRadioButton.clicked,
+                action)(self.modifyMeshObject)
 
     def toggleVisWin(self, isChecked, pos, size):
         @QtCore.pyqtSlot()
         def toggle():
 
             if isChecked() == True:
-                moveX = pos().x()-self.size().width()-5 # 5 pixels away from the window
+                moveX = pos().x()-self.size().width()-5  # 5 pixels away from the window
                 moveY = pos().y()-(self.size().height()-size().height())//2
 
                 if moveX < 0:
                     moveX = 0
                 if moveY < 0:
                     moveY = 0
-                self.move(moveX,moveY)
+                self.move(moveX, moveY)
                 self.show()
             else:
                 self.hide()
         return toggle
-
 
     def addRoot(self, name, ident):
         root = ownQTreeWidgetItem(self.ui.treeWidget)
@@ -209,7 +209,6 @@ class VisDialog(QtWidgets.QDialog):
         root.setIdentifier(ident)
         return root
 
-
     def addChild(self, parent, name, ident):
         item = ownQTreeWidgetItem()
         item.setText(0, name)
@@ -217,7 +216,6 @@ class VisDialog(QtWidgets.QDialog):
         item.setExpanded(True)
         item.setIdentifier(ident)
         return item
-
 
     def removeItem(self, item):
         if item.parent() == None:
@@ -227,28 +225,30 @@ class VisDialog(QtWidgets.QDialog):
             item.parent().removeChild(item)
         del item
 
-
     @QtCore.pyqtSlot()
     def updateTree(self):
         self.ui.treeWidget.clear()
 
         def recursivelyAddChildren(parentItem, parentModel):
             for child in (parentModel.children if hasattr(parentModel, 'children') else parentModel):
-                childItem = self.addChild(parentItem, child.fileName, child.identifier)
+                childItem = self.addChild(
+                    parentItem, child.fileName, child.identifier)
                 if child.identifier == VisualizationObject.Segmentation:
                     if not child in self.windows.keys():
                         try:
-                            dialog = self.segmentationDialogs[child.segmentationIdentifier](child, self)
+                            dialog = self.segmentationDialogs[child.segmentationIdentifier](
+                                child, self)
                             self.windows[child] = dialog
-                            dialog.updateObject.connect(self.modifySegmentation)
+                            dialog.updateObject.connect(
+                                self.modifySegmentation)
                         except Exception as e:
                             print(e)
-                            raise TypeError('Segmentation type dialog not implemented: ', child.segmentationIdentifier)
+                            raise TypeError(
+                                'Segmentation type dialog not implemented: ', child.segmentationIdentifier)
 
                     self.windows[child].update()
 
                 recursivelyAddChildren(childItem, child)
-
 
         if len(self.bundleReference):
             bundleRoot = self.addRoot('Bundles', VisualizationObject.Bundle)
@@ -270,11 +270,9 @@ class VisDialog(QtWidgets.QDialog):
 
             recursivelyAddChildren(roisRoot, self.roisReference)
 
-
     @QtCore.pyqtSlot(SegmentationHandler)
     def updateSettingWindow(self, segmentationRef):
         self.windows[segmentationRef].updateWindow()
-
 
     @QtCore.pyqtSlot(QtCore.QPoint)
     def prepareMenu(self, pos):
@@ -283,7 +281,7 @@ class VisDialog(QtWidgets.QDialog):
             return
 
         number = []
-        root = identifyNumberRecursively(item,number)
+        root = identifyNumberRecursively(item, number)
 
         parent = item.parent()
         text = None
@@ -296,7 +294,8 @@ class VisDialog(QtWidgets.QDialog):
         # Actions
         deleteAction = contextMenu.addAction('Delete')
         addSegmentationAction = QtWidgets.QMenu('Add segmentation method')
-        addMRIVisualizationAction = QtWidgets.QMenu('Add MRI visualization object')
+        addMRIVisualizationAction = QtWidgets.QMenu(
+            'Add MRI visualization object')
         focusObjectAction = contextMenu.addAction('Focus Camera')
         visibleToggleAction = QtWidgets.QAction('Visible')
         visibleToggleAction.setCheckable(True)
@@ -312,15 +311,16 @@ class VisDialog(QtWidgets.QDialog):
             contextMenu.addMenu(addSegmentationAction)
 
             for key in segmentations.keys():
-                segmentationAction[addSegmentationAction.addAction(key)] = segmentations[key]
+                segmentationAction[addSegmentationAction.addAction(
+                    key)] = segmentations[key]
 
         # MRI slicing and volume
         if item.identifier == VisualizationObject.MRI and parent != None:
             contextMenu.addMenu(addMRIVisualizationAction)
 
             for key in mriVisualizations.keys():
-                mriVisAction[addMRIVisualizationAction.addAction(key)] = mriVisualizations[key]
-
+                mriVisAction[addMRIVisualizationAction.addAction(
+                    key)] = mriVisualizations[key]
 
         # Visible only on Objects
         if root.text(0) == 'Bundles':
@@ -335,12 +335,16 @@ class VisDialog(QtWidgets.QDialog):
             reference = None
 
         if parent != None:
-            visibleToggleAction.setChecked(retrieveItemIteratively(reference,number).drawable)
+            visibleToggleAction.setChecked(
+                retrieveItemIteratively(reference, number).drawable)
             contextMenu.addAction(visibleToggleAction)
         if item.identifier == VisualizationObject.Segmentation:
-            dialog = self.windows[retrieveItemIteratively(reference,number)]
+            dialog = self.windows[retrieveItemIteratively(reference, number)]
             windowToggleAction.setChecked(dialog.isVisible())
             contextMenu.addAction(windowToggleAction)
+
+        # test
+        # testAction = contextMenu.addAction('Test')
 
         action = contextMenu.exec_(self.ui.treeWidget.mapToGlobal(pos))
 
@@ -348,26 +352,34 @@ class VisDialog(QtWidgets.QDialog):
 
         if action == deleteAction:
             if item.identifier == VisualizationObject.Segmentation:
-                self.windows.pop(retrieveItemIteratively(reference,number), None)
-            modifyObject = self.prepareDictionary(item, VisualizationActions.Delete)
+                self.windows.pop(retrieveItemIteratively(
+                    reference, number), None)
+            modifyObject = self.prepareDictionary(
+                item, VisualizationActions.Delete)
         elif action == visibleToggleAction:
-            modifyObject = self.prepareDictionary(item, VisualizationActions.ToggleDrawable)
+            modifyObject = self.prepareDictionary(
+                item, VisualizationActions.ToggleDrawable)
         elif action == windowToggleAction:
             dialog = self.windows[retrieveItemIteratively(reference, number)]
             dialog.setVisible(not dialog.isVisible())
             return
+        elif action == testAction:
+            print('testAction')
+            return
         elif action in segmentationAction.keys():
-            modifyObject = self.prepareDictionary(item, VisualizationActions.AddSegmentation, data=segmentationAction[action])
+            modifyObject = self.prepareDictionary(
+                item, VisualizationActions.AddSegmentation, data=segmentationAction[action])
         elif action in mriVisAction.keys():
-            modifyObject = self.prepareDictionary(item, VisualizationActions.AddSegmentation, data=mriVisAction[action])
+            modifyObject = self.prepareDictionary(
+                item, VisualizationActions.AddSegmentation, data=mriVisAction[action])
         elif action == focusObjectAction:
-            modifyObject = self.prepareDictionary(item, VisualizationActions.FocusObject)
+            modifyObject = self.prepareDictionary(
+                item, VisualizationActions.FocusObject)
         else:
             print('Action not atended: ', action)
             return
 
         self.changeObject.emit(modifyObject)
-
 
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Delete:
@@ -376,7 +388,8 @@ class VisDialog(QtWidgets.QDialog):
             if item == None:
                 return
 
-            modifyObject = self.prepareDictionary(item, VisualizationActions.Delete)
+            modifyObject = self.prepareDictionary(
+                item, VisualizationActions.Delete)
 
             self.changeObject.emit(modifyObject)
 
@@ -386,18 +399,16 @@ class VisDialog(QtWidgets.QDialog):
 
         event.accept()
 
-
     def identifyItem(self, item):
         if item.parent() == None:
             identifier = item.identifier
             number = -1
         else:
             number = []
-            root = identifyNumberRecursively(item,number)
+            root = identifyNumberRecursively(item, number)
             identifier = root.identifier
 
         return identifier, number
-
 
     def prepareDictionary(self, item, action, data=None):
         opts = {}
@@ -408,7 +419,6 @@ class VisDialog(QtWidgets.QDialog):
             opts['data'] = data
 
         return opts
-
 
     @QtCore.pyqtSlot(QtWidgets.QTreeWidgetItem, QtWidgets.QTreeWidgetItem)
     def activeItemChanged(self, current, previous):
@@ -459,11 +469,15 @@ class VisDialog(QtWidgets.QDialog):
 
                 self.bundleGBSignals(action='disconnect')
                 if isinstance(refObj, list):
-                    self.ui.shaderRadioButton_0.setChecked(refObj[0].selectedShader == 0)
-                    self.ui.shaderRadioButton_1.setChecked(refObj[0].selectedShader == 1)
+                    self.ui.shaderRadioButton_0.setChecked(
+                        refObj[0].selectedShader == 0)
+                    self.ui.shaderRadioButton_1.setChecked(
+                        refObj[0].selectedShader == 1)
                 else:
-                    self.ui.shaderRadioButton_0.setChecked(refObj.selectedShader == 0)
-                    self.ui.shaderRadioButton_1.setChecked(refObj.selectedShader == 1)
+                    self.ui.shaderRadioButton_0.setChecked(
+                        refObj.selectedShader == 0)
+                    self.ui.shaderRadioButton_1.setChecked(
+                        refObj.selectedShader == 1)
                 self.bundleGBSignals()
 
             else:
@@ -478,7 +492,8 @@ class VisDialog(QtWidgets.QDialog):
                 self.ui.discardPixelsCheckBox.setChecked(refObj.discardValues)
                 self.ui.sliceThresholdSlider.setMaximum(int(refObj.max))
                 self.ui.sliceThresholdSlider.setValue(int(refObj.threshold))
-                self.ui.sliceCurrentThresholdLineEdit.setText(str(refObj.threshold))
+                self.ui.sliceCurrentThresholdLineEdit.setText(
+                    str(refObj.threshold))
 
                 axis = refObj.axis == 1.0
                 if axis.sum() == 1:
@@ -495,9 +510,11 @@ class VisDialog(QtWidgets.QDialog):
                 self.axisCYLE.setText(str(refObj.axis[1]))
                 self.axisCZLE.setText(str(refObj.axis[2]))
 
-                self.slicePos2AxisSlider.setValue(int(refObj.pos2Axis*(self.ui.slicePos2AxisSlider.maximum()+1)))
+                self.slicePos2AxisSlider.setValue(
+                    int(refObj.pos2Axis*(self.ui.slicePos2AxisSlider.maximum()+1)))
 
-                self.sliceBrightSlider.setValue(int(refObj.bright*self.sliceBrightSlider.maximum()))
+                self.sliceBrightSlider.setValue(
+                    int(refObj.bright*self.sliceBrightSlider.maximum()))
                 self.sliceContrastSlider.setValue(int(refObj.contrast*10))
                 self.sliceGBSignals()
 
@@ -514,26 +531,27 @@ class VisDialog(QtWidgets.QDialog):
                 self.ui.volumeF2BCheckBox.setChecked(refObj.f2bDrawing)
 
                 self.ui.volumeThresholdSlider.setMaximum(int(refObj.max)*100)
-                self.ui.volumeThresholdSlider.setValue(int(refObj.threshold*100))
-                self.ui.volumeCurrentThresholdLineEdit.setText(str(refObj.threshold))
+                self.ui.volumeThresholdSlider.setValue(
+                    int(refObj.threshold*100))
+                self.ui.volumeCurrentThresholdLineEdit.setText(
+                    str(refObj.threshold))
 
                 self.volumeGBSignals()
 
             else:
                 self.volumeGroupBox.hide()
 
-
             # --------------------MESH--------------------
             if current.identifier == VisualizationObject.Mesh and len(number) != 0:
-                assert isinstance(refObj, Mesh)
                 self.meshGroupBox.show()
 
                 self.configMeshGB(action='disconnect')
                 self.ui.drawLinesCheckBox.setChecked(refObj.drawableLines)
-                self.ui.opacitySlider.setValue(int(self.ui.opacitySlider.maximum()*refObj.alpha))
-
+                self.ui.opacitySlider.setValue(
+                    int(self.ui.opacitySlider.maximum()*refObj.alpha))
                 self.ui.colorWidget.setAutoFillBackground(True)
-                self.ui.colorWidget.setPalette(QtGui.QPalette(QtGui.QColor(*refObj.getRGBA256())))
+                self.ui.colorWidget.setPalette(
+                    QtGui.QPalette(QtGui.QColor(*(refObj.getRGB256()))))
 
                 if refObj.back2frontSorting:
                     self.ui.back2frontRadioButton.setChecked(True)
@@ -545,7 +563,7 @@ class VisDialog(QtWidgets.QDialog):
             else:
                 self.meshGroupBox.hide()
 
-        self.selectedObject.emit({'current' : activeObject})
+        self.selectedObject.emit({'current': activeObject})
 
 
     @QtCore.pyqtSlot()
@@ -568,13 +586,14 @@ class VisDialog(QtWidgets.QDialog):
         axis = [x, y, z]
 
         if (x**2+y**2+z**2) < 0.0001:
-            reply = QtWidgets.QMessageBox.question(self, "Invalid value", 'Axis for rotation was not given.', QtWidgets.QMessageBox.Ok)
+            reply = QtWidgets.QMessageBox.question(
+                self, "Invalid value", 'Axis for rotation was not given.', QtWidgets.QMessageBox.Ok)
             return
 
-        modifyObject = self.prepareDictionary(item, VisualizationActions.Rotate, data=(angle, axis))
+        modifyObject = self.prepareDictionary(
+            item, VisualizationActions.Rotate, data=(angle, axis))
 
         self.changeObject.emit(modifyObject)
-
 
     @QtCore.pyqtSlot()
     def resetTransformsItemSelected(self):
@@ -582,11 +601,11 @@ class VisDialog(QtWidgets.QDialog):
 
         if item == None:
             return
-
-        modifyObject = self.prepareDictionary(item, VisualizationActions.ResetTransforms)
+          
+        modifyObject = self.prepareDictionary(
+            item, VisualizationActions.ResetTransforms)
 
         self.changeObject.emit(modifyObject)
-
 
     @QtCore.pyqtSlot()
     def loadMatrixFromFile(self):
@@ -595,15 +614,17 @@ class VisDialog(QtWidgets.QDialog):
         if item == None:
             return
 
-        matrixFile, fileType = QtWidgets.QFileDialog.getOpenFileNames(self, "Select matrix", "", "matrix (*.npy *.trm *.txt)")
+        matrixFile, fileType = QtWidgets.QFileDialog.getOpenFileNames(
+            self, "Select matrix", "", "matrix (*.npy *.trm *.txt)")
 
         if len(matrixFile) != 1:
             return
 
-        modifyObject = self.prepareDictionary(item, VisualizationActions.LoadAndApplyMatrix, data=matrixFile[0])
+        modifyObject = self.prepareDictionary(
+            item, VisualizationActions.LoadAndApplyMatrix, data=matrixFile[0])
 
         self.changeObject.emit(modifyObject)
-
+        
 
     @QtCore.pyqtSlot()
     def translateItemSelected(self):
@@ -622,11 +643,12 @@ class VisDialog(QtWidgets.QDialog):
 
         v = [x, y, z]
 
-        modifyObject = self.prepareDictionary(item, VisualizationActions.Translate, data=v)
+        modifyObject = self.prepareDictionary(
+            item, VisualizationActions.Translate, data=v)
 
         self.changeObject.emit(modifyObject)
 
-
+        
     @QtCore.pyqtSlot()
     def scaleItemSelected(self):
         item = self.ui.treeWidget.currentItem()
@@ -645,26 +667,20 @@ class VisDialog(QtWidgets.QDialog):
 
         v = [x, y, z]
 
-        modifyObject = self.prepareDictionary(item, VisualizationActions.Scale, data=v)
+        modifyObject = self.prepareDictionary(
+            item, VisualizationActions.Scale, data=v)
 
         self.changeObject.emit(modifyObject)
-
+        
 
     @QtCore.pyqtSlot()
     def modifyBundleObject(self):
         item = self.ui.treeWidget.currentItem()
-        if self.sender() in {self.ui.shaderRadioButton_0, self.ui.shaderRadioButton_1}:
-            shaderSelected = 0 if self.ui.shaderRadioButton_0.isChecked() else 1
-            action = VisualizationActions.ShaderSelection
-            data = [shaderSelected]
-        else:
-            color = QtWidgets.QColorDialog.getColor()
-            if not color.isValid():
-                return
-            action = VisualizationActions.ColorSelection
-            data = [(color.red()/255, color.green()/255, color.blue()/255)]
+        shaderSelected = 0 if self.ui.shaderRadioButton_0.isChecked() else 1
 
-        modifyObject = self.prepareDictionary(item, action, data=data)
+        modifyObject = self.prepareDictionary(
+            item, VisualizationActions.ShaderSelection, data=(shaderSelected))
+
         self.changeObject.emit(modifyObject)
 
 
@@ -693,26 +709,30 @@ class VisDialog(QtWidgets.QDialog):
             z = float(z) if z != '.' and len(z) != 0 else 1.0
 
             if (x**2+y**2+z**2) < 0.0001:
-                reply = QtWidgets.QMessageBox.question(self, "Invalid value", 'Axis for plane was not given.', QtWidgets.QMessageBox.Ok)
+                reply = QtWidgets.QMessageBox.question(
+                    self, "Invalid value", 'Axis for plane was not given.', QtWidgets.QMessageBox.Ok)
                 return
 
             axis = [x, y, z]
 
         else:
             axis = [float(self.ui.axisXRadioButton.isChecked()),
-                            float(self.ui.axisYRadioButton.isChecked()),
-                            float(self.ui.axisZRadioButton.isChecked())]
+                    float(self.ui.axisYRadioButton.isChecked()),
+                    float(self.ui.axisZRadioButton.isChecked())]
 
         # pos2Axis slider
-        pos2Axis = self.ui.slicePos2AxisSlider.value()/(self.ui.slicePos2AxisSlider.maximum()+1)
+        pos2Axis = self.ui.slicePos2AxisSlider.value(
+        )/(self.ui.slicePos2AxisSlider.maximum()+1)
 
         # bright and contrast
         bright = self.ui.sliceBrightSlider.value()/self.ui.sliceBrightSlider.maximum()
         contrast = self.ui.sliceContrastSlider.value()/10
 
-        modifyObject = self.prepareDictionary(item, VisualizationActions.SliceModification, data=(linearInterp, discardValues, threshold, axis, pos2Axis, bright, contrast))
+        modifyObject = self.prepareDictionary(item, VisualizationActions.SliceModification, data=(
+            linearInterp, discardValues, threshold, axis, pos2Axis, bright, contrast))
 
         self.changeObject.emit(modifyObject)
+
 
     @QtCore.pyqtSlot()
     def modifyVolumeObject(self):
@@ -728,10 +748,10 @@ class VisDialog(QtWidgets.QDialog):
         else:
             data = self.ui.volumeF2BCheckBox.isChecked()
 
-        modifyObject = self.prepareDictionary(item, VisualizationActions.VolumeModification, data)
+        modifyObject = self.prepareDictionary(
+            item, VisualizationActions.VolumeModification, data)
 
         self.changeObject.emit(modifyObject)
-
 
 
     @QtCore.pyqtSlot()
@@ -767,7 +787,8 @@ class VisDialog(QtWidgets.QDialog):
             print('Unknown sender for modifyMeshObject in VisDialog:', self.sender())
             return
 
-        modifyObject = self.prepareDictionary(item, VisualizationActions.MeshModification, data=data)
+        modifyObject = self.prepareDictionary(
+            item, VisualizationActions.MeshModification, data=data)
 
         self.changeObject.emit(modifyObject)
 
@@ -780,29 +801,44 @@ class VisDialog(QtWidgets.QDialog):
             except:
                 pass
 
-
+              
     def bundleGBSignals(self, action='connect'):
-        getattr(self.ui.shaderRadioButton_0.clicked, action) (self.modifyBundleObject)
-        getattr(self.ui.shaderRadioButton_1.clicked, action) (self.modifyBundleObject)
-        getattr(self.ui.changeBundleColorButton.clicked, action) (self.modifyBundleObject)
+        getattr(self.ui.shaderRadioButton_0.clicked,
+                action)(self.modifyBundleObject)
+        getattr(self.ui.shaderRadioButton_1.clicked,
+                action)(self.modifyBundleObject)
 
     def sliceGBSignals(self, action='connect'):
-        getattr(self.ui.linearInterpCheckBox.clicked, action) (self.modifySliceObject)
-        getattr(self.ui.discardPixelsCheckBox.clicked, action) (self.modifySliceObject)
-        getattr(self.ui.sliceThresholdSlider.valueChanged, action) (self.modifySliceObject)
-        getattr(self.ui.axisXRadioButton.clicked, action) (self.modifySliceObject)
-        getattr(self.ui.axisYRadioButton.clicked, action) (self.modifySliceObject)
-        getattr(self.ui.axisZRadioButton.clicked, action) (self.modifySliceObject)
-        getattr(self.ui.axisCustomRadioButton.clicked, action) (self.modifySliceObject)
-        getattr(self.ui.axisCXLE.returnPressed, action) (self.modifySliceObject)
-        getattr(self.ui.axisCYLE.returnPressed, action) (self.modifySliceObject)
-        getattr(self.ui.axisCZLE.returnPressed, action) (self.modifySliceObject)
-        getattr(self.ui.slicePos2AxisSlider.valueChanged, action) (self.modifySliceObject)
-        getattr(self.ui.sliceBrightSlider.valueChanged, action) (self.modifySliceObject)
-        getattr(self.ui.sliceContrastSlider.valueChanged, action) (self.modifySliceObject)
+        getattr(self.ui.linearInterpCheckBox.clicked,
+                action)(self.modifySliceObject)
+        getattr(self.ui.discardPixelsCheckBox.clicked,
+                action)(self.modifySliceObject)
+        getattr(self.ui.sliceThresholdSlider.valueChanged,
+                action)(self.modifySliceObject)
+        getattr(self.ui.axisXRadioButton.clicked,
+                action)(self.modifySliceObject)
+        getattr(self.ui.axisYRadioButton.clicked,
+                action)(self.modifySliceObject)
+        getattr(self.ui.axisZRadioButton.clicked,
+                action)(self.modifySliceObject)
+        getattr(self.ui.axisCustomRadioButton.clicked,
+                action)(self.modifySliceObject)
+        getattr(self.ui.axisCXLE.returnPressed, action)(self.modifySliceObject)
+        getattr(self.ui.axisCYLE.returnPressed, action)(self.modifySliceObject)
+        getattr(self.ui.axisCZLE.returnPressed, action)(self.modifySliceObject)
+        getattr(self.ui.slicePos2AxisSlider.valueChanged,
+                action)(self.modifySliceObject)
+        getattr(self.ui.sliceBrightSlider.valueChanged,
+                action)(self.modifySliceObject)
+        getattr(self.ui.sliceContrastSlider.valueChanged,
+                action)(self.modifySliceObject)
 
     def volumeGBSignals(self, action='connect'):
-        getattr(self.ui.volumeThresholdSlider.valueChanged, action) (self.modifyVolumeObject)
-        getattr(self.ui.volumeAlphaSlider.valueChanged, action) (self.modifyVolumeObject)
-        getattr(self.ui.volumeF2BCheckBox.clicked, action) (self.modifyVolumeObject)
-        getattr(self.ui.volumeCurrentThresholdLineEdit.returnPressed, action) (self.modifyVolumeObject)
+        getattr(self.ui.volumeThresholdSlider.valueChanged,
+                action)(self.modifyVolumeObject)
+        getattr(self.ui.volumeAlphaSlider.valueChanged,
+                action)(self.modifyVolumeObject)
+        getattr(self.ui.volumeF2BCheckBox.clicked,
+                action)(self.modifyVolumeObject)
+        getattr(self.ui.volumeCurrentThresholdLineEdit.returnPressed,
+                action)(self.modifyVolumeObject)

@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class VisualizationObject(Enum):
     NotDefined = -1
     Bundle = 0
@@ -11,11 +12,13 @@ class VisualizationObject(Enum):
     MRISlice = 5
     ROI = 6
 
+
 class ROIType(Enum):
     Sphere = 0
     Aabb = 1
     Obb = 2
     Plane = 3
+
 
 class VisualizationActions(Enum):
     Delete = 0
@@ -33,16 +36,23 @@ class VisualizationActions(Enum):
     FocusObject = 12
     ColorSelection = 13
 
+
 class SegmentationTypes(Enum):
     InPlace = 0
     ROIs = 1
     AtlasBased = 2
     FFClust = 3
+    Test = 23
 
-segmentations = {       'In place segmentation' : SegmentationTypes.InPlace,
-                                        'Roi segmentation' : SegmentationTypes.ROIs,
-                                        'Euclidean distance segmentation' : SegmentationTypes.AtlasBased,
-                                        'FFClust' : SegmentationTypes.FFClust}
 
-mriVisualizations = {   'Volume render' : VisualizationObject.MRIVolume,
-                                                'Slice' : VisualizationObject.MRISlice}
+segmentations = {
+                 'In place segmentation': SegmentationTypes.InPlace,
+                 'Roi segmentation': SegmentationTypes.ROIs,
+                 # 'Euclidean distance segmentation': SegmentationTypes.AtlasBased,
+                 # 'FFClust': SegmentationTypes.FFClust,
+                 # 'Test segmentation': SegmentationTypes.Test
+                 }
+
+mriVisualizations = {'Volume render': VisualizationObject.MRIVolume,
+                     'Slice': VisualizationObject.MRISlice}
+
