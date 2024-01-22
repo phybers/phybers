@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentation &mdash; Phybers 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="References.html" />
+    <link rel="prev" title="Examples and Tutorial Guide" href="Examples%20and%20Tutorial%20Guide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Phybers
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Requirements%20and%20Dependencies.html">Requirements and Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Examples%20and%20Tutorial%20Guide.html">Examples and Tutorial Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#segment">Segment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fiberseg-description">FiberSeg Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#atlases-download">Atlases Download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#phybers.segment.fiberseg"><code class="docutils literal notranslate"><span class="pre">fiberseg()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#clustering">Clustering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hclust-description">HClust Description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#phybers.clustering.hclust"><code class="docutils literal notranslate"><span class="pre">hclust()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ffclust-description">FFClust Description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#phybers.clustering.ffclust"><code class="docutils literal notranslate"><span class="pre">ffclust()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#utils">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#deformation-description">Deformation Description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#phybers.utils.deform"><code class="docutils literal notranslate"><span class="pre">deform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sampling-description">Sampling Description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#phybers.utils.sampling"><code class="docutils literal notranslate"><span class="pre">sampling()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#intersection-description">Intersection Description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#phybers.utils.intersection"><code class="docutils literal notranslate"><span class="pre">intersection()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#postprocessing-description">Postprocessing Description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#phybers.utils.postprocessing"><code class="docutils literal notranslate"><span class="pre">postprocessing()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#read-and-write-bundle-description">Read and Write bundle Description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#phybers.utils.read_bundle"><code class="docutils literal notranslate"><span class="pre">read_bundle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#phybers.utils.write_bundle"><code class="docutils literal notranslate"><span class="pre">write_bundle()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#visualization">Visualization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#interactive-3d-roi-based-fiber-segmentation">Interactive 3D ROI-based fiber segmentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#phybers.fibervis.start_fibervis"><code class="docutils literal notranslate"><span class="pre">start_fibervis()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="References.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Phybers</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Documentation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="documentation">
+<span id="doc-phybers"></span><h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h1>
+<p>Phybers is a Python library that provides several tools for brain tractography dataset analysis.
+With the aim of improving its usability, the library has been separated into 4 primary modules: <a class="reference internal" href="#segment-doc"><span class="std std-ref">Segment</span></a>, <a class="reference internal" href="#clustering-doc"><span class="std std-ref">Clustering</span></a>, <a class="reference internal" href="#utils-doc"><span class="std std-ref">Utils</span></a>, and <a class="reference internal" href="#visualization-doc"><span class="std std-ref">Visualization</span></a>.
+This section explains each of its modules, functions, and <code class="docutils literal notranslate"><span class="pre">input/output</span></code> arguments.</p>
+<section id="segment">
+<span id="segment-doc"></span><h2>Segment<a class="headerlink" href="#segment" title="Permalink to this heading"></a></h2>
+<p>This module incorporates a white matter fiber bundle segmentation algorithm based on a multi-subject atlas <span id="id1">[<a class="reference internal" href="References.html#id3" title="P. Guevara, D. Duclap, C. Poupon, L. Marrakchi-Kacem, P. Fillard, D. Le Bihan, M. Leboyer, J. Houenou, and J. F. Mangin. Automatic fiber bundle segmentation in massive tractography datasets using a multi-subject bundle atlas. Neuroimage, 61(4):1083-99, 2012. doi:10.1016/j.neuroimage.2012.02.071.">3</a>, <a class="reference internal" href="References.html#id4" title="Nicole Labra, Pamela Guevara, Delphine Duclap, Josselin Houenou, Cyril Poupon, Jean-François Mangin, and Miguel Figueroa. Fast automatic segmentation of white matter streamlines based on a multi-subject bundle atlas. Neuroinformatics, 15(1):71-86, 2017. doi:10.1007/s12021-016-9316-7.">5</a>, <a class="reference internal" href="References.html#id8" title="Andrea Vázquez, Narciso López-López, Nicole Labra, Miguel Figueroa, Cyril Poupon, Jean-François Mangin, Cecilia Hernández, and Pamela Guevara. Parallel optimization of fiber bundle segmentation for massive tractography datasets. In 2019 IEEE 16th International Symposium on Biomedical Imaging (ISBI 2019), 178-181. IEEE, 2019. doi:10.1109/ISBI.2019.8759208.">6</a>]</span>, called FiberSeg.</p>
+<span class="target" id="module-phybers.segment"></span><section id="fiberseg-description">
+<h3>FiberSeg Description<a class="headerlink" href="#fiberseg-description" title="Permalink to this heading"></a></h3>
+<p>The FiberSeg uses as a measure of similarity between pairs of fibers the maximum Euclidean distance between corresponding points ( <span class="math notranslate nohighlight">\(d_{ME}\)</span>), defined as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\label{eq:ecua1}
+d_{ME}(A,B) = \min(\max_{i}(|a_{i}-b_{i}|),\max_{i}(|a_{i}-b_{N_{p}-i}|)) \quad \qquad [1]
+\end{equation}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(a_{i}\)</span> and <span class="math notranslate nohighlight">\(b_{i}\)</span> represent the 3D coordinates of the points in fibers A and B, respectively, both having an equal number of points (<span class="math notranslate nohighlight">\(N_{p}\)</span>) and in direct order.
+This implies that the points of fiber A are sequentially traversed as <span class="math notranslate nohighlight">\(a_{i}\)</span> = [<span class="math notranslate nohighlight">\(a_{1}\)</span>, <span class="math notranslate nohighlight">\(a_{2}\)</span>, …, <span class="math notranslate nohighlight">\(a_{N_{p}}\)</span>],
+and those of B are similarly defined: <span class="math notranslate nohighlight">\(b_{i}\)</span> = [<span class="math notranslate nohighlight">\(b_{1}\)</span>, <span class="math notranslate nohighlight">\(b_{2}\)</span>, …, <span class="math notranslate nohighlight">\(b_{N_{p}}\)</span>].
+Therefore, the reverse order of fiber B is expressed as  <span class="math notranslate nohighlight">\(b_{N_{p-i}}\)</span> = [ <span class="math notranslate nohighlight">\(b_{N_{p}}\)</span>, <span class="math notranslate nohighlight">\(b_{N_{p-1}}\)</span>, …, <span class="math notranslate nohighlight">\(b_{1}\)</span>].</p>
+<p>It aims to classify the subject fibers according to a multi-subject bundle atlas. The bundle atlas consists of a set of representative bundles and an information file.
+The fibers of the atlas bundles are called centroids. The fibers of each subject are classified using a maximum <span class="math notranslate nohighlight">\(d_{ME}\)</span> distance threshold for each bundle between the subject’s fibers and the atlas centroids.
+The fibers are labeled with the closest atlas bundle, given that the distance is smaller than the distance threshold.</p>
+</section>
+<section id="atlases-download">
+<span id="id2"></span><h3>Atlases Download<a class="headerlink" href="#atlases-download" title="Permalink to this heading"></a></h3>
+<p>We provide one atlas of Deep White Matter (DWM) bundles <span id="id3">[<a class="reference internal" href="References.html#id3" title="P. Guevara, D. Duclap, C. Poupon, L. Marrakchi-Kacem, P. Fillard, D. Le Bihan, M. Leboyer, J. Houenou, and J. F. Mangin. Automatic fiber bundle segmentation in massive tractography datasets using a multi-subject bundle atlas. Neuroimage, 61(4):1083-99, 2012. doi:10.1016/j.neuroimage.2012.02.071.">3</a>]</span> and two atlases of Superficial White Matter (SWM) bundles, <span id="id4">[<a class="reference internal" href="References.html#id6" title="Claudio Román, Miguel Guevara, Ronald Valenzuela, Miguel Figueroa, Josselin Houenou, Delphine Duclap, Cyril Poupon, Jean-François Mangin, and Pamela Guevara. Clustering of whole-brain white matter short association bundles using hardi data. Frontiers in Neuroinformatics, 11:73, 2017 2017. doi:10.3389/fninf.2017.00073.">4</a>]</span> and <span id="id5">[<a class="reference internal" href="References.html#id7" title="Claudio Román, Cecilia Hernández, Miguel Figueroa, Josselin Houenou, Cyril Poupon, Jean-François Mangin, and Pamela Guevara. Superficial white matter bundle atlas based on hierarchical fiber clustering over probabilistic tractography data. NeuroImage, 262:119550, 2022. doi:10.1016/j.neuroimage.2022.119550.">7</a>]</span>.
+The following links provide access to these three atlases:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://www.dropbox.com/scl/fo/vy3j1bi56w07arzqnn8gc/h?rlkey=ngppw0xu4a5rbmx6sh0rtyg1o&amp;dl=1">Download DWM Bundles Atlas (Guevara et al. 2012)</a></p></li>
+<li><p><a class="reference external" href="https://www.dropbox.com/scl/fo/adjz3yx0pkw6nyekrpyta/h?rlkey=qpzulmnm86kn3a7zu02693t4z&amp;dl=1">Download SWM Bundles Atlas (Claudio Roman et al. 2017)</a></p></li>
+<li><p><a class="reference external" href="https://www.dropbox.com/scl/fo/hperwxwe86ai334x41ee5/h?rlkey=sfgz7v34sls40x3wgntmnpa9y&amp;dl=1">Download SWM Bundles Atlas (Claudio Roman et al. 2022)</a></p></li>
+</ol>
+<p>In addition to these atlases, we have tested our algorithm with the atlas <span id="id6">[<a class="reference internal" href="References.html#id10" title="Fan Zhang, Ye Wu, Isaiah Norton, Laura Rigolo, Yogesh Rathi, Nikos Makris, and Lauren J. O'Donnell. An anatomically curated fiber clustering white matter atlas for consistent white matter tract parcellation across the lifespan. NeuroImage, 179:429-447, 2018. doi:10.1016/j.neuroimage.2018.06.027.">8</a>]</span>, which contains both  DWM and SWM bundle.
+If you need this atlas in data <code class="docutils literal notranslate"><span class="pre">bundles</span></code> format, feel free to contact us via email.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="phybers.segment.fiberseg">
+<span class="sig-prename descclassname"><span class="pre">phybers.segment.</span></span><span class="sig-name descname"><span class="pre">fiberseg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subj_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlas_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atlas_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/phybers/segment/segment.html#fiberseg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#phybers.segment.fiberseg" title="Permalink to this definition"></a></dt>
+<dd><p>White matter fiber bundle segmentation algorithm based on a multi-subject atlas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_in</strong> (<em>str</em>) – Tractography dataset file in <em>bundles</em> format.</p></li>
+<li><p><strong>subj_name</strong> (<em>str</em>) – Subject name, used to label the results.</p></li>
+<li><p><strong>atlas_dir</strong> (<em>str</em>) – Bundle atlas directory, with bundles in separated files, sampled at 21 equidistant points. The bundle atlases provided are in same folders.</p></li>
+<li><p><strong>atlas_info</strong> (<em>str</em>) – Text file associated to the used atlas, that stores information needed to apply the segmentation algorithm, i.e., a list of the atlas fascicles, containing the name, the segmentation
+threshold (in <em>mm</em>) and the size of each fascicle. Note that the segmentation threshold can be adjusted depending on the database to be used.</p></li>
+<li><p><strong>dir_out</strong> (<em>str</em>) – Directory name to store all the results generated by the algorithm.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function generates the following files in the specified directory:</p>
+<dl class="simple">
+<dt>final_bundles<span class="classifier">bundles files</span></dt><dd><p>The directory contains individual files for each segmented fascicle in the <em>bundles/bundlesdata</em> format, sampled at 21 points, and in the atlas space (MNI).
+Each file is named using the subject’s name followed by the atlas label.</p>
+</dd>
+<dt>final_bundles_allpoints<span class="classifier">bundles files</span></dt><dd><p>The directory contains individual files for each segmented fascicle in the <em>bundles/bundlesdata</em> format, with all point that tractography dataset file input, and in the atlas space (MNI).
+Each file is named using the subject’s name followed by the atlas label. This directory is only generated when the input tractography dataset file has not been sampled at 21 points.</p>
+</dd>
+<dt>centroids<span class="classifier">bundles files</span></dt><dd><p>A directory storing two files corresponding to a tractography dataset in <em>bundles/bundlesdata</em> format, containing one centroid for each segmented fascicle.
+This dataset is named <em>centroids.bundles/centroids.bundlesdata</em>, and is sampled at 21 points in the atlas space (MNI).</p>
+</dd>
+<dt>bundles_id<span class="classifier">text files</span></dt><dd><p>The directoty that has a text file for each segmented bundle. A text file of a segmented bundle contains the indices of the fibers in the original  subject’s tractography dataset file.
+The name of each file corresponds to the name of the segmented bundle file with <code class="docutils literal notranslate"><span class="pre">'.txt'</span></code> extension.
+These files are used to obtain the segmented fascicles in the subject’s original space and with all points of brain fibers.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="clustering">
+<span id="clustering-doc"></span><h2>Clustering<a class="headerlink" href="#clustering" title="Permalink to this heading"></a></h2>
+<p>The module comprises two fiber clustering algorithms whole-brain tractography dataset, HClust (Clustering Hierarchical, <span id="id7">[<a class="reference internal" href="References.html#id6" title="Claudio Román, Miguel Guevara, Ronald Valenzuela, Miguel Figueroa, Josselin Houenou, Delphine Duclap, Cyril Poupon, Jean-François Mangin, and Pamela Guevara. Clustering of whole-brain white matter short association bundles using hardi data. Frontiers in Neuroinformatics, 11:73, 2017 2017. doi:10.3389/fninf.2017.00073.">4</a>, <a class="reference internal" href="References.html#id7" title="Claudio Román, Cecilia Hernández, Miguel Figueroa, Josselin Houenou, Cyril Poupon, Jean-François Mangin, and Pamela Guevara. Superficial white matter bundle atlas based on hierarchical fiber clustering over probabilistic tractography data. NeuroImage, 262:119550, 2022. doi:10.1016/j.neuroimage.2022.119550.">7</a>]</span>)
+and FFClust (Fast Fiber Clustering, <span id="id8">[<a class="reference internal" href="References.html#id9" title="A. Vázquez, N. López-López, A. Sánchez, J. Houenou, C. Poupon, J. F. Mangin, C. Hernández, and P. Guevara. Ffclust: fast fiber clustering for large tractography datasets for a detailed study of brain connectivity. Neuroimage, 220:117070, 2020. doi:10.1016/j.neuroimage.2020.117070.">9</a>]</span>)</p>
+<span class="target" id="module-phybers.clustering"></span><section id="hclust-description">
+<h3>HClust Description<a class="headerlink" href="#hclust-description" title="Permalink to this heading"></a></h3>
+<p>HClust is an average-link hierarchical agglomerative clustering algorithm which allows finding bundles based on a pairwise fiber distance measure.
+The algorithm calculates a distance matrix between all fiber pairs for a bundles dataset (<span class="math notranslate nohighlight">\(d_{ij}\)</span>), by using the maximum of the Euclidean distance between fiber pairs (Equation [1]).
+Then, it computes an affinity graph on the <span class="math notranslate nohighlight">\(d_{ij}\)</span> matrix for the fiber pairs that have Euclidean distance below a maximum distance threshold (<em>fiber_thr</em>).
+The Affinity <span id="id9">[<a class="reference internal" href="References.html#id11" title="L. J. O' Donnell and C. Westin. Automatic tractography segmentation using a high-dimensional white matter atlas. IEEE Transactions on Medical Imaging, 26(11):1562-75, 2007. doi:10.1109/TMI.2007.906785.">10</a>]</span> is given by the following equation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+a_{ij} = e^{\frac{-d_{ij}}{\sigma^{2}}}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(d_{ij}\)</span> is the distance between the elements <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>, and <span class="math notranslate nohighlight">\(\sigma\)</span> is a parameter that defines the similarity scale in <em>mm</em>.</p>
+<p>From the affinity graph, the hierarchical tree is generated using an agglomerative average-link hierarchical clustering algorithm.
+The tree is adaptively partitioned using a distance threshold (<em>partition_thr</em>).</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="phybers.clustering.hclust">
+<span class="sig-prename descclassname"><span class="pre">phybers.clustering.</span></span><span class="sig-name descname"><span class="pre">hclust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiber_thr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partition_thr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/phybers/clustering/clustering.html#hclust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#phybers.clustering.hclust" title="Permalink to this definition"></a></dt>
+<dd><p>Average-link hierarchical agglomerative clustering algorithm which allows finding bundles based on a pairwise fiber distance measure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_in</strong> (<em>str</em>) – Tractography dataset file in <em>bundles</em> format.</p></li>
+<li><p><strong>dir_out</strong> (<em>str</em>) – Directory to store all the results generated by the algorithm.</p></li>
+<li><p><strong>fiber_thr</strong> (<em>str</em>) – Maximum distance threshold in <em>mm</em>, default: <em>70</em>.</p></li>
+<li><p><strong>partition_thr</strong> (<em>str</em>) – Partition threshold in <em>mm</em>, default: <em>70</em>.</p></li>
+<li><p><strong>variance</strong> (<em>str</em>) – Variance squared and provides a similarity scale in <em>mm</em>, default: <em>3600</em>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function generates the following files in the specified directory:</p>
+<dl class="simple">
+<dt>final_bundles<span class="classifier">bundles files</span></dt><dd><p>Directory that stores all the fiber clusters identified in separated datasets (<em>bundles/bundlesdata</em> files), sampled at 21 points.
+The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters (N-1) identified.</p>
+</dd>
+<dt>final_bundles_allpoints<span class="classifier">bundles files</span></dt><dd><p>Directory that stores all the fiber clusters identified in separated datasets (<em>bundles/bundlesdata</em> files).
+The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters (N-1) identified.
+This directory is only generated when the input tractography dataset file has not been sampled at 21 points.</p>
+</dd>
+<dt>centroids<span class="classifier">bundles files</span></dt><dd><p>A directory storing two files corresponding to a tractography dataset in <em>bundles/bundlesdata</em> format,
+containing one centroid for each created cluster. This dataset is named <em>centroids.bundles/centroids.bundlesdata</em>, and is sampled at 21 points in the atlas space (MNI).</p>
+</dd>
+<dt>bundles_id<span class="classifier">text file</span></dt><dd><p>Text file that stores the fiber indexes from the original input tractography dataset file for each detected cluster.
+Each line in the file correspond to a cluster in correlative order.</p>
+</dd>
+<dt>outputs<span class="classifier">Several formats</span></dt><dd><p>Temporal directory with intermediate results, such as the distance matrix, the affinity graph, and the dendrogram.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="ffclust-description">
+<h3>FFClust Description<a class="headerlink" href="#ffclust-description" title="Permalink to this heading"></a></h3>
+<p>FFClust is an intra-subject clustering algorithm aims to identify compact and homogeneous fiber clusters on a large tractography dataset.
+The algorithm consists of four stages. The stage 1 applies Minibatch K-Means clustering on five fiber points, and it merges fibers sharing the same point clusters (map clustering) in stage 2.
+Next, it reassigns small clusters to bigger ones (stage 3) considering distance of fibers in direct and reverse order.
+Finally, at stage 4, the algorithm groups clusters sharing the central point and merges close clusters represented by their centroids.
+The distance among fibers is defined as the maximum of the Euclidean distance between corresponding points.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="phybers.clustering.ffclust">
+<span class="sig-prename descclassname"><span class="pre">phybers.clustering.</span></span><span class="sig-name descname"><span class="pre">ffclust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">10</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">17</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">20</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">200</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">300</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">300</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">300</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">200</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assign_thr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_thr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/phybers/clustering/clustering.html#ffclust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#phybers.clustering.ffclust" title="Permalink to this definition"></a></dt>
+<dd><p>Intra-subject clustering algorithm aims to identify compact and homogeneous fiber clusters on a large tractography dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_in</strong> (<em>str</em>) – Tractography data file in <em>‘.bundles’</em> format.</p></li>
+<li><p><strong>dir_out</strong> (<em>str</em>) – Directory to store all the results generated by the algorithm.</p></li>
+<li><p><strong>points</strong> (<em>list</em><em>(</em><em>)</em>) – Index of the points to be used in the point clustering (K-means), default: 0, 3, 10, 17, 20.</p></li>
+<li><p><strong>ks</strong> (<em>list</em><em>(</em><em>)</em>) – Number of clusters to be computed for each point using K-Means, default: 300, 200, 200, 200, 300.</p></li>
+<li><p><strong>assign_thr</strong> (<em>str</em>) – Maximum distance threshold for the cluster reassignment in <em>mm</em>, default: <em>6</em>.</p></li>
+<li><p><strong>join_thr</strong> (<em>str</em>) – Maximum distance threshold for the cluster merge in <em>mm</em>, default: <em>6</em>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function generates the following files in the specified directory:</p>
+<dl class="simple">
+<dt>final_bundles<span class="classifier">bundles files</span></dt><dd><p>Directory that stores all the fiber clusters identified in separated datasets (<em>bundles/bundlesdata</em> files), sampled at 21 points.
+The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters (N-1) identified.</p>
+</dd>
+<dt>final_bundles_allpoints<span class="classifier">bundles files</span></dt><dd><p>Directory that stores all the fiber clusters identified in separated datasets (<em>bundles/bundlesdata</em> files).
+The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters (N-1) identified.
+This directory is only generated when the input tractography dataset file has not been sampled at 21 points.</p>
+</dd>
+<dt>centroids<span class="classifier">bundles files</span></dt><dd><p>A directory storing two files corresponding to a tractography dataset in <em>bundles/bundlesdata</em> format,
+containing one centroid for each created cluster. This dataset is named <em>centroids.bundles/centroids.bundlesdata</em>, and is sampled at 21 points in the atlas space (MNI).</p>
+</dd>
+<dt>bundles_id<span class="classifier">text file</span></dt><dd><p>Text file that stores the fiber indexes from the original input tractography dataset file for each detected cluster.
+Each line in the file correspond to a cluster in correlative order.</p>
+</dd>
+<dt>outputs<span class="classifier">Several formats</span></dt><dd><p>Temporal directory with intermediate results, such as the point clusters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="utils">
+<span id="utils-doc"></span><h2>Utils<a class="headerlink" href="#utils" title="Permalink to this heading"></a></h2>
+<p>The Utils module is a set of tools used for tractography dataset pre-processing and the analysis of brain fiber clustering and segmentation results.
+The module includes tools for reading and writing brain fiber files in bundles format, transform the fibers to a reference coordinate system based on a deformation field,
+sampling of fibers at a defined number of equidistant points, calculation of intersection between sets of brain fibers,
+and tools for extracting measures and filtering fiber clusters or segmented bundles.
+We considered the extraction of measures such as size, mean length (in <em>mm</em>), and the distance between fibers of each cluster (or fascicle), in <em>mm</em>. The source code is mostly developed in C/C++.</p>
+<span class="target" id="module-phybers.utils"></span><section id="deformation-description">
+<h3>Deformation Description<a class="headerlink" href="#deformation-description" title="Permalink to this heading"></a></h3>
+<p>The <em>deformation</em> sub-module transforms a tractography dataset file to another space using a nonlinear deformation file.
+The maps must be stored in <code class="docutils literal notranslate"><span class="pre">NIfTI</span></code> format, where the voxels contain the transformation to be applied to each voxel 3D space location.
+<em>deformation</em> applies the transformation to the 3D coordinates of the fiber points.
+The <em>deformation</em> can be employed on the  Human Connectome Project (HCP) database <span id="id10">[<a class="reference internal" href="References.html#id13" title="Matthew F. Glasser, Stamatios N. Sotiropoulos, J. Anthony Wilson, Timothy S. Coalson, Bruce Fischl, Jesper L. Andersson, Junqian Xu, Saad Jbabdi, Matthew Webster, Jonathan R. Polimeni, David C. Van Essen, and Mark Jenkinson. The minimal preprocessing pipelines for the human connectome project. NeuroImage, 80:105-124, 2013. doi:10.1016/j.neuroimage.2013.04.127.">2</a>]</span> during the pre-processing stage before applying the segmentation algorithm.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="phybers.utils.deform">
+<span class="sig-prename descclassname"><span class="pre">phybers.utils.</span></span><span class="sig-name descname"><span class="pre">deform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deform_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/phybers/utils/utils.html#deform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#phybers.utils.deform" title="Permalink to this definition"></a></dt>
+<dd><p>Transforms a tractography file to another space using a non-linear deformation image file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>deform_file</strong> (<em>str</em>) – Deformation image (image in NIfTI format containing the deformations).</p></li>
+<li><p><strong>file_in</strong> (<em>str</em>) – Input tractography dataset in bundles format.</p></li>
+<li><p><strong>file_out</strong> (<em>str</em>) – Path to the transformed tractography dataset.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function generates the following files in the specified directory:</p>
+<dl class="simple">
+<dt>Tractography<span class="classifier">bundles files</span></dt><dd><p>Tractography dataset that has been transformed into the MNI space.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="sampling-description">
+<h3>Sampling Description<a class="headerlink" href="#sampling-description" title="Permalink to this heading"></a></h3>
+<p>Tractography datasets are usually composed of a large number of 3D polylines with a variable number of points.
+The <em>sampling</em> sub-module performs a sampling of the fibers, recalculating their points using a defined number of equidistant points.
+The input data of the algorithm are the path of the tractography dataset file to be sampled, the output file with the fibers with n points, and the number of points (npoints).
+The <em>sampling</em> sub-module is used in the pre-processing stage of the segmentation and clustering algorithms.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="phybers.utils.sampling">
+<span class="sig-prename descclassname"><span class="pre">phybers.utils.</span></span><span class="sig-name descname"><span class="pre">sampling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">21</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/phybers/utils/utils.html#sampling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#phybers.utils.sampling" title="Permalink to this definition"></a></dt>
+<dd><p>Performs a fiber sampling by recalculating their points using a specified number of equidistant points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_in</strong> (<em>str</em>) – Tractography dataset file in <em>bundles</em> format.</p></li>
+<li><p><strong>file_out</strong> (<em>str</em>) – Path to save the tractography dataset sampled at n equidistant points.</p></li>
+<li><p><strong>npoints</strong> (<em>str</em>) – Number of sampling points (n). Default: <em>21</em>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function generates the following files in the specified directory:</p>
+<dl class="simple">
+<dt>Tractography<span class="classifier">bundles files</span></dt><dd><p>Tractography dataset sampled at n equidistant points in <em>bundles</em> format</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="intersection-description">
+<h3>Intersection Description<a class="headerlink" href="#intersection-description" title="Permalink to this heading"></a></h3>
+<p>The <em>intersection</em> sub-module calculates a similarity measure between two sets of brain fibers, that could be generated with other algorithms, such as fiber clustering (fiber clusters) and bundle
+segmentation (segmented bundles). It uses a maximum distance threshold (in <em>mm</em>) to consider two fibers as similar. Both sets of fibers must be in the same space. First, an Euclidean distance matrix is calculated
+between the fibers of the two sets. The number of fibers from one set that have a similar fiber in the other set are counted, for both sets. The similarity measure yields a value between <em>0</em> and <em>100 %</em>.
+The input data of the intersection algorithm are the two sets of fibers and the maximum distance threshold, while the output is the similarity percentage.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="phybers.utils.intersection">
+<span class="sig-prename descclassname"><span class="pre">phybers.utils.</span></span><span class="sig-name descname"><span class="pre">intersection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file1_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file2_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_thr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/phybers/utils/utils.html#intersection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#phybers.utils.intersection" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates a similarity measure between two sets of brain fibers (fiber clusters or segmented bundles).
+The similarity measure yields a value between <em>0</em> and <em>100%</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file1_in</strong> (<em>str</em>) – Path of the first fiber bundle.</p></li>
+<li><p><strong>file2_in</strong> (<em>str</em>) – Path of the second fiber bundle.</p></li>
+<li><p><strong>dir_out</strong> (<em>str</em>) – Directory name to store all the results generated by the algorithm.</p></li>
+<li><p><strong>distance_thr</strong> (<em>float</em>) – Distance threshold in <em>mm</em> used to consider similar two fibers, default: <em>10</em>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Tuple</strong> – <cite>[float, float]</cite>, The first value indicates the percentage of intersection of the first set of fibers compared to the second set of fibers,
+and the second value indicates the reverse scenario, intersection of the second set of fibers compared to the first set of fibers.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[float, float]</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function generates three tractography dataset files in the ouput directory, as follows:</p>
+<dl class="simple">
+<dt><em>fiber1-fiber2.bundles/fiber1-fiber2.bundlesdata</em>:</dt><dd><p>Containing the fibers that are considered similar (or intersecting) for both fascicles.</p>
+</dd>
+<dt><em>only_fiber1.bundles/only_fiber1.bundlesdata</em>:</dt><dd><p>Containing the fibers that are only in the first fascicle.</p>
+</dd>
+<dt><em>only_fiber2.bundles/only_fiber2.bundlesdata</em>:</dt><dd><p>Containing the fibers that are only in the second fascicle.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="postprocessing-description">
+<h3>Postprocessing Description<a class="headerlink" href="#postprocessing-description" title="Permalink to this heading"></a></h3>
+<p>The PostProcessing sub-module contains a set of algorithms that can be applied to the results of clustering and segmentation algorithms.
+This algorithm constructs a Pandas library object (<code class="docutils literal notranslate"><span class="pre">Dataframe</span></code>), where each key corresponds to the name of the fiber set (cluster or segmented fascicle),
+followed by measures defined on the fiber set such as number of fibers (size), intra-fiber bundle distance (in <em>mm</em>) and mean length (in <em>mm</em>).
+It can be used to perform single or multiple feature filtering on the clustering or segmentation results. The input of the algorithm is the directory with the bundle sets to be
+analyzed, and the output is a Pandas Dataframe object with the calculated metrics.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="phybers.utils.postprocessing">
+<span class="sig-prename descclassname"><span class="pre">phybers.utils.</span></span><span class="sig-name descname"><span class="pre">postprocessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/phybers/utils/utils.html#postprocessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#phybers.utils.postprocessing" title="Permalink to this definition"></a></dt>
+<dd><p>Sets of algorithms that can be applied on the results of clustering and segmentation algorithms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dir_in</strong> (<em>str</em>) – Root directory where all segmentation or clustering algorithm results are stored.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>pd.DataFrame</cite>, contains the following list of keys: <cite>size</cite>: number of fibers in the bundle,
+<cite>len</cite>: centroid length per bundle, <cite>intra_mean</cite>: mean intra-bundle Euclidean distance.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="read-and-write-bundle-description">
+<h3>Read and Write bundle Description<a class="headerlink" href="#read-and-write-bundle-description" title="Permalink to this heading"></a></h3>
+<p>The functions <code class="docutils literal notranslate"><span class="pre">read_bundle()</span></code> and <code class="docutils literal notranslate"><span class="pre">write_bundle()</span></code> allow reading and writing files in the <code class="docutils literal notranslate"><span class="pre">'.bundles/bundlesdata'</span></code> format, respectively. Below, their inputs and outputs are described.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="phybers.utils.read_bundle">
+<span class="sig-prename descclassname"><span class="pre">phybers.utils.</span></span><span class="sig-name descname"><span class="pre">read_bundle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/phybers/utils/utils.html#read_bundle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#phybers.utils.read_bundle" title="Permalink to this definition"></a></dt>
+<dd><p>Read tractography in bundles format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_in</strong> (<em>str</em>) – Path to read of the tractography dataset file in <em>bundles</em> format.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List where each position contains a NumPy array representing the 3D coordinates of a brain fiber.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="phybers.utils.write_bundle">
+<span class="sig-prename descclassname"><span class="pre">phybers.utils.</span></span><span class="sig-name descname"><span class="pre">write_bundle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1048576</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/phybers/utils/utils.html#write_bundle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#phybers.utils.write_bundle" title="Permalink to this definition"></a></dt>
+<dd><p>Write tractography in <em>bundles</em> format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_out</strong> (<em>str</em>) – Path to save of the tractography dataset file in <em>bundles</em> format.</p></li>
+<li><p><strong>points</strong> (<em>list</em>) – List where each position contains a NumPy array representing the 3D coordinates of a brain fibers.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="visualization">
+<span id="visualization-doc"></span><h2>Visualization<a class="headerlink" href="#visualization" title="Permalink to this heading"></a></h2>
+<p>The tractography dataset files can be rendered with lines or cylinders.
+In the case of lines, the software loads the streamlines with a fixed normal per vertex, which correspond to the normalized direction for the particular segment of the streamline.
+Furthermore, a phong lighting algorithm <span id="id11">[<a class="reference internal" href="References.html#id5" title="I. Osorio, M. Guevara, D. Bonometti, D. Carrasco, M. Descoteaux, C. Poupon, J. F. Mangin, C. Hernández, and P. Guevara. Abrainvis: an android brain image visualization tool. Biomed Eng Online, 20(1):72, 2021. doi:10.1186/s12938-021-00909-0.">11</a>]</span> is implemented in a vertex shader to compute the color fetched for the streamline.
+The MRI data is rendered by using specific shaders for slice visualization and volume rendering. Meshes can be displayed using points, wireframes or shaded triangles.
+The user interface (GUI) allows viewing several objects simultaneously, performing camera operations (zoom, rotate and panning), modifying material properties (color and adding transparency)
+and applying linear transformation on the brain tractography dataset.</p>
+<blockquote>
+<div><span class="target" id="module-phybers.fibervis"></span></div></blockquote>
+<section id="interactive-3d-roi-based-fiber-segmentation">
+<h3>Interactive 3D ROI-based fiber segmentation<a class="headerlink" href="#interactive-3d-roi-based-fiber-segmentation" title="Permalink to this heading"></a></h3>
+<p>This function enables users to extract bundles using 3D objects and labeled 3D images, creating a point-based data structure for fast queries, known as an Octree.
+It is based on storing points inside a bounding box with a capacity of N. When a node is filled, and a new point is added, the node subdivides its bounding box into eight new non-overlapping nodes,
+and the points are moved to the new nodes. The resulting selected fiber for each object can be used in logical mathematical operations (and, or, xor, not).
+This allows the use of multiple ROIs (Regions of Interest) to find fibers that connect specific areas while excluding others selected by different areas.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="phybers.fibervis.start_fibervis">
+<span class="sig-prename descclassname"><span class="pre">phybers.fibervis.</span></span><span class="sig-name descname"><span class="pre">start_fibervis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bundles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mri</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#phybers.fibervis.start_fibervis" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes the graphical user interface (GUI).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>To test <code class="docutils literal notranslate"><span class="pre">fibervis()</span></code>, download the data from the links provided above. Then, open a Python terminal and run the following commands:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">phybers.fibervis</span> <span class="kn">import</span> <span class="n">start_fibervis</span>
+<span class="n">start_fibervis</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fibervis()</span></code> is installed as a program, allowing you to run it through the command line in Windows or Ubuntu. To execute it on both platforms, use the following command:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fibervis</span>
+</pre></div>
+</div>
+<p>For your convenience in using <code class="docutils literal notranslate"><span class="pre">fibervis()</span></code>, a video demonstrating all its features is accessible through the following link:
+[Video in progress].</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Examples%20and%20Tutorial%20Guide.html" class="btn btn-neutral float-left" title="Examples and Tutorial Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="References.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, L.Liset González Rodríguez.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
