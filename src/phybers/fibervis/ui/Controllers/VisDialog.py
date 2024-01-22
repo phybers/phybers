@@ -22,7 +22,7 @@ _vot_ui = files('phybers.fibervis') / 'ui' / 'visualizationObjectsTool.ui'
 def identifyNumberRecursively(item, number):
     root = item
 
-    if item.parent() != None:
+    if item.parent() is not None:
         root = identifyNumberRecursively(item.parent(), number)
         number.append(item.parent().indexOfChild(item))
     else:
@@ -56,7 +56,6 @@ class VisDialog(QtWidgets.QDialog):
     modifySegmentation = QtCore.pyqtSignal(dict)
     selectedObject = QtCore.pyqtSignal(dict)
 
-
     def __init__(self, parent):
         super().__init__(parent)
         self.ui = uic.loadUi(str(_vot_ui), self)
@@ -65,6 +64,7 @@ class VisDialog(QtWidgets.QDialog):
 
         # signal when closing
         oldCloseEvent = self.ui.closeEvent
+
         def newCloseEvent(*args, **kwargs):
             self.closed.emit()
             return oldCloseEvent(*args, **kwargs)
@@ -75,7 +75,6 @@ class VisDialog(QtWidgets.QDialog):
         self.meshReference = None
         self.mriReference = None
         self.roisReference = None
-
 
         # Context menu
         self.ui.treeWidget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
