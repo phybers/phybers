@@ -127,7 +127,17 @@ bool is_inverted, unsigned int fiber_index, unsigned int fatlas_index){
     return false;
 }
 
-char * str_to_char_array(string s){
+char * str_to_char_array(string s) {
+    size_t length = s.length() + 1; // cambio int length = (int) s.length() + 1; a size_t length = s.length() + 1; 
+    char * char_array = new char[length];
+#pragma omp parallel for
+    for (int i = 0; i < length; i++) { // cambio de <= a <
+        char_array[i] = s[i];
+    }
+    return char_array;
+}
+
+/*char * str_to_char_array(string s){
     int length = (int) s.length()+1;
     char * char_array = new char[length];
 #pragma omp parallel for
@@ -135,7 +145,7 @@ char * str_to_char_array(string s){
         char_array[i] = s[i];
     }
     return char_array;
-}
+}*/
 
 float discarded_21points (vector<float> &subject_data, vector<float> &atlas_data, unsigned short int ndata_fiber,
                 unsigned char threshold, bool is_inverted, unsigned int fiber_index, unsigned int fatlas_index){
@@ -281,10 +291,11 @@ void write_bundles(string subject_name, string output_path, vector<vector<unsign
                        <<"    \'space_dimension\' : 3"<<endl
                        <<"  }"<<endl;
             bundlesfile.close();
-            delete(bundlesdata_file);
+            delete[] bundlesdata_file; // cambio de delete(bundlesdata_file) a delete[] bundlesdata_file
         }
     }
-    delete(output_folder);
+
+    delete[] output_folder; // cambio de delete(output_folder) a delete[] output_folder
 }
 
 /*Read .bundles files and return (by reference) a vector with the datas*/
@@ -350,7 +361,7 @@ void read_atlas_info(string path, vector<string> &names, vector<unsigned char> &
     }
 
     string name;
-    unsigned short int t;
+    float t; //cambio de unsigned short int t; a float t;
     unsigned int n;
     while (infile >> name >> t >> n)
     {
