@@ -6,7 +6,7 @@ from . import clustering
 from ...utils import write_bundle
 
 
-def clusters_fibers21p(results: ClusterMapCentroid, final_bundles_dir, infile):
+def clusters_fibers(results: ClusterMapCentroid, final_bundles_dir, infile):
     for i, cluster in enumerate(results.clusters):
         bcust = [infile[j] for j in cluster.indices]
         write_bundle(path.join(final_bundles_dir, f'{i}.bundles'), bcust)

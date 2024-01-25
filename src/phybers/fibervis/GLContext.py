@@ -39,7 +39,7 @@ def defaultLighting():
 
 
 def defaultBackgroundColor():
-    return [0.3, 0.3, 0.3, 1.0]
+	return [1.0, 1.0, 1.0, 1.0]
 
 
 class GLWidget(QtWidgets.QOpenGLWidget):

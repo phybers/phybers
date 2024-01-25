@@ -36,7 +36,7 @@ float *read_bundles(char *bundles_path, unsigned short int ndata_fiber, unsigned
     float *data = (float*) malloc (ndata_fiber * nfibers * sizeof(float));
     path[path_size + 4] = 0;
     FILE *fp = fopen(path, "rb");
-    printf("%s\n", path);
+    //printf("%s\n", path);
     if (fp == NULL) {fputs ("File error opening file\n",stderr); exit (1);}
     fseek (fp, 0 , SEEK_END);
     long lSize = ftell(fp);                                // Get file size.
@@ -179,12 +179,12 @@ int * initialized_array(int size, int value){
 
 int * parallel_segmentation(float *atlas_data, float *subject_data, unsigned short int ndata_fiber,
                             float threshold, const int atlas_size, const int subject_size) {
-                                 printf("Entra en parallel segmentation");
+                                 //printf("Start parallel segmentation");
     int * assignment = initialized_array(subject_size,-1);
     unsigned int nunProc = omp_get_num_procs();
     omp_set_num_threads(nunProc);
-        printf("\nEntra en la segmentación\n");
-        printf("\nUmbral: %f\n",threshold);
+        //printf("\nStart the segmentation\n");
+        //printf("\Threshold: %f\n",threshold);
     int i;
 #pragma omp parallel
 {
@@ -221,7 +221,7 @@ int * parallel_segmentation(float *atlas_data, float *subject_data, unsigned sho
                 assignment[i]=assignment_i;
         }
     }
-    printf("Termina segmentación");
+    //printf("End Segmentation");
     return assignment;
 }
 
@@ -250,7 +250,7 @@ int * segmentation(unsigned int n_points, char *subject_path, char *atlas_path, 
     free(atlas_data);
     free(subject_data);
 
-    printf("Total segmented fibers: %d\n\n",count);
-    printf("Execution time of algorithm: %f seconds\n",parallelFastCPUTime);
+    //printf("Total segmented fibers: %d\n\n",count);
+    //printf("Execution time of algorithm: %f seconds\n",parallelFastCPUTime);
     return assignment;
 }

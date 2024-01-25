@@ -1,2 +1,1 @@
-from .ffclust.mainFFClust import ffclust
-from .hclust.mainHClust import hclust
+from .clustering import hclust, ffclust

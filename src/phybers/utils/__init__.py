@@ -1,2 +1,2 @@
-from .utilities import deform, inter2bundles as intersection, postprocessing, sampling, read_bundle, write_bundle
-del utilities
+from .utils import deform, intersection, postprocessing, sampling, read_bundle, write_bundle
+

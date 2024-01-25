@@ -1,9 +1,3 @@
-/* main.cpp
-   Authors:
-   Narciso López López
-   Andrea Vázquez Varela
-   Last update: 15-02-2020 */
-
 #include "dbindex.hpp"
 
 using namespace std;

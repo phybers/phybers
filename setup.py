@@ -132,13 +132,12 @@ fibervis_ext = Extension("phybers.fibervis.FiberVis_core.FiberVis_core",
 
 setup(
     name="phybers",
-    version="0.1.0b3",
+    version="1.1",
     description="Phybers: A Package for Brain Tractography Analysis.",
     url="https://github.com/phybers/phybers",
     author="L. Liset Gonzalez, Alejandro Cofre",
     author_email="phybers.dmris@gmail.com",
     license="GNU",
-    classifiers=['Development Status :: 4 - Beta'],
     install_requires=[
         "numpy",
         "dipy",
@@ -187,7 +186,7 @@ setup(
     zip_safe=False,
     entry_points={
         'gui_scripts': [
-            'FiberVis = phybers.fibervis.FiberVis:parse_args_and_run'
+            'fibervis = phybers.fibervis.FiberVis:parse_args_and_run'
         ],
     },
     long_description=long_description,

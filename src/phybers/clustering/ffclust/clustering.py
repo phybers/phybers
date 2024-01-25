@@ -1,6 +1,7 @@
 import functools
 import sklearn.cluster
 import numpy as np
+import os
 from dipy.segment.clustering import ClusterCentroid, \
                                     ClusterMapCentroid, \
                                     Clustering
@@ -12,7 +13,7 @@ from .c_wrappers import seg as segmentation
 
 
 def cluster_kmeans(x, k, random_state=0):
-    kmeans = sklearn.cluster.MiniBatchKMeans(n_clusters=k,
+    kmeans = sklearn.cluster.MiniBatchKMeans(n_clusters=k, n_init=3,
                                              random_state=random_state)
     return kmeans.fit_predict(x), kmeans
 
@@ -204,7 +205,7 @@ def clique_join(clusters, refdata, joined_bundles_dir, ident_clusters, object_di
         map_cluster_names[cluster_names[i]] = cluster
     return map_cluster_names
 
-def parallel_group_join_clique(clusters, groups, refdata,joined_bundles_dir,final_centroids_dir,ident_clusters,object_dir,thr_join):
+def parallel_group_join_clique(clusters, groups, refdata,joined_bundles_dir,dir_out,final_centroids_dir,ident_clusters,object_dir,thr_join):
     """
     Same as group_join_clique, using multiprocessing.dummy.Pool for threading
     Return clusters after distributing them in groups and joining with both distances and
@@ -226,7 +227,7 @@ def parallel_group_join_clique(clusters, groups, refdata,joined_bundles_dir,fina
                            ident_clusters=ident_clusters, object_dir=object_dir, threshold=thr_join)
     results = p.map(func, pool_input)
 
-    final_output_filename = object_dir + '/final_clusters.txt'
+    final_output_filename = os.path.join(dir_out, "bundles_id.txt")
     utils.save_join_clusters_fibers(results=results, filename=final_output_filename)
 
     final_centroids = []
@@ -234,13 +235,13 @@ def parallel_group_join_clique(clusters, groups, refdata,joined_bundles_dir,fina
     for cluster_names in results:
         for name in cluster_names:
             cluster = cluster_names[name]
-            join_bundles_file = joined_bundles_dir+"/"+str(i)+".bundles"
+            join_bundles_file = os.path.join(joined_bundles_dir, str(i)+".bundles")
             i+=1
             c = np.asarray(cluster[:])
             final_centroids.append(cluster.centroid)
             write_bundle(join_bundles_file,c)
 
-    write_bundle(final_centroids_dir + '/centroids.bundles',np.asarray(final_centroids))
+    write_bundle(os.path.join(final_centroids_dir, "centroids.bundles"),np.asarray(final_centroids))
 
     for new_clusters in results:
         for k in new_clusters:

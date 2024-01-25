@@ -28,7 +28,7 @@ def createfffGraphFromFile( graphfile ):
     E = int( l[ 1 ] )
     edges = N.zeros( [ E, 2 ], 'i' )
     weights = N.zeros( [ E, 1 ], 'f' )
-    print ('edges: ', E, ' vertices: ', V)
+    #print ('edges: ', E, ' vertices: ', V)
 
     count = 0
     while True:
@@ -274,15 +274,9 @@ def wforest_partition_maxdist_from_graph( wforestfile,
     WFV.top = top
 
     #calculate maximum values of distances to evaluate clusters
-    #print("maxdist type: ")
-    print(maxdist)
-    print(type(maxdist))
     max_cldist = float(maxdist) * 1.0         #maximum distance within a cluster
     max_meancldist = float(maxdist) * 1.0      #mean distance within a cluster
     #minimum affinity within a cluster
-    print(type(-max_cldist))
-    print(type(max_cldist))
-    print(type(var))
     min_claff = N.exp( -max_cldist * max_cldist / float(var) );
     #mean affinity within a cluster
     min_meanclaff = N.exp( -max_meancldist * max_meancldist / float(var) );
@@ -398,11 +392,10 @@ def wforest_partition_maxdist_from_graph( wforestfile,
     WFV.finalcl_singles = singles + singles2 + singles2b
     WFV.finalcl_notsingles = finalcl
     WFV.finalcl = finalcl + WFV.finalcl_singles
-    print ('total singles num = ', len( WFV.finalcl_singles ))
-    print ('not single clusters = ', len( WFV.finalcl_notsingles ))
-    print ('total clusters = ', len( WFV.finalcl ))
-    #tmp
-    print ('count divide = ', count_divide)
+    #print ('total singles num = ', len( WFV.finalcl_singles ))
+    #print ('not single clusters = ', len( WFV.finalcl_notsingles ))
+    #print ('total clusters = ', len( WFV.finalcl ))
+    #print ('count divide = ', count_divide)
 
     if add_singles == True:
 

@@ -94,8 +94,8 @@ int gAGFDM_main(char *fp_input, char *fp_output, float maxdist)
     fprintf(out, "%d %d", nodes, edges); // escribir número de nodos y aristas
     fclose(out);                         // cerrar fichero de salida
 
-    //   std::cout << "Execution Time: " << ((double)(clock() - t_start)*1000)/CLOCKS_PER_SEC  << " ms" << std::endl;	// mostrar tiempo de ejecución
-    std::cout << "Execution Time: " << ((double)(clock() - t_start)) / CLOCKS_PER_SEC << " secs" << std::endl; // mostrar tiempo de ejecución
+
+    //std::cout << "Execution Time: " << ((double)(clock() - t_start)) / CLOCKS_PER_SEC << " secs" << std::endl; // Execute Time
 
     return 0;
 }
@@ -155,8 +155,8 @@ int gALHCFGF_main(char *fp_input, char *fp_output)
              << std::flush;
         return 1;
     }
-    std::cout << "File Opened" << std::endl
-            << std::flush;
+    /*std::cout << "File Opened" << std::endl
+            << std::flush;*/
     is >> nV;
     is >> nE;
     std::cout << "Edges: " << nE
@@ -230,7 +230,7 @@ int gALHCFGF_main(char *fp_input, char *fp_output)
     // nbcc = k;
     maxv = maxv - nbcc;
 
-    printf("Connected components: %d\n", nbcc);
+    //printf("Connected components: %d\n", nbcc);
     // fclose(inFile);
 
     // execute clustering
@@ -245,8 +245,8 @@ int gALHCFGF_main(char *fp_input, char *fp_output)
     {
         if (q % 500 == 0)
         {
-            printf("#");
-            fflush(stdout);
+            /*printf("#");
+            fflush(stdout);*/
         }
         // # 1. find the heaviest edge
         m = floatmax(weights, nE).arg; // best fitting edge
@@ -446,9 +446,9 @@ int gALHCFGF_main(char *fp_input, char *fp_output)
     }
     wforestFile.close();
 
-    std::cout << "Execution Time: " << ((double)(clock() - t_start)) / CLOCKS_PER_SEC << " secs" << std::endl;
+    /*std::cout << "Execution Time: " << ((double)(clock() - t_start)) / CLOCKS_PER_SEC << " secs" << std::endl;
     std::cout << "done" << std::endl
-         << std::flush;
+         << std::flush;*/
 
     return 0;
 }

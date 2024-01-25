@@ -18,16 +18,16 @@ struct bundle read_bundle(char* bunfile)
     fgets(buffer,100,fb);
     fgets(buffer,100,fb);
     fgets(buffer,100,fb);
-    int index_i=0;//Indice posici�n inicial de los numeros
+    int index_i=0;//Indice posición inicial de los numeros
     for(i=0;i<sizeof(buffer);i++)
     {
-        if(buffer[i]>=48 && buffer[i]<=57)//Detecta cuando hay un n�mero en la l�nea le�da y guarda el �ndice
+        if(buffer[i]>=48 && buffer[i]<=57)//Detecta cuando hay un número en la linea leida y guarda el índice
         {
             index_i=i;
             break;
         }
     }
-    int index_f=index_i;//Indice posici�n final de los n�meros
+    int index_f=index_i;//Indice posición final de los números
     int32_t nfibers=0;   // variable para numero de fibras
     while(buffer[index_f]!=44)//Mientras no se detecte una coma aumenta el otro indice de la pos final
     {
@@ -215,28 +215,10 @@ struct bundle sliceFiber( struct bundle fibras, int sliceNum)
     return sB;
 }
 
-/*
-int32_t string2int(char* si)
-{
-    int i,j;
-    int32_t ent=0;
-    for(i=0;si[i]!=NULL;i++){}
 
-    for(j=0;j<i;j++)
-    {
-        ent+=(si[j]-48)*pow(10,i-j-1);
-    }
-    return ent;
-}
-*/
-
-// Retorna un puntero a memoria din�mica
-// creada con malloc en esta funci�n.
-// La funci�n que llama a esta debe liberar
-// la memoria de la matriz con free
 float** fiberDistanceMax(struct bundle f)
 {
-    // Calcula la distancia m�xima entre todas las fibras de un bundle
+    // Calcula la distancia máxima entre todas las fibras de un bundle
     // Todas deben tener la misma cantidad de puntos
 
     float** matriz = (float**) malloc (f.nfibers*sizeof(float*));
