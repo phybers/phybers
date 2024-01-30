@@ -1,3 +1,5 @@
+#version 150 core
+
 vec4 identityQ() {
 	return vec4(0.0, 0.0, 0.0, 1.0);
 }

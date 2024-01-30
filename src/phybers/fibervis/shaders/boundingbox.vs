@@ -13,6 +13,6 @@ uniform mat4 P;
 
 
 void main() {
-    color = vec4(1.0, 1.0, 1.0, 1.0);
+    color = vec4(0.0, 0.0, 0.0, 1.0);
     gl_Position = P*V*M*bbM*vec4(vertexPos, 1.0);
 }

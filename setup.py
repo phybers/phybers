@@ -132,7 +132,7 @@ fibervis_ext = Extension("phybers.fibervis.FiberVis_core.FiberVis_core",
 
 setup(
     name="phybers",
-    version="1.1.1",
+    version="1.1.2b0",
     description="Phybers: A Package for Brain Tractography Analysis.",
     url="https://github.com/phybers/phybers",
     author="L. Liset Gonzalez, Alejandro Cofre",

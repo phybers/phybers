@@ -40,8 +40,8 @@ class VisualizationActions(Enum):
 class SegmentationTypes(Enum):
     InPlace = 0
     ROIs = 1
-    # AtlasBased = 2
-    # FFClust = 3
+    AtlasBased = 2
+    FFClust = 3
 
 
 segmentations = {'In place segmentation': SegmentationTypes.InPlace,

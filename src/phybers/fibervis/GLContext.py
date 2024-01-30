@@ -737,11 +737,11 @@ class GLWidget(QtWidgets.QOpenGLWidget):
         elif key == QtCore.Qt.Key_B:
             self.set_draw_bbox()
         elif key == QtCore.Qt.Key_W:
-            self.camera.panning(0, 0, -10)
+            self.camera.panning(0, 0, 10)
         elif key == QtCore.Qt.Key_A:
             self.camera.panning(10, 0)
         elif key == QtCore.Qt.Key_S:
-            self.camera.panning(0, 0, 10)
+            self.camera.panning(0, 0, -10)
         elif key == QtCore.Qt.Key_D:
             self.camera.panning(-10, 0)
         elif key == QtCore.Qt.Key_R:
