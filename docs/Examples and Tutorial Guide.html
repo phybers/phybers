@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examples and Tutorial Guide &mdash; Phybers 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Documentation" href="Documentation.html" />
+    <link rel="prev" title="Requirements and Dependencies" href="Requirements%20and%20Dependencies.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Phybers
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Requirements%20and%20Dependencies.html">Requirements and Dependencies</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples and Tutorial Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-calculate-tractography-data-from-diffusion-weighted-images-using-dsi-studio-software">How to calculate tractography data from diffusion-weighted images using DSI Studio software</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hcp-database">HCP database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#openneuro-database">OpenNeuro database</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#conversion-of-tractography-data-to-working-format-trk-or-tck-bundles">Conversion of tractography data to working format (TRK or TCK -&gt; bundles)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conversion-of-tractography-data-from-working-format-to-other-formats-bundles-trk-or-tck">Conversion of tractography data from working format to other formats (bundles -&gt; TRK or TCK)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples-of-phybers-use">Examples of Phybers use</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#test-data-download">Test data download</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fiber-segmentation-and-visualization-example">Fiber segmentation and visualization example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fiber-bundle-segmentation">Fiber bundle segmentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#visualization-of-segmented-fascicles">Visualization of segmented fascicles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#retrieve-the-fascicles-with-all-points-in-the-subject-s-original-space">Retrieve the fascicles with all points in the subject’s original space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#calculating-intersection-between-fascicles">Calculating intersection between fascicles</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#clustering-example">Clustering example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hclust">HClust</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ffclust">FFClust</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Documentation.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="References.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Phybers</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Examples and Tutorial Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Examples and Tutorial Guide.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="examples-and-tutorial-guide">
+<h1>Examples and Tutorial Guide<a class="headerlink" href="#examples-and-tutorial-guide" title="Permalink to this heading"></a></h1>
+<p>This section was created with the purpose of providing a comprehensive example that covers the main functions of the Phybers package.
+Here, you will find well-commented test codes and data that will allow you to explore many functionalities of the package.</p>
+<p>To make the examples more comprehensive, we start with the <a class="reference internal" href="#testing-data"><span class="std std-ref">How to calculate tractography data from diffusion-weighted images using DSI Studio software</span></a> subsection,
+where we describe how to calculate brain tractography data using the DSI Studio software <span id="id1">[<a class="reference internal" href="References.html#id16" title="Fang-Cheng Yeh, Timothy D. Verstynen, Yibao Wang, Juan C. Fernández-Miranda, and Wen-Yih Isaac Tseng. Deterministic Diffusion Fiber Tracking Improved by Quantitative Anisotropy. PLOS ONE, 8(11):e80713, 2013. doi:10.1371/journal.pone.0080713.">1</a>]</span>.
+We also provide a source code that allows you to convert a tractography dataset from <code class="docutils literal notranslate"><span class="pre">TRK</span></code> (used by DSI Studio, TrackVis, among others)
+or <code class="docutils literal notranslate"><span class="pre">TCK</span></code> (used by MRtrix and others) formats to the <code class="docutils literal notranslate"><span class="pre">bundles</span></code> format, and vice versa.
+Then, in the <a class="reference internal" href="#subsec-example"><span class="std std-ref">Examples of Phybers use</span></a> subsection, we provide test data for running each of the showcased examples, divided into <a class="reference internal" href="#segmentation-example"><span class="std std-ref">Fiber segmentation and visualization example</span></a> and <a class="reference internal" href="#clustering-example"><span class="std std-ref">Clustering example</span></a>.
+It’s important to note that completing the <a class="reference internal" href="#testing-data"><span class="std std-ref">How to calculate tractography data from diffusion-weighted images using DSI Studio software</span></a> subsection is not necessary to try the provided examples.
+You can start directly in the <a class="reference internal" href="#data-test-download"><span class="std std-ref">Test data download</span></a> subsection to run them. Additionally, for detailed documentation on each Phybers module, we recommend accessing the <a class="reference internal" href="Documentation.html#doc-phybers"><span class="std std-ref">Documentation</span></a> section.</p>
+<section id="how-to-calculate-tractography-data-from-diffusion-weighted-images-using-dsi-studio-software">
+<span id="testing-data"></span><h2>How to calculate tractography data from diffusion-weighted images using DSI Studio software<a class="headerlink" href="#how-to-calculate-tractography-data-from-diffusion-weighted-images-using-dsi-studio-software" title="Permalink to this heading"></a></h2>
+<p>Currently, various programs enable the calculation of brain tractography.
+Nevertheless, in this subsection, we suggest a workflow to obtain a brain tractography dataset from diffusion MRI data of a subject of the Human Connectome Project (HCP) database <span id="id2">[<a class="reference internal" href="References.html#id13" title="Matthew F. Glasser, Stamatios N. Sotiropoulos, J. Anthony Wilson, Timothy S. Coalson, Bruce Fischl, Jesper L. Andersson, Junqian Xu, Saad Jbabdi, Matthew Webster, Jonathan R. Polimeni, David C. Van Essen, and Mark Jenkinson. The minimal preprocessing pipelines for the human connectome project. NeuroImage, 80:105-124, 2013. doi:10.1016/j.neuroimage.2013.04.127.">2</a>]</span>,
+utilizing DSI Studio software <span id="id3">[<a class="reference internal" href="References.html#id16" title="Fang-Cheng Yeh, Timothy D. Verstynen, Yibao Wang, Juan C. Fernández-Miranda, and Wen-Yih Isaac Tseng. Deterministic Diffusion Fiber Tracking Improved by Quantitative Anisotropy. PLOS ONE, 8(11):e80713, 2013. doi:10.1371/journal.pone.0080713.">1</a>]</span>.
+Furthermore, we also tested and provide examples for dMRI data of a subject from the <a class="reference external" href="https://openneuro.org/search/modality/MRI?query=%7B%22modality_selected%22%3A%22MRI%22%7D">OpenNeuro MRI Database</a>,
+wich has a lower resolution than the HCP database. The example data is compatible with all phybers modules.
+To increase usability, we provide a code to convert the brain tractography dataset file from the output format of DSI Studio (<code class="docutils literal notranslate"><span class="pre">TRK</span></code>) to our working format (<code class="docutils literal notranslate"><span class="pre">bundles</span></code>).
+This code source is also employed for converting from the <code class="docutils literal notranslate"><span class="pre">TCK</span></code> format to the <code class="docutils literal notranslate"><span class="pre">bundles</span></code> format, ensuring compatibility with other programs such as MRtrix, among others.</p>
+<p>Download and install the DSI Studio software by following the instructions provided on the <a class="reference external" href="https://dsi-studio.labsolver.org/download.html">DSI Studio website</a>.</p>
+<section id="hcp-database">
+<h3>HCP database<a class="headerlink" href="#hcp-database" title="Permalink to this heading"></a></h3>
+<p>The Human Connectome Project (HCP) has made available a freely accessible high-quality brain imaging database.
+The images were acquired on a 3 Tesla Siemens Skyra scanner.
+Multi-shell diffusion data was collected with three b-values (1000, 2000, 3000 <span class="math notranslate nohighlight">\(s/mm^{2}\)</span>),
+270 diffusion weighting directions, and an isotropic voxel size of 1.25 <em>mm</em>.</p>
+<p>To perform tractography, use preprocessed diffusion MRI images from an HCP subject, which can be downloaded from the following website:
+<a class="reference external" href="https://db.humanconnectome.org/app/template/Login.vm">HCP ConnectomeDB</a>.
+You can also download an example scan from <a class="reference external" href="https://www.dropbox.com/scl/fo/kfvc5r7ny4eunuz6gsya7/h?rlkey=sdiupfv9nnetsglogrp65iwhq&amp;dl=1">here</a>.
+When you obtain the example scan, unzip the file (<code class="docutils literal notranslate"><span class="pre">'subject_diffusion_MRI_example.zip'</span></code>) using the <code class="docutils literal notranslate"><span class="pre">extract</span> <span class="pre">here</span></code> option.</p>
+<p>Diffusion MRI data processed through the HCP diffusion pipeline includes diffusion MRI images (<code class="docutils literal notranslate"><span class="pre">'data.nii.gz'</span></code>), b-values (<code class="docutils literal notranslate"><span class="pre">bvals</span></code>), directions (<code class="docutils literal notranslate"><span class="pre">bvecs</span></code>),
+a brain mask (<code class="docutils literal notranslate"><span class="pre">'nodif_brain_mask.nii.gz'</span></code>), a file (<code class="docutils literal notranslate"><span class="pre">'grad_dev.nii.gz'</span></code>) that can be utilized to address gradient nonlinearities during model fitting,
+and log files detailing the EDDY processing (found in the <code class="docutils literal notranslate"><span class="pre">'subject_diffusion_MRI_example/eddylogs/'</span></code> directory).</p>
+<p>Afterward, you have the option to compute whole-brain tractography with DSI Studio. This can be done through the graphical interface or by using command lines.
+For a single subject, we suggest performing it through the graphical user interface.
+Open the graphical user interface and follow the subsequent 3 steps (Figure 1):</p>
+<ul class="simple">
+<li><p>Step T1: <em>Open Source Images</em>: allows reading diffusion MRI images in <code class="docutils literal notranslate"><span class="pre">NIfTI</span></code> or <code class="docutils literal notranslate"><span class="pre">DICOM</span></code> format and then creating the <code class="docutils literal notranslate"><span class="pre">SRC</span></code> file.
+In this case, the diffusion MRI images are located in the file <code class="docutils literal notranslate"><span class="pre">'data.nii.gz'</span></code>.</p></li>
+<li><p>Step T2: <em>Reconstruction</em>: the <code class="docutils literal notranslate"><span class="pre">SRC</span></code> file is read. Subsequently, skull stripping techniques or opening a brain mask (<code class="docutils literal notranslate"><span class="pre">'nodif_brain_mask.nii.gz'</span></code>) can be applied.
+Eddy current and motion corrections are then applied.
+Afterward, the diffusion reconstruction method is selected, with GQI being the chosen method in this case. Finally, the <code class="docutils literal notranslate"><span class="pre">FIB</span></code> file is generated.</p></li>
+<li><p>Step T3: <em>Fiber Tracking &amp; Visualization</em>: takes the <code class="docutils literal notranslate"><span class="pre">FIB</span></code> file and allows you to adjust parameters for fiber tracking.
+In this case, you can perform whole-brain deterministic tractography with the following fiber tracking parameters: angular threshold = <span class="math notranslate nohighlight">\(60^{0}\)</span>, step size = 0.5 <em>mm</em>, smoothing = 0.5, minimum length = 30 <em>mm</em>,
+maximum length = 300 <em>mm</em>, and a tract count of 1.5 million fibers.  To conclude, the tractography dataset can be stored in <code class="docutils literal notranslate"><span class="pre">TRK</span></code> format.</p></li>
+</ul>
+<figure class="align-default" id="id8">
+<img alt="pipeline-DSI-Studio.png" src="_images/pipeline-DSI-Studio.png" />
+<figcaption>
+<p><span class="caption-text">Figure 1. Workflow suggested to generate a whole-brain tractography dataset in DSI Studio for testing.
+In Step T1, diffusion MRI images are read from <code class="docutils literal notranslate"><span class="pre">NIfTI</span></code> or <code class="docutils literal notranslate"><span class="pre">DICOM</span></code> format, and create <code class="docutils literal notranslate"><span class="pre">SRC</span></code> file.
+Step T2 involves applying motion and distortion corrections, selecting the diffusion reconstruction method, ultimately leading to the creation of the <code class="docutils literal notranslate"><span class="pre">'FIB'</span></code> file
+Step T3, enables fiber tracking and the saving of the tractography dataset in <code class="docutils literal notranslate"><span class="pre">TRK</span></code> format.</span><a class="headerlink" href="#id8" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="openneuro-database">
+<h3>OpenNeuro database<a class="headerlink" href="#openneuro-database" title="Permalink to this heading"></a></h3>
+<p>Alternatively, you can obtain a brain tractography dataset using lower-resolution diffusion MRI images.
+For example, on the <a class="reference external" href="https://openneuro.org/datasets/ds001378/versions/00003/download">OpenNeuro website</a>, you can download diffusion images from 25 subjects.
+OpenNeuro has provided an open-access brain imaging database. The scans were performed on a 1.5 Tesla Philips Intera MRI scanner.
+Diffusion-weighted images were acquired using a single-shot echo-planar imaging sequence with 15 non-collinear and non-coplanar diffusion weighting directions,
+and b-values of 0 (b0 image) and 1000 <span class="math notranslate nohighlight">\(s/mm^{2}\)</span>. The voxel size is 2x2x3 <em>mm</em>.</p>
+<p>We have taken a subject from OpenNeuro and made it available at the following <a class="reference external" href="https://www.dropbox.com/scl/fo/swftwgqbw7er9l8qyx0p9/h?rlkey=5ezfroobayl6pgd35pffwbtkq&amp;dl=1">link</a>.
+Download the subject to the <code class="docutils literal notranslate"><span class="pre">'Downloads/'</span></code> directory and unzip it using the <code class="docutils literal notranslate"><span class="pre">extract</span> <span class="pre">here</span></code> option.
+Then, check for the existence of the three necessary files for tractography calculation: diffusion MRI images (<code class="docutils literal notranslate"><span class="pre">'data_openneuro.nii.gz'</span></code>)
+and the respective directions and b-values  (<code class="docutils literal notranslate"><span class="pre">'data_openneuro.bvec'</span></code>, <code class="docutils literal notranslate"><span class="pre">'data_openneuro.bval'</span></code>).
+Subsequently, you can use DSI Studio software to calculate brain tractography and follow the same steps described above.
+We recommend using the DTI fiber reconstruction method with the following tracking parameters:
+angular threshold = <span class="math notranslate nohighlight">\(60^{0}\)</span>, step size = 1.0 <em>mm</em>, smoothing = 0.5, minimum length = 30 <em>mm</em>,
+maximum length = 250 <em>mm</em>, and a tract count of 1.0 million fibers.</p>
+</section>
+</section>
+<section id="conversion-of-tractography-data-to-working-format-trk-or-tck-bundles">
+<h2>Conversion of tractography data to working format (TRK or TCK -&gt; bundles)<a class="headerlink" href="#conversion-of-tractography-data-to-working-format-trk-or-tck-bundles" title="Permalink to this heading"></a></h2>
+<p>To ensure compatibility of our working format (<code class="docutils literal notranslate"><span class="pre">bundles</span></code>) with other software (DSI Studio, Dipy, MRtrix, among others), we offer a source code for performing format conversions.
+The following code allows you to convert tractography dataset from the <code class="docutils literal notranslate"><span class="pre">TRK</span></code> or <code class="docutils literal notranslate"><span class="pre">TCK</span></code> formats (obtained with DSI Studio) to the <code class="docutils literal notranslate"><span class="pre">bundles</span></code> format.
+In the next subsection, we provide code for converting from <code class="docutils literal notranslate"><span class="pre">bundles</span></code> format to <code class="docutils literal notranslate"><span class="pre">TRK</span></code> or <code class="docutils literal notranslate"><span class="pre">TKC</span></code>.
+To test this code, download the test <a class="reference external" href="https://www.dropbox.com/scl/fo/vjq9shi9zk8ka0iy3a8wq/h?rlkey=in68fyr37faa86poq9rt60rur&amp;dl=1">dataset</a> to the <code class="docutils literal notranslate"><span class="pre">'Downloads/'</span></code> directory on your computer and
+then unzip it with the <code class="docutils literal notranslate"><span class="pre">extract</span> <span class="pre">here</span></code> option.
+In the <code class="docutils literal notranslate"><span class="pre">'Downloads/format_conversion_testing/'</span></code> directory you will find three files. The files <code class="docutils literal notranslate"><span class="pre">'tractography_format_test.trk'</span></code> and <code class="docutils literal notranslate"><span class="pre">'tractography_format_test.tck'</span></code>,
+containing 10K brain fibers, in <code class="docutils literal notranslate"><span class="pre">TRK</span></code> and <code class="docutils literal notranslate"><span class="pre">TCK</span></code> formats, respectively.
+The file <code class="docutils literal notranslate"><span class="pre">'diffusion_data.nii'</span></code> is the diffusion MRI image in the diffusion-weighted subject’s acquisition space.
+This image is used to extract the voxel size and the number of slices necessary to apply the affine transformation and convert the tractography dataset from one format to another.
+Next, within the <code class="docutils literal notranslate"><span class="pre">'Downloads/format_conversion_testing/'</span></code> directory, create a text file named <code class="docutils literal notranslate"><span class="pre">'format_conversion_tool.py'</span></code>, copy the following code, and save it.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import for enabling parallel processing:</span>
+<span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
+
+<span class="c1"># Import of the nibabel library for handling image file:</span>
+<span class="kn">import</span> <span class="nn">nibabel</span> <span class="k">as</span> <span class="nn">nb</span>
+
+<span class="c1"># Import of the NumPy library:</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Import necessary modules from Phybers for writing fiber bundles:</span>
+<span class="kn">from</span> <span class="nn">phybers.utils</span> <span class="kn">import</span> <span class="n">write_bundle</span><span class="p">,</span> <span class="n">read_bundle</span>
+
+<span class="c1"># Import necessary functions for loading and saving tractograms from Dipy library:</span>
+<span class="kn">from</span> <span class="nn">dipy.io.streamline</span> <span class="kn">import</span> <span class="n">load_tractogram</span><span class="p">,</span> <span class="n">save_tractogram</span>
+
+<span class="c1"># Import necessary classes for handling stateful tractograms and specifying coordinate space from Dipy library:</span>
+<span class="kn">from</span> <span class="nn">dipy.io.stateful_tractogram</span> <span class="kn">import</span> <span class="n">Space</span><span class="p">,</span> <span class="n">StatefulTractogram</span>
+
+<span class="k">def</span> <span class="nf">apply_affine_bundle_parallel</span><span class="p">(</span><span class="n">in_fibers</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">):</span>
+<span class="w">   </span><span class="sd">&quot;&quot;&quot;Use parallel processing to apply the affine transformation to each fiber.</span>
+<span class="sd">   &quot;&quot;&quot;</span>
+   <span class="c1"># Use parallel processing to apply the affine transformation to each fiber:</span>
+   <span class="n">out_fibers</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">nthreads</span><span class="p">)(</span><span class="n">delayed</span><span class="p">(</span><span class="n">apply_affine_fiber</span><span class="p">)(</span><span class="n">f</span><span class="p">,</span> <span class="n">affine</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">in_fibers</span><span class="p">)</span>
+
+   <span class="k">return</span> <span class="n">out_fibers</span>
+
+<span class="k">def</span> <span class="nf">apply_affine_point</span><span class="p">(</span><span class="n">in_point</span><span class="p">,</span> <span class="n">affine</span><span class="p">):</span>
+<span class="w">   </span><span class="sd">&quot;&quot;&quot;Apply an affine transformation to a 3D point.</span>
+<span class="sd">   &quot;&quot;&quot;</span>
+   <span class="c1"># Apply the affine transformation to the input point:</span>
+   <span class="n">tmp</span> <span class="o">=</span> <span class="n">affine</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">in_point</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+
+   <span class="c1"># Extract the transformed point coordinates</span>
+   <span class="n">out_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tmp</span><span class="p">))[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+
+   <span class="k">return</span> <span class="n">out_point</span>
+
+<span class="k">def</span> <span class="nf">get_affine</span><span class="p">(</span><span class="n">image_reference</span><span class="p">):</span>
+<span class="w">   </span><span class="sd">&quot;&quot;&quot; Get an affine transformation matrix from an image reference.</span>
+<span class="sd">   &quot;&quot;&quot;</span>
+   <span class="c1"># Load the image reference:</span>
+   <span class="n">img_reference</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">image_reference</span><span class="p">)</span>
+
+   <span class="c1"># Get the affine transformation matrix from the image reference:</span>
+   <span class="n">affine_</span> <span class="o">=</span> <span class="n">img_reference</span><span class="o">.</span><span class="n">affine</span>
+
+   <span class="c1"># Ensure all values in the affine matrix are positive:</span>
+   <span class="n">affine_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">affine_</span><span class="p">)</span>
+
+   <span class="c1"># Apply specific modifications to the diagonal elements and translation vector:</span>
+   <span class="n">affine_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+   <span class="n">affine_</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+   <span class="n">affine_</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+   <span class="n">affine_</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img_reference</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">get_zooms</span><span class="p">())</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img_reference</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">get_data_shape</span><span class="p">())</span>
+
+   <span class="k">return</span> <span class="n">affine_</span>
+
+<span class="k">def</span> <span class="nf">apply_affine_fiber</span><span class="p">(</span><span class="n">fiber</span><span class="p">,</span> <span class="n">affine</span><span class="p">):</span>
+<span class="w">   </span><span class="sd">&quot;&quot;&quot;Apply an affine transformation to a fiber.</span>
+<span class="sd">   &quot;&quot;&quot;</span>
+   <span class="n">new_fiber</span> <span class="o">=</span> <span class="p">[]</span>
+
+   <span class="c1"># Apply the affine transformation to each point in the fiber:</span>
+   <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">fiber</span><span class="p">:</span>
+      <span class="n">point_transform</span> <span class="o">=</span> <span class="n">apply_affine_point</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">affine</span><span class="p">)</span>
+      <span class="n">new_fiber</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">point_transform</span><span class="p">))</span>
+
+   <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">new_fiber</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">convert_to_bundles</span><span class="p">(</span><span class="n">file_in</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">image_reference</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">file_out_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="w">   </span><span class="sd">&quot;&quot;&quot;Convert streamlines from TRK or TCK format to bundles format.</span>
+<span class="sd">   &quot;&quot;&quot;</span>
+   <span class="c1"># Get the affine transformation matrix:</span>
+   <span class="n">affine</span> <span class="o">=</span> <span class="n">get_affine</span><span class="p">(</span><span class="n">image_reference</span><span class="p">)</span>
+
+   <span class="c1"># Load the streamlines from file:</span>
+   <span class="n">fibers</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">streamlines</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_in</span><span class="p">)</span><span class="o">.</span><span class="n">streamlines</span>
+
+   <span class="c1"># Apply the affine transformation to the streamlines in parallel:</span>
+   <span class="n">fibers_converted</span> <span class="o">=</span> <span class="n">apply_affine_bundle_parallel</span><span class="p">(</span><span class="n">fibers</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+   <span class="c1"># Write the streamline to bundles format:</span>
+   <span class="n">write_bundle</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">file_out_name</span><span class="si">}</span><span class="s1">.bundles&#39;</span><span class="p">,</span> <span class="n">fibers_converted</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, to convert from <code class="docutils literal notranslate"><span class="pre">TRK</span></code> to <code class="docutils literal notranslate"><span class="pre">bundles</span></code> format, at the end of the script <code class="docutils literal notranslate"><span class="pre">'format_conversion_tool.py'</span></code>, add the following lines:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Input reference image file:</span>
+<span class="n">image_reference</span> <span class="o">=</span> <span class="s1">&#39;diffusion_data.nii&#39;</span>
+
+<span class="c1"># Input tractography dataset file in TRK format:</span>
+<span class="n">file_in</span><span class="o">=</span> <span class="s1">&#39;tractography_format_test.trk&#39;</span>
+
+<span class="c1"># Output tractography dataset file name to convert in bundles format:</span>
+<span class="n">file_out_name</span> <span class="o">=</span> <span class="s1">&#39;tractography_bundles_from_trk&#39;</span>
+
+<span class="c1"># # Execute the function to convert the TRK format to bundle:</span>
+<span class="n">convert_to_bundles</span><span class="p">(</span><span class="n">file_in</span><span class="p">,</span> <span class="n">image_reference</span><span class="p">,</span> <span class="n">file_out_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Subsequently, run the code to obtain the converted fibers in the <code class="docutils literal notranslate"><span class="pre">bundles</span></code> format. In the directory <code class="docutils literal notranslate"><span class="pre">'Downloads/format_conversion_testing/'</span></code>,
+you can verify that the fibers were converted, if the following two files are created:
+<code class="docutils literal notranslate"><span class="pre">'tractography_format_test_trk.bundles'</span></code> and <code class="docutils literal notranslate"><span class="pre">'tractography_format_test_trk.bundlesdata'</span></code>.
+To convert from <code class="docutils literal notranslate"><span class="pre">TCK</span></code> to <code class="docutils literal notranslate"><span class="pre">bundles</span></code> format, follow the same procedure, but in this case, use <code class="docutils literal notranslate"><span class="pre">file_in</span> <span class="pre">=</span> <span class="pre">'tractography_format_test.tck'</span></code>.</p>
+</section>
+<section id="conversion-of-tractography-data-from-working-format-to-other-formats-bundles-trk-or-tck">
+<h2>Conversion of tractography data from working format to other formats (bundles -&gt; TRK or TCK)<a class="headerlink" href="#conversion-of-tractography-data-from-working-format-to-other-formats-bundles-trk-or-tck" title="Permalink to this heading"></a></h2>
+<p>This subsection introduces a code for converting from the <code class="docutils literal notranslate"><span class="pre">bundles</span></code> format to <code class="docutils literal notranslate"><span class="pre">TRK</span></code> and <code class="docutils literal notranslate"><span class="pre">TCK</span></code> formats.
+To employ this code, insert the following function into the script <code class="docutils literal notranslate"><span class="pre">'format_conversion_tool.py'</span></code> and save afterward.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">convert_bundles_to_track</span><span class="p">(</span><span class="n">file_in</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">image_reference</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">file_out_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">format_out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="w">   </span><span class="sd">&quot;&quot;&quot; Convert streamlines from bundles format to TRK or TCK formats.</span>
+<span class="sd">   &quot;&quot;&quot;</span>
+
+   <span class="c1"># Load the reference NIfTI image</span>
+   <span class="n">nifti_img</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">image_reference</span><span class="p">)</span>
+
+   <span class="c1"># Read tractography dataset from the input file:</span>
+   <span class="n">fibers</span> <span class="o">=</span> <span class="n">read_bundle</span><span class="p">(</span><span class="n">file_in</span><span class="p">)</span>
+
+   <span class="c1"># Initialize an empty list to store transformed fibers:</span>
+   <span class="n">fibs</span> <span class="o">=</span> <span class="p">[]</span>
+
+   <span class="c1"># Iterate through each fiber in the input tractography dataset:</span>
+   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fibers</span><span class="p">)):</span>
+      <span class="n">fib</span> <span class="o">=</span> <span class="n">fibers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+      <span class="c1"># Initialize an array with zeros to store transformed fiber points:</span>
+      <span class="n">fib2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">fib</span><span class="p">)</span>
+
+      <span class="c1"># Iterate through each point in the fiber:</span>
+      <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fib</span><span class="p">)):</span>
+
+            <span class="c1"># Transform each point by subtracting it from the data shape of the NIfTI image:</span>
+            <span class="n">fib2</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nifti_img</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">get_data_shape</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">fib</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">fib2</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nifti_img</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">get_data_shape</span><span class="p">())[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">fib</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">fib2</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nifti_img</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">get_data_shape</span><span class="p">())[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">fib</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+
+      <span class="c1"># Append the transformed fiber to the list:</span>
+      <span class="n">fibs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fib2</span><span class="p">)</span>
+
+   <span class="c1"># Create an identity affine matrix:</span>
+   <span class="n">affine_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+   <span class="c1"># Create a NIfTI image from the reference image data:</span>
+   <span class="n">nifti_img_ref</span> <span class="o">=</span> <span class="n">nb</span><span class="o">.</span><span class="n">Nifti1Image</span><span class="p">(</span><span class="n">nifti_img</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">(),</span> <span class="n">affine_</span><span class="p">)</span>
+
+   <span class="c1"># Create a stateful tractogram using transformed fibers and the reference NIfTI image:</span>
+   <span class="n">tractogram</span> <span class="o">=</span> <span class="n">StatefulTractogram</span><span class="p">(</span><span class="n">fibs</span><span class="p">,</span> <span class="n">nifti_img_ref</span><span class="p">,</span> <span class="n">Space</span><span class="o">.</span><span class="n">VOX</span><span class="p">)</span>
+
+   <span class="c1"># Save the stateful tractogram as a TRK file:</span>
+   <span class="n">save_tractogram</span><span class="p">(</span><span class="n">tractogram</span><span class="p">,</span> <span class="n">file_out_name</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">format_out</span><span class="p">,</span> <span class="n">bbox_valid_check</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Below is an example for converting from the <code class="docutils literal notranslate"><span class="pre">bundles</span></code> format to <code class="docutils literal notranslate"><span class="pre">TRK</span></code>. Refer to the script <code class="docutils literal notranslate"><span class="pre">'Downloads/format_conversion_testing/format_conversion_tool.py'</span></code>,
+and at the end of the script, add the following lines that execute the <code class="docutils literal notranslate"><span class="pre">convert_bundles_to_track()</span></code> function.
+Then, verify that the file <code class="docutils literal notranslate"><span class="pre">'tractography_trk_from_bundles.trk'</span></code> has been created in the <code class="docutils literal notranslate"><span class="pre">'Downloads/format_conversion_testing'</span></code> directory.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Input reference image file:</span>
+<span class="n">image_reference</span> <span class="o">=</span> <span class="s1">&#39;diffusion_data.nii&#39;</span>
+
+<span class="c1"># Input tractography dataset file in bundles format:</span>
+<span class="n">file_in</span> <span class="o">=</span> <span class="s1">&#39;tractography_bundles_from_trk.bundles&#39;</span>
+
+<span class="c1"># Output tractography dataset file name to convert:</span>
+<span class="n">file_out_name</span> <span class="o">=</span> <span class="s1">&#39;tractography_trk_from_bundles&#39;</span>
+
+<span class="c1"># Output chosen format for conversion to the input tractography dataset file:</span>
+<span class="n">format_out</span> <span class="o">=</span> <span class="s1">&#39;trk&#39;</span>
+
+<span class="c1"># Execute the function to convert the bundles format to TRK::</span>
+<span class="n">convert_bundles_to_track</span><span class="p">(</span><span class="n">file_in</span><span class="p">,</span> <span class="n">image_reference</span><span class="p">,</span> <span class="n">file_out_name</span><span class="p">,</span> <span class="n">format_out</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="examples-of-phybers-use">
+<span id="subsec-example"></span><h2>Examples of Phybers use<a class="headerlink" href="#examples-of-phybers-use" title="Permalink to this heading"></a></h2>
+<p>This subsection provides all the necessary test data to run the main functionalities of Phybers. Two main examples, <a class="reference internal" href="#segmentation-example"><span class="std std-ref">Fiber segmentation and visualization example</span></a> and <a class="reference internal" href="#clustering-example"><span class="std std-ref">Clustering example</span></a> have been created for this purpose.
+The first step would be to obtain the test data from <a class="reference internal" href="#data-test-download"><span class="std std-ref">Test data download</span></a>,
+and then you can run both examples in any order you prefer, as each one is independent from the other.
+In the <a class="reference internal" href="#segmentation-example"><span class="std std-ref">Fiber segmentation and visualization example</span></a>, an illustration is given of how the Utils module (<code class="docutils literal notranslate"><span class="pre">deform()</span></code>, <code class="docutils literal notranslate"><span class="pre">sampling()</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">intersection()</span></code>) and the Visualization module (<code class="docutils literal notranslate"><span class="pre">start_fibervis()</span></code>) integrate with tractography segmentation using the <code class="docutils literal notranslate"><span class="pre">fiberseg()</span></code> algorithm.
+In the <a class="reference internal" href="#clustering-example"><span class="std std-ref">Clustering example</span></a>, an integrative example is presented that allows combining the Utils module (<code class="docutils literal notranslate"><span class="pre">postprocessing()</span></code>) and
+the Visualization module (<code class="docutils literal notranslate"><span class="pre">start_fibervis()</span></code>) with the clustering module’s algorithms <code class="docutils literal notranslate"><span class="pre">hclust()</span></code> and <code class="docutils literal notranslate"><span class="pre">ffclust()</span></code>.
+Additionally, an example is provided to analyze clustering results, such as obtaining a histogram of clusters with a size greater than 150 (fibers) and a length between 50 and 60 <em>mm</em>.</p>
+<section id="test-data-download">
+<span id="data-test-download"></span><h3>Test data download<a class="headerlink" href="#test-data-download" title="Permalink to this heading"></a></h3>
+<p>For the execution of all Phybers functions, two sets of diffusion MRI testing data are available.
+The initial set features higher-resolution data sourced from the HPC database, while the second set is derived from a lower-resolution dataset from the OpenNeuro database.
+The example scripts provided here were created using higher-resolution data, but instructions are given to apply them to the second database.</p>
+<p>To run each of the examples provided below, <a class="reference external" href="https://www.dropbox.com/scl/fo/shibujoaqkov3rda5sse2/h?rlkey=4wto6ycw61ozs60mo5kjpibic&amp;dl=1">download the HCP dataset</a>
+to the <code class="docutils literal notranslate"><span class="pre">'Downloads/'</span></code> directory on your computer,
+and then unzip the data using the <code class="docutils literal notranslate"><span class="pre">extract</span> <span class="pre">here</span></code> option. This will generate the <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/'</span></code> directory, which should contain:
+a <code class="docutils literal notranslate"><span class="pre">NIfTI</span></code> image with the nonlinear transformation to deform the tractography dataset to the MNI space (<code class="docutils literal notranslate"><span class="pre">'nonlinear_transform.nii'</span></code>),
+and two files of brain tractography datasets with their respective <code class="docutils literal notranslate"><span class="pre">bundles/bundlesdata</span></code> files. These datasets are named <code class="docutils literal notranslate"><span class="pre">'subject_15e5.bundles/subject_15e5.bundlesdata'</span></code>
+and <code class="docutils literal notranslate"><span class="pre">'subject_4K.bundles/subject_4K.bundlesdata'</span></code>.
+Both tractography datasets correspond to the same test subject; their fibers have a variable number of points and are aligned with the subject’s diffusion-weigthed acquisition space.
+The first tractography dataset has a size of 1.5 million (<code class="docutils literal notranslate"><span class="pre">'15e5'</span></code>) brain fibers from the whole-brain, while the second dataset has 4,000 (<code class="docutils literal notranslate"><span class="pre">'4K'</span></code>) brain fibers from the postcentral region of the brain.
+Next, execute the following examples within the <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/'</span></code> directory.</p>
+<p>To access the OpenNeuro database data in a format compatible for direct use with Phybers, we invite you to download it through the
+<a class="reference external" href="https://www.dropbox.com/scl/fo/lqmr6c01t0sugpvo3l57u/h?rlkey=zy85rhpw7tzfr6bbrefk8w0ho&amp;dl=1">provided link</a>.
+Follow the same download and decompression steps as outlined for the HCP dataset.
+Subsequently, verify the presence of the following files within the directory <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers_OpenNeuro_database/'</span></code>.
+<code class="docutils literal notranslate"><span class="pre">'subject_openneuro_1M.bundes/subject_openneuro_1M.bundesdata'</span></code> contains the whole-brain tractography dataset, aligned with the subject’s diffusion-weighted acquisition space,
+featuring a size of 1 million (<code class="docutils literal notranslate"><span class="pre">'1M'</span></code>) brain fibers.
+<code class="docutils literal notranslate"><span class="pre">'nonlinear_transform_oepnneuro.nii'</span></code> has the nonlinear transformation to deform the tractography dataset to the MNI space.
+Finally, <code class="docutils literal notranslate"><span class="pre">'subject_openneuro_4K.bundes/subject_openneuro_4K.bundesdata'</span></code>
+has brain fibers from the postcentral region of the brain, aligned with the subject’s diffusion-weighted acquisition space, featuring a size of 4,000 (<code class="docutils literal notranslate"><span class="pre">'4K'</span></code>) brain fibers.</p>
+</section>
+<section id="fiber-segmentation-and-visualization-example">
+<span id="segmentation-example"></span><h3>Fiber segmentation and visualization example<a class="headerlink" href="#fiber-segmentation-and-visualization-example" title="Permalink to this heading"></a></h3>
+<section id="fiber-bundle-segmentation">
+<h4>Fiber bundle segmentation<a class="headerlink" href="#fiber-bundle-segmentation" title="Permalink to this heading"></a></h4>
+<p>To perform the fiber bundle segmentation, it is crucial that the subject’s tractography dataset has fibers resampled with 21 equidistant points and is in the same space as the brain fiber bundle atlas.
+To carry out the segmentation example, follow these three steps:
+First, download the test data detailed in the previous subsection  <a class="reference internal" href="#data-test-download"><span class="std std-ref">Test data download</span></a>.
+Second, download the Deep White Matter (DWM) bundle atlas (Guevara et al. 2012) as described  in the subsection
+<a class="reference internal" href="Documentation.html#atlases-download"><span class="std std-ref">Atlases Download</span></a>, to the <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/'</span></code> directory and then unzip it with the <code class="docutils literal notranslate"><span class="pre">extract</span> <span class="pre">here</span></code> option.
+You can also use either of the other two Superficial White Matter (SWM) atlases provided in the subsection <a class="reference internal" href="Documentation.html#atlases-download"><span class="std std-ref">Atlases Download</span></a>.
+Third, create a script file with the name <code class="docutils literal notranslate"><span class="pre">'testing_fiberseg.py'</span></code>, copy the following command lines, save,
+and execute the script in a Python terminal within the <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/'</span></code> directory.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import Python&#39;s os library for directory management:</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># Import deform  sub-module. Transforms a tractography dataset file to another space using a nonlinear deformation image file:</span>
+<span class="kn">from</span> <span class="nn">phybers.utils</span> <span class="kn">import</span> <span class="n">deform</span>
+
+<span class="c1"># Import sampling  sub-module. Performs a sampling of the fibers points:</span>
+<span class="kn">from</span> <span class="nn">phybers.utils</span> <span class="kn">import</span> <span class="n">sampling</span>
+
+<span class="c1"># Import fiberseg sub-module. White matter fiber bundle segmentation algorithm based on a multi-subject atlas:</span>
+<span class="kn">from</span> <span class="nn">phybers.segment</span> <span class="kn">import</span> <span class="n">fiberseg</span>
+
+<span class="c1">#Execute the deform function:</span>
+<span class="n">deform</span> <span class="p">(</span> <span class="n">deform_file</span> <span class="o">=</span> <span class="s1">&#39;nonlinear_transform.nii&#39;</span><span class="p">,</span> <span class="n">file_in</span> <span class="o">=</span> <span class="s1">&#39;subject_15e5.bundles&#39;</span><span class="p">,</span> <span class="n">file_out</span> <span class="o">=</span> <span class="s1">&#39;subject_15e5_MNI.bundles&#39;</span><span class="p">)</span>
+
+<span class="c1"># Execute the sampling function:</span>
+<span class="n">sampling</span> <span class="p">(</span> <span class="n">file_in</span> <span class="o">=</span> <span class="s1">&#39;subject_15e5_MNI.bundles&#39;</span><span class="p">,</span> <span class="n">file_out</span> <span class="o">=</span> <span class="s1">&#39;subject_15e5_MNI_21pts.bundles&#39;</span><span class="p">,</span> <span class="n">npoints</span> <span class="o">=</span> <span class="mi">21</span> <span class="p">)</span>
+
+<span class="c1"># Path to the tractography dataset file:</span>
+<span class="n">file_in</span> <span class="o">=</span> <span class="s1">&#39;subject_15e5_MNI_21pts.bundles&#39;</span>
+
+<span class="c1"># Subject name used to label the results; in this case, the suffix &#39;subject_15e5&#39; is used:</span>
+<span class="n">subj_name</span> <span class="o">=</span> <span class="s1">&#39;subject_15e5&#39;</span>
+
+<span class="c1"># Directory to the bundle atlas:</span>
+<span class="n">atlas_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;DWM_atlas_2012&#39;</span><span class="p">,</span><span class="s1">&#39;bundles&#39;</span><span class="p">)</span>
+
+<span class="c1"># Path to the atlas information file:</span>
+<span class="n">atlas_info</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;DWM_atlas_2012&#39;</span><span class="p">,</span><span class="s1">&#39;atlas_info.txt&#39;</span><span class="p">)</span>
+
+<span class="c1"># Directory to save all result segmentation, in this case &#39;seg_result&#39;:</span>
+<span class="n">dir_out</span> <span class="o">=</span> <span class="s1">&#39;seg_result&#39;</span>
+
+<span class="c1"># Execute the fiberseg function:</span>
+<span class="n">fiberseg</span><span class="p">(</span><span class="n">file_in</span><span class="p">,</span> <span class="n">subj_name</span><span class="p">,</span> <span class="n">atlas_dir</span><span class="p">,</span> <span class="n">atlas_info</span><span class="p">,</span> <span class="n">dir_out</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first step to verify that the segmentation was performed correctly would be to open the <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/seg_result/'</span></code> directory and check that the following 3 directories were created:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/seg_result/final_bundles/'</span></code>: It contains separately all the segmented fascicles in <code class="docutils literal notranslate"><span class="pre">bundles/bundlesdata</span></code> files, sampled at 21 points and in the atlas space (MNI).
+For example, for the inferior longitudinal fascicle (IL), we should find two files: <code class="docutils literal notranslate"><span class="pre">'subject_15e5_to_IL_LEFT_MNI.bundles'</span></code> and <code class="docutils literal notranslate"><span class="pre">'subject_15e5_to_IL_LEFT_MNI.bundlesdata'</span></code>.
+The names encode that we are dealing with the segmentation result for the subject <code class="docutils literal notranslate"><span class="pre">'subject_15e5'</span></code>, specifically for the inferior longitudinal fascicle in the left hemisphere (<code class="docutils literal notranslate"><span class="pre">'IL_LEFT'</span></code>),
+and it is located in the MNI space. This convention holds for the rest of the fascicles.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/seg_result/bundles_id/'</span></code>: It is a directory that has a text file for each segmented bundle. A text file of a segmented bundle contains the indices of the fibers in the original  subject’s tractography dataset file.
+The name of each file corresponds to the name of the segmented bundle file with a <code class="docutils literal notranslate"><span class="pre">'.txt'</span></code> extension.
+These files are used to obtain the segmented fascicles in the subject’s original space and with all points of brain fibers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/seg_result/centroids/'</span></code>: A directory storing two files corresponding to a tractography dataset in <code class="docutils literal notranslate"><span class="pre">bundles/bundlesdata</span></code> format, containing one centroid for each segmented fascicle. This dataset is named <code class="docutils literal notranslate"><span class="pre">'centroids.bundles/centroids.bundlesdata'</span></code>, and is sampled at 21 points in the atlas space (MNI).</p></li>
+</ul>
+</section>
+<section id="visualization-of-segmented-fascicles">
+<h4>Visualization of segmented fascicles<a class="headerlink" href="#visualization-of-segmented-fascicles" title="Permalink to this heading"></a></h4>
+<p>The second step to check the segmentation results would be to use our visualization software to observe the segmented fascicles.
+To do this, execute the following commands in the <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/'</span></code> directory:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import fibervis:</span>
+<span class="kn">from</span> <span class="nn">phybers.fibervis</span> <span class="kn">import</span> <span class="n">start_fibervis</span>
+
+<span class="c1"># Execute the graphical user interface for fibervis:</span>
+<span class="n">start_fibervis</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Subsequently, navigate to the directory that stores all segmented bundles, in this case, <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/seg_result/final_bundles/'</span></code>.
+As example, select the 3 segments of the arcuate fasciculus (AR) for the left hemisphere: <code class="docutils literal notranslate"><span class="pre">'subject_15e5_to_AR_LEFT_MNI.bundles'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'subject_15e5_to_AR_ANT_LEFT_MNI.bundles'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'subject_15e5_to_AR_POST_LEFT_MNI.bundles'</span></code> .
+This will allow you to obtain a visualization similar to the one shown in Figure 2.</p>
+<figure class="align-default" id="id9">
+<img alt="ARF-seg.png" src="_images/ARF-seg.png" />
+<figcaption>
+<p><span class="caption-text">Figure 2. Bundle segmentation results for a subject from the HCP database using the DWM bundle atlas <span id="id4">[<a class="reference internal" href="References.html#id3" title="P. Guevara, D. Duclap, C. Poupon, L. Marrakchi-Kacem, P. Fillard, D. Le Bihan, M. Leboyer, J. Houenou, and J. F. Mangin. Automatic fiber bundle segmentation in massive tractography datasets using a multi-subject bundle atlas. Neuroimage, 61(4):1083-99, 2012. doi:10.1016/j.neuroimage.2012.02.071.">3</a>]</span>.
+The three segments of the arcuate fasciculus in the left hemisphere: direct segment (purple), anterior segment (yellow), and posterior segment (green). Colors are randomly assigned.</span><a class="headerlink" href="#id9" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Alternatively, you can execute the segmentation example using the brain tractography dataset from OpenNeuro (<a class="reference internal" href="#data-test-download"><span class="std std-ref">Test data download</span></a>), and use it with <code class="docutils literal notranslate"><span class="pre">file_in</span> <span class="pre">='subject_openneuro_1M.bundes'</span></code>.
+In this case, we recommend adjusting the segmentation
+thresholds for each of the fascicles in the DWM bundle atlas or simply download and replace the atlas information file (<code class="docutils literal notranslate"><span class="pre">'atlas_info.txt'</span></code>) we provided at the
+<a class="reference external" href="https://www.dropbox.com/scl/fi/zlg6c7o0cu1gfjqrugqr6/atlas_info.txt?rlkey=xj4tj1cgnk9b5n9iw8mi6xxqn&amp;dl=1">following link</a>.
+Figure 3 visualizes the segmentation results for the three segments of the arcuate fascicle.</p>
+<figure class="align-default" id="id10">
+<img alt="ARF-seg_openneuro.png" src="_images/ARF-seg_openneuro.png" />
+<figcaption>
+<p><span class="caption-text">Figure 3. Bundle segmentation results for a subject from the OpenNeuro database using the DWM bundle atlas <span id="id5">[<a class="reference internal" href="References.html#id3" title="P. Guevara, D. Duclap, C. Poupon, L. Marrakchi-Kacem, P. Fillard, D. Le Bihan, M. Leboyer, J. Houenou, and J. F. Mangin. Automatic fiber bundle segmentation in massive tractography datasets using a multi-subject bundle atlas. Neuroimage, 61(4):1083-99, 2012. doi:10.1016/j.neuroimage.2012.02.071.">3</a>]</span>.
+The three segments of the arcuate fasciculus in the left hemisphere: direct segment (violet), anterior segment (yellow), and posterior segment (green). Colors are randomly assigned.</span><a class="headerlink" href="#id10" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="retrieve-the-fascicles-with-all-points-in-the-subject-s-original-space">
+<h4>Retrieve the fascicles with all points in the subject’s original space<a class="headerlink" href="#retrieve-the-fascicles-with-all-points-in-the-subject-s-original-space" title="Permalink to this heading"></a></h4>
+<p>In the <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/seg_result/final_bundles/'</span></code> directory, all fascicles identified in the test subject are stored.
+These fascicles have the same number of fiber points, specifically, 21 points, and are located in the atlas space.
+In case you need to obtain the fascicles in original space, where the bundles were tracked (usually the subject’s diffusion-weighted space)
+and with the same number of points as the original tractography dataset, execute the following commands on the <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/'</span></code> directory.
+This will generate a new directory inside <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/seg_result/'</span></code> called <code class="docutils literal notranslate"><span class="pre">'final_bundles_allpoints'</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import Python libraries for additional processing steps:</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Import necessary Phybers modules for fiber reading and writing, respectively:</span>
+<span class="kn">from</span> <span class="nn">phybers.utils</span> <span class="kn">import</span> <span class="n">read_bundle</span><span class="p">,</span> <span class="n">write_bundle</span>
+
+<span class="c1"># Read the fibers with all points and in the subject&#39;s original space:</span>
+<span class="n">bundles_allpoint</span> <span class="o">=</span> <span class="n">read_bundle</span><span class="p">(</span><span class="s1">&#39;subject_15e5.bundles&#39;</span><span class="p">)</span>
+
+<span class="c1"># Convert the bundle list into a NumPy array</span>
+<span class="n">bundles_allpoint_to_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">bundles_allpoint</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+<span class="c1"># Create a directory to store the final bundles with all points</span>
+<span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;seg_result&#39;</span><span class="p">,</span> <span class="s1">&#39;final_bundles_allpoints&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+   <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+
+<span class="c1"># Iterate through files in the &#39;bundles_id/bundles_id&#39; directory</span>
+<span class="k">for</span> <span class="n">file_id</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;seg_result&#39;</span><span class="p">,</span> <span class="s1">&#39;bundles_id&#39;</span><span class="p">)):</span>
+   <span class="n">indices</span><span class="o">=</span><span class="p">[]</span>
+
+   <span class="c1"># Read indices from the file</span>
+   <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;seg_result&#39;</span><span class="p">,</span> <span class="s1">&#39;bundles_id&#39;</span><span class="p">,</span><span class="n">file_id</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())))</span>
+
+   <span class="c1"># Write the fibers with all points to a new bundle file</span>
+   <span class="n">write_bundle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;seg_result&#39;</span><span class="p">,</span><span class="s1">&#39;final_bundles_allpoints&#39;</span><span class="p">,</span><span class="n">file_id</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.bundles&#39;</span><span class="p">),</span><span class="n">bundles_allpoint_to_array</span><span class="p">[</span><span class="n">indices</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="calculating-intersection-between-fascicles">
+<h4>Calculating intersection between fascicles<a class="headerlink" href="#calculating-intersection-between-fascicles" title="Permalink to this heading"></a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">phybers.utils</span></code> module includes the <code class="docutils literal notranslate"><span class="pre">intersection</span></code> tool, designed to calculate the percentage of overlap between two given fascicles.
+To consider two fibers as intersecting, their maximum Euclidean distance must be less than a defined threshold, given as a parameter (<code class="docutils literal notranslate"><span class="pre">distance_thr</span></code>) with a default value of <em>10.0 mm</em>.
+This function can be used to compare fascicles from different processing, for example,
+for evaluating the impact of linear versus nonlinear registration on segmented data, as outlined in <span id="id6">Román <em>et al.</em> [<a class="reference internal" href="References.html#id6" title="Claudio Román, Miguel Guevara, Ronald Valenzuela, Miguel Figueroa, Josselin Houenou, Delphine Duclap, Cyril Poupon, Jean-François Mangin, and Pamela Guevara. Clustering of whole-brain white matter short association bundles using hardi data. Frontiers in Neuroinformatics, 11:73, 2017 2017. doi:10.3389/fninf.2017.00073.">4</a>]</span>.
+Additionally, it can be employed to identify similarities between the same fascicle across two different subjects.</p>
+<p>In this example, we propose computing the intersection of the segmented left anterior arcuate fasciculus in MNI space (<code class="docutils literal notranslate"><span class="pre">'subject_15e5_to_AR_ANT_LEFT_MNI.bundles'</span></code>)
+with the segmented left direct arcuate fasciculus in MNI space (<code class="docutils literal notranslate"><span class="pre">'subject_15e5_to_AR_LEFT_MNI.bundles'</span></code>). Then, we can proceed with the bundle intersection calculation (<code class="docutils literal notranslate"><span class="pre">phybers.utils.intersection()</span></code>).
+Thus, the fascicle <code class="docutils literal notranslate"><span class="pre">'subject_15e5_to_AR_ANT_LEFT_MNI.bundles'</span></code> will be passed to the <code class="docutils literal notranslate"><span class="pre">file1_in</span></code> argument, while <code class="docutils literal notranslate"><span class="pre">'subject_15e5_to_AR_LEFT_MNI.bundles'</span></code> will be passed to the <code class="docutils literal notranslate"><span class="pre">file2_in</span></code> argument.
+Additionally, the output directory name will be set to the <code class="docutils literal notranslate"><span class="pre">dir_out</span></code> argument, in this case:
+<code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/seg_result/intersection_output/'</span></code>.</p>
+<p>The intersection function returns a tuple with the percentage of intersection of the first bundle with the second and vice versa.
+Also, the function generates three tractography dataset files in the ouput directory, as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'fiber1-fiber2.bundles/fiber1-fiber2.bundlesdata'</span></code>: containing the fibers that are considered similar (or intersecting) for both fascicles.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'only_fiber1.bundles/only_fiber1.bundlesdata'</span></code>: containing the fibers that are only in the first fascicle.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'only_fiber2.bundles/only_fiber2.bundlesdata'</span></code>: containing the fibers that are only in the second fascicle.</p></li>
+</ul>
+<p>Open a Python terminal in the <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/'</span></code> directory and run the following commands:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import intersection sub-module:</span>
+<span class="kn">from</span> <span class="nn">phybers.utils</span> <span class="kn">import</span> <span class="n">intersection</span>
+
+<span class="c1"># Import Python&#39;s os library for directory management:</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># Execute the intersection function:</span>
+<span class="n">result_intersection</span> <span class="o">=</span> <span class="n">intersection</span><span class="p">(</span><span class="n">file1_in</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;seg_result&#39;</span><span class="p">,</span> <span class="s1">&#39;final_bundles&#39;</span><span class="p">,</span> <span class="s1">&#39;subject_15e5_to_AR_ANT_LEFT_MNI.bundles&#39;</span><span class="p">),</span>
+                                 <span class="n">file2_in</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;seg_result&#39;</span><span class="p">,</span> <span class="s1">&#39;final_bundles&#39;</span><span class="p">,</span> <span class="s1">&#39;subject_15e5_to_AR_LEFT_MNI.bundles&#39;</span><span class="p">),</span>
+                                 <span class="n">dir_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;seg_result&#39;</span><span class="p">,</span> <span class="s1">&#39;intersection_output&#39;</span><span class="p">),</span> <span class="n">distance_thr</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
+
+<span class="c1"># Display the results of intersection</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Intersection fibers1 with fibers2 &#39;</span><span class="p">,</span> <span class="n">result_intersection</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Intersection fibers2 with fibers1 &#39;</span><span class="p">,</span> <span class="n">result_intersection</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>In Figure 4, the left side displays the overlap of the <code class="docutils literal notranslate"><span class="pre">'only_fiber1.bundles'</span></code> fascicle with the <code class="docutils literal notranslate"><span class="pre">'fiber1-fiber2.bundles'</span></code> fibers,
+while the right side shows the <code class="docutils literal notranslate"><span class="pre">'only_fiber2.bundles'</span></code> fascicle with the <code class="docutils literal notranslate"><span class="pre">'fiber1-fiber2.bundles'</span></code> fibers.</p>
+<figure class="align-default" id="id11">
+<img alt="intersection.png" src="_images/intersection.png" />
+<figcaption>
+<p><span class="caption-text">Figure 4. Example of intersection between the left anterior arcuate fasciculus (first fascicle) and the left direct arcuate fasciculus (second fascicle), both obtained in the segmentation example.
+On the left, the overlap of fibers intersecting in both fascicles is shown: fibers from the first fascicle are represented in pink, and intersecting fibers from the second fascicle are in violet.
+On the right, the intersecting fibers from both fascicles are presented, with those belonging to the second fascicle highlighted in brown and those from the first fascicle that intersect, in violet.</span><a class="headerlink" href="#id11" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="clustering-example">
+<span id="id7"></span><h3>Clustering example<a class="headerlink" href="#clustering-example" title="Permalink to this heading"></a></h3>
+<p>The clustering module includes two clustering algorithms: HClust and FFClust.
+First, an example of how to apply HClust (<code class="docutils literal notranslate"><span class="pre">'phybers.clustering.hclust()'</span></code>) will be presented, followed by an example of FFClust use (<code class="docutils literal notranslate"><span class="pre">'phybers.clustering.ffclust()'</span></code>).
+Before carrying out any of the provided examples, download the test data following the instructions given in section <a class="reference internal" href="#data-test-download"><span class="std std-ref">Test data download</span></a>.</p>
+<section id="hclust">
+<h4>HClust<a class="headerlink" href="#hclust" title="Permalink to this heading"></a></h4>
+<p>Navigate to the <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/'</span></code> directory, open a Python terminal, and execute the commands provided below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import hclust sub-module. Average-link hierarchical agglomerative clustering algorithm:</span>
+<span class="kn">from</span> <span class="nn">phybers.clustering</span> <span class="kn">import</span> <span class="n">hclust</span>
+
+<span class="c1"># Path to the tractography dataset file:</span>
+<span class="n">file_in</span> <span class="o">=</span> <span class="s1">&#39;subject_4K.bundles&#39;</span>
+
+<span class="c1"># Directory to save all result clustering:</span>
+<span class="n">dir_out</span> <span class="o">=</span> <span class="s1">&#39;hclust_result&#39;</span>
+
+<span class="c1"># Maximum distance threshold in mm:</span>
+<span class="n">fiber_thr</span> <span class="o">=</span> <span class="mi">70</span>
+
+<span class="c1"># Adaptive partition threshold in mm:</span>
+<span class="n">partition_thr</span> <span class="o">=</span> <span class="mi">70</span>
+
+<span class="c1"># Variance squared and provides a similarity scale in mm:</span>
+<span class="n">variance</span> <span class="o">=</span> <span class="mi">3600</span>
+
+<span class="c1"># Execute the hclust function:</span>
+<span class="n">hclust</span><span class="p">(</span><span class="n">file_in</span><span class="p">,</span> <span class="n">dir_out</span><span class="p">,</span> <span class="n">fiber_thr</span><span class="p">,</span> <span class="n">partition_thr</span><span class="p">,</span> <span class="n">variance</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If HClust was executed successfully, in the directory <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/hclust_result/'</span></code> you should be able to verify the existence of the following outputs:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/hclust_result/final_bundles/'</span></code>: Directory that stores all the fiber clusters identified in separated datasets (<code class="docutils literal notranslate"><span class="pre">bundles/bundlesdata</span></code> files), sampled at 21 points.
+The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters (N-1) identified.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/hclust_result/final_bundles_allpoints/'</span></code>: Directory that stores all the fiber clusters identified in separated datasets (<code class="docutils literal notranslate"><span class="pre">bundles/bundlesdata</span></code> files), with all points and in the original space.
+The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters (N-1) identified.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/hclust_result/centroids/'</span></code>: A directory storing two files corresponding to a tractography dataset in <code class="docutils literal notranslate"><span class="pre">bundles/bundlesdata</span></code> format,
+containing one centroid for each created cluster. This dataset is named <code class="docutils literal notranslate"><span class="pre">'centroids.bundles/centroids.bundlesdata'</span></code>, and is sampled at 21 points in the atlas space (MNI).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/hclust_result/bundles_id.txt'</span></code>: Text file that stores the fiber indexes from the original input tractography dataset file for each detected cluster.
+Each line in the file correspond to a cluster in correlative order.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/hclust_result/outputs/'</span></code>: Temporal directory with intermediate results, such as the distance matrix, the affinity graph, and the dendrogram.</p></li>
+</ul>
+<section id="visualization-of-the-clusters-obtained-with-hclust">
+<h5>Visualization of the clusters obtained with HClust<a class="headerlink" href="#visualization-of-the-clusters-obtained-with-hclust" title="Permalink to this heading"></a></h5>
+<p>Additionally, you can use the visualization module to observe and interact with the obtained results for HClust.
+First, run the Fibervis graphical user interface, open the files located in the
+<code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/hclust_result/final_bundles/'</span></code> directory, and then execute the following commands.
+This allows obtaining a visualization similar to Figure 5, where eight clusters manually chosen are loaded and displayed with random colors.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import fibervis:</span>
+<span class="kn">from</span> <span class="nn">phybers.fibervis</span> <span class="kn">import</span> <span class="n">start_fibervis</span>
+
+<span class="c1"># Execute the graphical user interface for fibervis:</span>
+<span class="n">start_fibervis</span><span class="p">(</span><span class="n">bundles</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;1.bundles&#39;</span><span class="p">,</span> <span class="s1">&#39;3.bundles&#39;</span><span class="p">,</span> <span class="s1">&#39;5.bundles&#39;</span><span class="p">,</span> <span class="s1">&#39;8.bundles&#39;</span><span class="p">,</span> <span class="s1">&#39;9.bundles&#39;</span><span class="p">,</span> <span class="s1">&#39;12.bundles&#39;</span><span class="p">,</span> <span class="s1">&#39;13.bundles&#39;</span><span class="p">,</span> <span class="s1">&#39;32.bundles&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id12">
+<img alt="figure_hclust.png" src="_images/figure_hclust.png" />
+<figcaption>
+<p><span class="caption-text">Figure 5. Results of applying HClust to the tractography dataset with 4000 streamlines from the HCP database. Eight clusters chosen manually are shown with random colors.</span><a class="headerlink" href="#id12" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>If you wish to run this example with the test dataset from the OpenNeuro database, we recommend using the brain tractography dataset consisting of 4,000 brain fibers (<code class="docutils literal notranslate"><span class="pre">'subject_openneuro_4K.bundes/subject_openneuro_4K.bundesdata'</span></code>),
+defining distance thresholds as <code class="docutils literal notranslate"><span class="pre">fiber_thr</span> <span class="pre">=</span> <span class="pre">60</span></code> and <code class="docutils literal notranslate"><span class="pre">partition_thr</span> <span class="pre">=</span> <span class="pre">60</span></code>.
+Figure 6 displays the visualization results for clusters <code class="docutils literal notranslate"><span class="pre">'0.bundles'</span></code>, <code class="docutils literal notranslate"><span class="pre">'1.bundles'</span></code>, <code class="docutils literal notranslate"><span class="pre">'2.bundles'</span></code>, <code class="docutils literal notranslate"><span class="pre">'3.bundles'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'21.bundles'</span></code>.</p>
+<figure class="align-default" id="id13">
+<img alt="figure_hclust_openneuro.png" src="_images/figure_hclust_openneuro.png" />
+<figcaption>
+<p><span class="caption-text">Figure 6. Results of applying HClust to the tractography dataset with 4000 streamlines from the OpenNeuro database. Five clusters, selected manually, are depicted with random colors.</span><a class="headerlink" href="#id13" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="ffclust">
+<span id="ffclust-script"></span><h4>FFClust<a class="headerlink" href="#ffclust" title="Permalink to this heading"></a></h4>
+<p>To execute FFClust, find on your computer the directory  <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/'</span></code>. Afterward, open a Python terminal and run the following commands:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the ffclust sub-module. Intra-subject clustering algorithm:</span>
+<span class="kn">from</span> <span class="nn">phybers.clustering</span> <span class="kn">import</span> <span class="n">ffclust</span>
+
+<span class="c1"># Import the ffclust sub-module. Intra-subject clustering algorithm:</span>
+<span class="kn">from</span> <span class="nn">phybers.utils</span> <span class="kn">import</span> <span class="n">sampling</span>
+
+<span class="c1"># Path to the tractography dataset file:</span>
+<span class="n">file_in</span> <span class="o">=</span> <span class="s1">&#39;subject_15e5.bundles&#39;</span>
+
+<span class="c1"># Directory to save all segmentation results:</span>
+<span class="n">dir_out</span> <span class="o">=</span> <span class="s1">&#39;ffclust_result&#39;</span>
+
+<span class="c1"># Indices of the points to be used in point K-means:</span>
+<span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+
+<span class="c1"># Number of clusters to be computed for each point using K-Means:</span>
+<span class="n">ks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">]</span>
+
+<span class="c1"># Maximum distance threshold for the cluster reassignment in mm:</span>
+<span class="n">assign_thr</span> <span class="o">=</span> <span class="mi">6</span>
+
+<span class="c1"># Maximum distance threshold for cluster merging in mm:</span>
+<span class="n">join_thr</span> <span class="o">=</span> <span class="mi">6</span>
+
+<span class="c1"># Execute the ffclust function:</span>
+<span class="n">ffclust</span><span class="p">(</span><span class="n">file_in</span><span class="p">,</span> <span class="n">dir_out</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">assign_thr</span><span class="p">,</span> <span class="n">join_thr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once FFClust has been successfully executed, in the directory <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/ffclust_result/'</span></code>, you should be able to confirm the presence of the following outputs, that have the same structure as HClust:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/ffclust_result/final_bundles/'</span></code>: Directory that stores all the fiber clusters identified in separated datasets (<code class="docutils literal notranslate"><span class="pre">bundles/bundlesdata</span></code> files), sampled at 21 points.
+The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters (N-1) identified.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/ffclust_result/final_bundles_allpoints/'</span></code>: Directory that stores all the fiber clusters identified in separated datasets (<code class="docutils literal notranslate"><span class="pre">bundles/bundlesdata</span></code> files), with all points and in the original space.
+The file names are labeled with integer numbers ranging from zero to the total number of fiber clusters (N-1) identified.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/ffclust_result/centroids/'</span></code>: A directory storing two files corresponding to a tractography dataset in <code class="docutils literal notranslate"><span class="pre">bundles/bundlesdata</span></code> format,
+containing one centroid for each created cluster. This dataset is named <code class="docutils literal notranslate"><span class="pre">'centroids.bundles/centroids.bundlesdata'</span></code>, and is sampled at 21 points in the atlas space (MNI).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/ffclust_result/bundles_id.txt'</span></code>: Text file that stores the fiber indexes from the original input tractography dataset file for each detected cluster.
+Each line in the file correspond to a cluster in correlative order.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/hclust_result/outputs/'</span></code>: Temporal directory with intermediate results, such as the point clusters.</p></li>
+</ul>
+<section id="filtering-the-clusters-with-a-size-greater-than-150-and-a-length-in-the-range-from-50-to-60-mm">
+<h5>Filtering the clusters with a size greater than 150 and a length in the range from 50 to 60 mm<a class="headerlink" href="#filtering-the-clusters-with-a-size-greater-than-150-and-a-length-in-the-range-from-50-to-60-mm" title="Permalink to this heading"></a></h5>
+<p>The <code class="docutils literal notranslate"><span class="pre">postprocessing()</span></code> tool from the Utils module is useful for exploring and evaluating clustering and segmentation results.
+This tool extracts information (metrics), such as cluster size (number of fibers), cluster mean length, and mean intra-cluster distance, from the generated clusters.
+These results enable various analyses, such as the application of different filters to obtain clusters of a given size
+or the construction of a histogram depicting the distribution of metrics.</p>
+<p>In this example, we illustrate the usage of the PostProcessing sub-module applied to the results obtained with the <code class="docutils literal notranslate"><span class="pre">ffclust()</span></code> algorithm,
+discussed in the previous subsection. First, the <code class="docutils literal notranslate"><span class="pre">postprocessing()</span></code> function is applied, returning a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> object containing the following keys:
+<code class="docutils literal notranslate"><span class="pre">'size'</span></code> (number of fibers in the bundle), <code class="docutils literal notranslate"><span class="pre">'len'</span></code> (centroid length per bundle), and <code class="docutils literal notranslate"><span class="pre">'intra_mean'</span></code> (mean intra-bundle Euclidean distance).
+The DataFrame index corresponds to the cluster number; in other words, index zero of the DataFrame corresponds to cluster zero and centroid zero.</p>
+<p>Next, a filtering criterion is applied, selecting clusters with a size greater or equal to 150, and a mean length between 50 and 60 <em>mm</em>.
+Next, the clusters meeting this condition are stored.
+Finally, a histogram is constructed to visualize the distribution of the selected clusters in relation to their size.</p>
+<p>To execute this example, open the Python terminal in the <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/'</span></code> directory,
+create a script named <code class="docutils literal notranslate"><span class="pre">'testing_postprocessing.py'</span></code>, copy the following command lines, and then run them.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import postprocessing:</span>
+<span class="kn">from</span> <span class="nn">phybers.utils</span> <span class="kn">import</span> <span class="n">postprocessing</span>
+
+<span class="c1"># Import Python libraries for additional processing steps:</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># Set the input directory</span>
+<span class="n">dir_in</span> <span class="o">=</span> <span class="s1">&#39;ffclust_result&#39;</span>
+
+<span class="c1"># Execute postprocessing:</span>
+<span class="n">df_metrics</span> <span class="o">=</span> <span class="n">postprocessing</span> <span class="p">(</span><span class="n">dir_in</span><span class="p">)</span>
+
+<span class="c1"># Save the DataFrame with calculated metrics</span>
+<span class="n">df_metrics</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;ffclust_result&#39;</span><span class="p">,</span> <span class="s1">&#39;outputs&#39;</span><span class="p">,</span> <span class="s1">&#39;metrics.xlsx&#39;</span><span class="p">))</span>
+
+<span class="c1"># Filtering the clusters with a size greater than 150 and a length in the range from 50 to 60 mm:</span>
+<span class="n">filter_df_metrics</span> <span class="o">=</span> <span class="n">df_metrics</span><span class="p">[(</span><span class="n">df_metrics</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">150</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_metrics</span><span class="p">[</span><span class="s1">&#39;len&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">50</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_metrics</span><span class="p">[</span><span class="s1">&#39;len&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">60</span><span class="p">)]</span>
+
+<span class="c1"># List with the indices of filtered fibers:</span>
+<span class="n">list_id_fibers_filter</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">filter_df_metrics</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+<span class="c1"># Define the output directory for filtered fibers:</span>
+<span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;ffclust_result&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_150S_50-60L&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create the directory if it doesn&#39;t exist:</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+   <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+
+<span class="c1"># # Copy the filtered fiber clusters to the created directory:</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">list_id_fibers_filter</span><span class="p">:</span>
+   <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;ffclust_result&#39;</span><span class="p">,</span> <span class="s1">&#39;final_bundles_allpoints&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.bundles&#39;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.bundles&#39;</span><span class="p">))</span>
+   <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;ffclust_result&#39;</span><span class="p">,</span> <span class="s1">&#39;final_bundles_allpoints&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.bundlesdata&#39;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.bundlesdata&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In this example, the calculated DataFrame is automatically saved in the directory <code class="docutils literal notranslate"><span class="pre">'ffclust_result/outputs/'</span></code> as an Excel file named <code class="docutils literal notranslate"><span class="pre">'metrics.xlsx'</span></code>.
+The DataFrame <code class="docutils literal notranslate"><span class="pre">df_metrics</span></code> is filtered and then the selected clusters are stored on the directory <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/ffclust_result/filter_150S_50-60L/'</span></code>.</p>
+</section>
+<section id="visualization-of-the-filtered-clusters">
+<h5>Visualization of the filtered clusters<a class="headerlink" href="#visualization-of-the-filtered-clusters" title="Permalink to this heading"></a></h5>
+<p>The filtered clusters are stored in the <code class="docutils literal notranslate"><span class="pre">'Downloads/testing_phybers/ffclust_result/filter_150S_50-60L/'</span></code> directory.
+To visualize them, run the graphical user interface of Fibervis using the following command lines and then drag all the <code class="docutils literal notranslate"><span class="pre">bundles</span></code> files.
+This will allow you to obtain a visualization similar to the one shown in Figure 7.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import fibervis</span>
+<span class="kn">from</span> <span class="nn">phybers.fibervis</span> <span class="kn">import</span> <span class="n">start_fibervis</span>
+
+<span class="c1"># Execute the graphical user interface for fibervis:</span>
+<span class="n">start_fibervis</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id14">
+<img alt="filter_ffclust_150s_50-60l.png" src="_images/filter_ffclust_150S_50-60L.png" />
+<figcaption>
+<p><span class="caption-text">Figure 7. Results of applying FFClust to the whole-brain tractography dataset with 1.5 million streamlines from HCP database.
+The detected clusters were filtered using the PostProcessing sub-module of the Utils module;
+the filtering criterion shows clusters with a size greater than 150 and a mean length between 50 <em>mm</em> and 60 <em>mm</em>.</span><a class="headerlink" href="#id14" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>For the execution of the FFClust example using the OpenNeuro database (<a class="reference internal" href="#data-test-download"><span class="std std-ref">Test data download</span></a>), begin by running the script provided in the preceding subsection (<a class="reference internal" href="#ffclust-script"><span class="std std-ref">FFClust</span></a>)
+and configuring the <code class="docutils literal notranslate"><span class="pre">'file_in'</span></code> argument as <code class="docutils literal notranslate"><span class="pre">'subject_openneuro_1M.bundes'</span></code>.
+Subsequently, run the script to filter clusters with a size greater than 150 and a mean length between 50 <em>mm</em> and 60 <em>mm</em>.
+This process will enable you to achieve a visual representation similar to the one depicted in Figure 8.</p>
+<figure class="align-default" id="id15">
+<img alt="filter_ffclust_150S_50-60L_openneuro.png" src="_images/filter_ffclust_150S_50-60L_openneuro.png" />
+<figcaption>
+<p><span class="caption-text">Figure 8. Results of applying FFClust to the whole-brain tractography dataset with 1 million streamlines from the OpenNeuro database.
+The detected clusters were filtered using the PostProcessing sub-module of the Utils module;
+the filtering criterion shows clusters with a size greater than 150 and a mean length between 50 <em>mm</em> and 60 <em>mm</em>.</span><a class="headerlink" href="#id15" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="histogram-of-the-filtered-clusters">
+<h5>Histogram of the filtered clusters<a class="headerlink" href="#histogram-of-the-filtered-clusters" title="Permalink to this heading"></a></h5>
+<p>Below is an example that guides you through the process of calculating a histogram to analyse the size of the filtered clusters from the previous step.
+To run the following command lines, create a script with the name <code class="docutils literal notranslate"><span class="pre">'testing_postprocessing_histogram.py'</span></code>
+in the <code class="docutils literal notranslate"><span class="pre">'testing_phybers/ffclust_result/'</span></code> directory, save it, and then execute.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import Seaborn and Matplotlib for creating the histogram:</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Import the pandas library to handle data filtering:</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Import Python&#39;s os library for directory management:</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># Read the Excel file into a pandas DataFrame containing the calculated metrics for FFClust clusters:</span>
+<span class="n">df_metrics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;ffclust_result&#39;</span><span class="p">,</span> <span class="s1">&#39;outputs&#39;</span><span class="p">,</span> <span class="s1">&#39;metrics.xlsx&#39;</span><span class="p">))</span>
+
+<span class="c1"># Filtering the clusters with a size greater than 150 and a length in the range from 50 to 60 mm:</span>
+<span class="n">filter_df_metrics</span> <span class="o">=</span> <span class="n">df_metrics</span><span class="p">[(</span><span class="n">df_metrics</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">150</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_metrics</span><span class="p">[</span><span class="s1">&#39;len&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">50</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_metrics</span><span class="p">[</span><span class="s1">&#39;len&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">60</span><span class="p">)]</span>
+
+<span class="c1"># Set the bin width for the histogram:</span>
+<span class="n">bin_width</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Find the maximum and minimum values of the &#39;size&#39; column in the DataFrame:</span>
+<span class="n">max_lens</span> <span class="o">=</span> <span class="n">filter_df_metrics</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">min_lens</span> <span class="o">=</span> <span class="n">filter_df_metrics</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+
+<span class="c1"># Create bins with the specified bin width, covering the range from the minimum to maximum &#39;size&#39; values:</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_lens</span><span class="p">,</span> <span class="n">max_lens</span> <span class="o">+</span> <span class="n">bin_width</span><span class="p">,</span> <span class="n">bin_width</span><span class="p">)</span>
+
+<span class="c1"># Create a histogram plot using Seaborn, specifying the data, the &#39;size&#39; column, bins, and visual settings:</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">filter_df_metrics</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1"># Set the title and labels for the plot:</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Clusters with a size greater than 150 and a length ranging from 50 to 60 mm&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Sizes&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+
+<span class="c1"># Adjust x-axis tick labels with rotation, alignment, and font size:</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Add grid lines on the y-axis with a dashed linestyle and reduced alpha (transparency):</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+<span class="c1"># Display the histogram plot:</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Figure 9 displays the expected result. It can be deduced that as the size of clusters for fibers with lengths between 50 and 60 mm increases, the number of fibers decreases.</p>
+<figure class="align-default" id="id16">
+<img alt="filter_ffclust_150s_50-60l.png" src="_images/histplot_sizes.png" />
+<figcaption>
+<p><span class="caption-text">Figure 9. Histogram displaying the sizes of clusters obtained with FFClust that have a size greater than 150 and a length between 50 <em>mm</em> and 60 <em>mm</em>.
+On the x-axis, the cluster sizes are presented with 100-unit intervals in the range from 150 to 1750,
+while on the y-axis, the frequency or count of clusters is depicted according to their size.</span><a class="headerlink" href="#id16" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Requirements%20and%20Dependencies.html" class="btn btn-neutral float-left" title="Requirements and Dependencies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Documentation.html" class="btn btn-neutral float-right" title="Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, L.Liset González Rodríguez.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
